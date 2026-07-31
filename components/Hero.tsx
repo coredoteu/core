@@ -2,21 +2,25 @@ import Image from "next/image";
 import Link from "next/link";
 import ProductHoverViewer from "./ProductHoverViewer";
 
+// 3. Replaced broken/missing icons with available equivalents from /icons directory
+// – ph-level.svg      → flask-conical.svg   (chemistry / pH context)
+// – dropper-precision.svg → dropper.svg     (precise dosage context)
+// – cylinder.svg represents liquid volume
 const shampooMarkers = [
-  { icon: "/icons/volume.svg", label: "vol: 290ml", top: "8%", left: "-10%" },
-  { icon: "/icons/ph-level.svg", label: "ph 4.5 - 5.5", top: "46%", left: "80%" },
-  { icon: "/icons/dropper-precision.svg", label: "precise dosage", top: "86%", left: "-10%" },
+  { icon: "/icons/cylinder.svg",       label: "vol: 290ml",       top: "8%",  left: "-10%" },
+  { icon: "/icons/flask-conical.svg",label: "ph 4.5 - 5.5",     top: "46%", left: "80%"  },
+  { icon: "/icons/dropper.svg",      label: "precise dosage",   top: "86%", left: "-10%" },
 ];
 
 const conditionerMarkers = [
-  { icon: "/icons/volume.svg", label: "vol: 290ml", top: "8%", left: "82%" },
-  { icon: "/icons/ph-level.svg", label: "ph 4.5 - 5.5", top: "46%", left: "-14%" },
-  { icon: "/icons/dropper-precision.svg", label: "precise dosage", top: "86%", left: "82%" },
+  { icon: "/icons/cylinder.svg",       label: "vol: 290ml",       top: "8%",  left: "82%" },
+  { icon: "/icons/flask-conical.svg",label: "ph 4.5 - 5.5",     top: "46%", left: "-14%" },
+  { icon: "/icons/dropper.svg",      label: "precise dosage",   top: "86%", left: "82%" },
 ];
 
 export default function Hero() {
   return (
-    <section className="relative pt-16 md:pt-20 overflow-hidden">
+    <section className="relative pt-16 md:pt-20 overflow-visible">
       <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:56px_56px] pointer-events-none" />
 
       <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 pt-10 md:pt-16">
@@ -46,10 +50,15 @@ export default function Hero() {
               className="group flex items-center justify-between px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white transition-colors duration-300"
             >
               <span>[ shop the duo ]</span>
+              {/* 3. Arrow icon — white filter applied, inverts on hover when bg is dark */}
               <img
                 src="/icons/arrow-right.svg"
                 alt=""
-                className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300 invert group-hover:invert-0"
+                aria-hidden="true"
+                className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300"
+                style={{
+                  filter: "brightness(0)", // black on white bg by default
+                }}
               />
             </Link>
             <Link
@@ -63,16 +72,32 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="relative w-full aspect-[16/9] md:aspect-[21/9] border-t border-white/10">
-        <Image
-          src="/images/v1-hero-duo.png"
-          alt="core. shampoo and conditioner duo on volcanic rock"
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-[#0D0D0D]/10" />
+      {/*
+        4. Hero Image Layout Fix:
+        Instead of being constrained inside a container, the image wrapper uses
+        negative horizontal margins (calc) to break out of the page padding and
+        span edge-to-edge. z-index keeps it behind the text sections. The image
+        itself uses object-position: center to avoid top/bottom clipping.
+      */}
+      <div
+        className="relative border-t border-white/10"
+        style={{
+          marginLeft: "calc(-1 * max(0px, (100vw - 1600px) / 2))",
+          marginRight: "calc(-1 * max(0px, (100vw - 1600px) / 2))",
+        }}
+      >
+        <div className="relative w-full" style={{ aspectRatio: "21 / 9", minHeight: "360px" }}>
+          <Image
+            src="/images/v1-hero-duo.png"
+            alt="core. shampoo and conditioner duo on volcanic rock"
+            fill
+            className="object-cover"
+            style={{ objectPosition: "center 35%" }}
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-[#0D0D0D]/10" />
+        </div>
       </div>
 
       <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-white/10">

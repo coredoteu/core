@@ -42,6 +42,14 @@ export default function AddToCartButton({
       ? "adding"
       : label;
 
+  // 2. Dynamic cart icon color:
+  // – success state: button bg is white → icon must be BLACK (invert off, no filter needed since svg is already dark stroke)
+  // – all other states: dark bg → icon should be WHITE (brightness(0) invert(1))
+  const iconFilter =
+    status === "success"
+      ? "brightness(0)" // black icon on white background
+      : "brightness(0) invert(1)"; // white icon on dark background
+
   return (
     <button
       type="button"
@@ -58,11 +66,12 @@ export default function AddToCartButton({
       <img
         src={icon}
         alt=""
-        className={`h-4 w-4 transition-opacity duration-300 ${
-          status === "success"
-            ? "opacity-100 invert"
-            : "opacity-60 group-hover:opacity-100"
-        }`}
+        aria-hidden="true"
+        className="h-4 w-4 transition-all duration-300"
+        style={{
+          filter: iconFilter,
+          opacity: status === "success" ? 1 : 0.8,
+        }}
       />
     </button>
   );
