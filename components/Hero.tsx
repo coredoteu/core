@@ -30,7 +30,7 @@ export default function Hero() {
           <span>lat 51.92 / lon 4.47</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 py-14 md:py-20 items-end">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 py-14 md:py-20 items-end">
           <div className="lg:col-span-8">
             <h1 className="text-[15vw] sm:text-7xl md:text-8xl lg:text-[7rem] leading-[0.86] tracking-tighter font-light lowercase text-white">
               refined
@@ -74,26 +74,25 @@ export default function Hero() {
 
       {/*
         4. Hero Image Layout Fix:
-        Instead of being constrained inside a container, the image wrapper uses
-        negative horizontal margins (calc) to break out of the page padding and
-        span edge-to-edge. z-index keeps it behind the text sections. The image
-        itself uses object-position: center to avoid top/bottom clipping.
+        The container defines a fixed aspect ratio for page flow.
+        The image uses absolute positioning with w-full and h-auto to scale 
+        naturally and overflow the top and bottom bounds seamlessly without 
+        shrinking or cropping.
       */}
       <div
-        className="relative border-t border-white/10"
+        className="relative z-0 border-t border-white/10 pointer-events-none"
         style={{
           marginLeft: "calc(-1 * max(0px, (100vw - 1600px) / 2))",
           marginRight: "calc(-1 * max(0px, (100vw - 1600px) / 2))",
         }}
       >
-        <div className="relative w-full" style={{ aspectRatio: "21 / 9", minHeight: "360px" }}>
+        <div className="relative w-full flex items-center justify-center" style={{ aspectRatio: "21 / 9", minHeight: "360px" }}>
           <Image
             src="/images/v1-hero-duo.png"
             alt="core. shampoo and conditioner duo on volcanic rock"
-            fill
-            className="object-cover"
-            style={{ objectPosition: "center 35%" }}
-            sizes="100vw"
+            width={1348}
+            height={949}
+            className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-auto max-w-none"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-[#0D0D0D]/10" />
