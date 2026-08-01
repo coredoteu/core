@@ -1,5 +1,6 @@
 import Image from "next/image";
 import AddToCartButton from "./AddToCartButton";
+import { CATALOG } from "@/lib/catalog";
 
 // 3. Replaced missing custom icons with available equivalents from /icons directory:
 // cruelty-free → badge-check.svg | nut-free → ban.svg | silicone-free → ban.svg
@@ -25,19 +26,19 @@ const shampooRitual = ["massage", "cleanse", "rinse"];
 const conditionerRitual = ["apply", "nourish", "rinse"];
 
 const shampooActives = [
-  { code: "sh.01", name: "aloe barbadensis leaf juice", desc: "hydrates the scalp directly and calms irritation on contact." },
-  { code: "sh.02", name: "lauryl & coco-glucoside cleansing base", desc: "mild coconut-derived cleansers that foam without stripping." },
-  { code: "sh.03", name: "crambe maritima (sea kale) leaf extract", desc: "marine-derived antioxidant that supports scalp equilibrium." },
-  { code: "sh.04", name: "ginkgo biloba leaf extract", desc: "organically farmed, supports micro-circulation at the follicle." },
-  { code: "sh.05", name: "arctium lappa (burdock) root extract", desc: "organically farmed, strengthens strand structure from the root." },
+  { code: "sh.01", name: "ALOE BARBADENSIS LEAF JUICE", desc: "hydrates the scalp directly and calms irritation on contact." },
+  { code: "sh.02", name: "LAURYL & COCO-GLUCOSIDE CLEANSING BASE", desc: "mild coconut-derived cleansers that foam without stripping." },
+  { code: "sh.03", name: "CRAMBE MARITIMA (SEA KALE) LEAF EXTRACT", desc: "marine-derived antioxidant that supports scalp equilibrium." },
+  { code: "sh.04", name: "GINKGO BILOBA LEAF EXTRACT", desc: "organically farmed, supports micro-circulation at the follicle." },
+  { code: "sh.05", name: "ARCTIUM LAPPA (BURDOCK) ROOT EXTRACT", desc: "organically farmed, strengthens strand structure from the root." },
 ];
 
 const conditionerActives = [
-  { code: "co.01", name: "hydrolyzed wheat protein", desc: "rebuilds strand structure from the outside in." },
-  { code: "co.02", name: "argania spinosa (argan) kernel oil", desc: "organically farmed, deep lipid nourishment without weight." },
-  { code: "co.03", name: "aloe barbadensis leaf juice", desc: "core hydration carried through from the shampoo step." },
-  { code: "co.04", name: "crambe maritima & burdock root extract", desc: "antioxidant support paired with root-level strength." },
-  { code: "co.05", name: "ginkgo biloba leaf extract", desc: "organically farmed, closes the system with circulation support." },
+  { code: "co.01", name: "HYDROLYZED WHEAT PROTEIN", desc: "rebuilds strand structure from the outside in." },
+  { code: "co.02", name: "ARGANIA SPINOSA (ARGAN) KERNEL OIL", desc: "organically farmed, deep lipid nourishment without weight." },
+  { code: "co.03", name: "ALOE BARBADENSIS LEAF JUICE", desc: "core hydration carried through from the shampoo step." },
+  { code: "co.04", name: "CRAMBE MARITIMA & BURDOCK ROOT EXTRACT", desc: "antioxidant support paired with root-level strength." },
+  { code: "co.05", name: "GINKGO BILOBA LEAF EXTRACT", desc: "organically farmed, closes the system with circulation support." },
 ];
 
 function RitualSteps({ steps }: { steps: string[] }) {
@@ -80,7 +81,7 @@ function IngredientList({
             <div className="flex items-center gap-2">
               {/* 3. molecule.svg missing → replaced with atom.svg; white filter applied */}
               <img src="/icons/atom.svg" alt="" className="h-3.5 w-3.5 opacity-50 shrink-0" style={{ filter: "brightness(0) invert(1)" }} />
-              <span className="text-sm text-white lowercase">{item.name}</span>
+              <span className="text-sm text-white uppercase tracking-wider">{item.name}</span>
               <span className="ml-auto font-mono text-[10px] text-white/30 lowercase shrink-0">
                 {item.code}
               </span>
@@ -129,7 +130,7 @@ export default function SystemSpecSheet() {
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
               src="/images/shampoo-front.png"
-              alt="core. daily balancing shampoo"
+              alt="CORE. daily balancing shampoo"
               fill
               className="object-contain"
               sizes="160px"
@@ -145,7 +146,7 @@ export default function SystemSpecSheet() {
           <div className="mt-auto flex items-center justify-between pt-2">
             <span className="text-2xl font-light text-white">€28.00</span>
           </div>
-          <AddToCartButton />
+          <AddToCartButton product={CATALOG.find((p) => p.id === "shampoo-290")!} />
         </div>
 
         <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6">
@@ -153,7 +154,7 @@ export default function SystemSpecSheet() {
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
               src="/images/conditioner-front.png"
-              alt="core. daily nourishing conditioner"
+              alt="CORE. daily nourishing conditioner"
               fill
               className="object-contain"
               sizes="160px"
@@ -169,7 +170,7 @@ export default function SystemSpecSheet() {
           <div className="mt-auto flex items-center justify-between pt-2">
             <span className="text-2xl font-light text-white">€28.00</span>
           </div>
-          <AddToCartButton />
+          <AddToCartButton product={CATALOG.find((p) => p.id === "conditioner-290")!} />
         </div>
 
         <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6 bg-white/[0.02] relative">
@@ -223,7 +224,7 @@ export default function SystemSpecSheet() {
             <span className="text-xs text-white/30 line-through">€56.00</span>
             <span className="text-[10px] font-mono text-white/40 lowercase">save €4</span>
           </div>
-          <AddToCartButton label="add the duo" className="border-white" />
+          <AddToCartButton product={CATALOG.find((p) => p.id === "duo-system-001")!} label="add the duo" className="border-white" />
         </div>
       </div>
 

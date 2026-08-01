@@ -1,22 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import ProductHoverViewer from "./ProductHoverViewer";
-
-// 3. Replaced broken/missing icons with available equivalents from /icons directory
-// – ph-level.svg      → flask-conical.svg   (chemistry / pH context)
-// – dropper-precision.svg → dropper.svg     (precise dosage context)
-// – cylinder.svg represents liquid volume
-const shampooMarkers = [
-  { icon: "/icons/cylinder.svg",       label: "vol: 290ml",       top: "8%",  left: "-10%" },
-  { icon: "/icons/flask-conical.svg",label: "ph 4.5 - 5.5",     top: "46%", left: "80%"  },
-  { icon: "/icons/dropper.svg",      label: "precise dosage",   top: "86%", left: "-10%" },
-];
-
-const conditionerMarkers = [
-  { icon: "/icons/cylinder.svg",       label: "vol: 290ml",       top: "8%",  left: "82%" },
-  { icon: "/icons/flask-conical.svg",label: "ph 4.5 - 5.5",     top: "46%", left: "-14%" },
-  { icon: "/icons/dropper.svg",      label: "precise dosage",   top: "86%", left: "82%" },
-];
 
 export default function Hero() {
   return (
@@ -25,9 +8,9 @@ export default function Hero() {
 
       <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 pt-10 md:pt-16">
         <div className="flex items-center justify-between text-[11px] font-mono tracking-[0.2em] text-white/35 pb-8 md:pb-14 border-b border-white/10">
-          <span>core. / system 001</span>
+          <span>CORE. // system 001</span>
           <span className="hidden sm:inline">technical hair care.</span>
-          <span>lat 51.92 / lon 4.47</span>
+          <span>lat 51.92 // lon 4.47</span>
         </div>
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 py-14 md:py-20 items-end">
@@ -37,17 +20,18 @@ export default function Hero() {
               <br />
               to the core.
             </h1>
-            <p className="mt-8 max-w-md text-white/50 text-base md:text-lg leading-relaxed lowercase">
-              technical hair care, engineered right. a shampoo and
-              conditioner system built from 98-99% natural origin actives,
-              zero shortcuts.
+            <p className="mt-8 text-white/50 text-base md:text-lg leading-relaxed lowercase max-w-sm sm:max-w-md lg:max-w-none">
+              technical hair care, engineered right.
+              a shampoo and conditioner system
+              built from 98-99% natural origin
+              actives, zero shortcuts.
             </p>
           </div>
 
           <div className="lg:col-span-4 flex flex-col gap-4">
             <Link
               href="/shop/duo"
-              className="group flex items-center justify-between px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white transition-colors duration-300"
+              className="group flex items-center justify-between px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white active:scale-[0.98] transition-all duration-300"
             >
               <span>[ shop the duo ]</span>
               {/* 3. Arrow icon — white filter applied, inverts on hover when bg is dark */}
@@ -63,7 +47,7 @@ export default function Hero() {
             </Link>
             <Link
               href="#formula"
-              className="flex items-center justify-between px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 transition-colors duration-300"
+              className="flex items-center justify-between px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300"
             >
               <span>[ see the formulation ]</span>
               <span className="font-mono text-white/30">→</span>
@@ -79,59 +63,31 @@ export default function Hero() {
         naturally and overflow the top and bottom bounds seamlessly without 
         shrinking or cropping.
       */}
+      {/* Hero image — edge-to-edge on all viewports, aspect ratio adapts per breakpoint */}
       <div
-        className="relative z-0 border-t border-white/10 pointer-events-none"
+        className="relative z-0 border-t border-white/10 pointer-events-none mb-0 md:mb-4 lg:mb-8"
         style={{
           marginLeft: "calc(-1 * max(0px, (100vw - 1600px) / 2))",
           marginRight: "calc(-1 * max(0px, (100vw - 1600px) / 2))",
         }}
       >
-        <div className="relative w-full flex items-center justify-center" style={{ aspectRatio: "21 / 9", minHeight: "360px" }}>
-          <Image
-            src="/images/v1-hero-duo.png"
-            alt="core. shampoo and conditioner duo on volcanic rock"
-            width={1348}
-            height={949}
-            className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-auto max-w-none"
-            priority
-          />
+        {/* Mobile / tablet: taller 4:3 crop keeps product centred. Desktop: wide-cinema 21:9 */}
+        <div className="relative w-full overflow-hidden aspect-[4/3] lg:aspect-[21/9]">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/v1-hero-duo.png"
+              alt="CORE. shampoo and conditioner duo on volcanic rock"
+              fill
+              className="object-cover object-center lg:object-contain lg:object-center"
+              style={{
+                WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)",
+                maskImage: "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)"
+              }}
+              priority
+              sizes="100vw"
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-[#0D0D0D]/10" />
-        </div>
-      </div>
-
-      <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-white/10">
-        <div className="flex items-center gap-4 mb-14">
-          <span className="font-mono text-xs tracking-[0.2em] text-white/30">
-            inspect /
-          </span>
-          <h2 className="text-2xl md:text-3xl font-light lowercase text-white">
-            every angle, every active.
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-10">
-          <div>
-            <span className="block text-center text-[10px] font-mono tracking-[0.2em] text-white/30 lowercase mb-8">
-              unit 01 / shampoo
-            </span>
-            <ProductHoverViewer
-              frontSrc="/images/shampoo-front.png"
-              backSrc="/images/shampoo-back.png"
-              alt="core. daily balancing shampoo"
-              markers={shampooMarkers}
-            />
-          </div>
-          <div>
-            <span className="block text-center text-[10px] font-mono tracking-[0.2em] text-white/30 lowercase mb-8">
-              unit 02 / conditioner
-            </span>
-            <ProductHoverViewer
-              frontSrc="/images/conditioner-front.png"
-              backSrc="/images/conditioner-back.png"
-              alt="core. daily nourishing conditioner"
-              markers={conditionerMarkers}
-            />
-          </div>
         </div>
       </div>
     </section>

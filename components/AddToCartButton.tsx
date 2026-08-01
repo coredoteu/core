@@ -1,29 +1,31 @@
 "use client";
 
 import { useState } from "react";
+import { useCart, CartProduct } from "@/context/CartContext";
 
 type Status = "idle" | "adding" | "success" | "error";
 
 export default function AddToCartButton({
+  product,
   label = "add to cart",
   className = "",
 }: {
+  product: CartProduct;
   label?: string;
   className?: string;
 }) {
   const [status, setStatus] = useState<Status>("idle");
+  const { addItem } = useCart();
 
   function handleClick() {
     if (status === "adding") return;
     setStatus("adding");
 
-    // Wire this up to the real cart mutation. Call setStatus("error") on a
-    // failed request; cart-cross.svg and the "try again" label are already
-    // handled below.
     setTimeout(() => {
+      addItem(product);
       setStatus("success");
       setTimeout(() => setStatus("idle"), 1800);
-    }, 450);
+    }, 350);
   }
 
   const icon =
@@ -42,13 +44,10 @@ export default function AddToCartButton({
       ? "adding"
       : label;
 
-  // 2. Dynamic cart icon color:
-  // – success state: button bg is white → icon must be BLACK (invert off, no filter needed since svg is already dark stroke)
-  // – all other states: dark bg → icon should be WHITE (brightness(0) invert(1))
   const iconFilter =
     status === "success"
-      ? "brightness(0)" // black icon on white background
-      : "brightness(0) invert(1)"; // white icon on dark background
+      ? "brightness(0)"       // black icon on white button
+      : "brightness(0) invert(1)"; // white icon on dark button
 
   return (
     <button
@@ -56,7 +55,7 @@ export default function AddToCartButton({
       onClick={handleClick}
       disabled={status === "adding"}
       aria-live="polite"
-      className={`group flex items-center justify-between gap-3 px-6 py-3.5 border text-sm tracking-[0.15em] lowercase transition-colors duration-300 disabled:cursor-wait ${
+      className={`group flex items-center justify-between gap-3 px-6 py-3.5 border text-sm tracking-[0.15em] lowercase transition-all duration-300 disabled:cursor-wait ${
         status === "success"
           ? "border-white bg-white text-[#0D0D0D]"
           : "border-white/20 text-white/70 hover:text-white hover:border-white/40"

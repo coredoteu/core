@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import V2IngredientsGrid from "./V2IngredientsGrid";
 
 // ─── Static data ──────────────────────────────────────────────────────────────
 
@@ -35,7 +36,7 @@ export default function V2SneakPeek() {
         {/* ── Eyebrow / section label ───────────────────────────────────── */}
         <div className="flex items-center gap-4">
           <span className="font-mono text-xs tracking-[0.2em] text-white/40">
-            04 //
+            07 //
           </span>
           <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
             what comes next
@@ -112,7 +113,7 @@ export default function V2SneakPeek() {
 
               {/* Scan-line overlay */}
               <div
-                className="absolute inset-0 z-10 pointer-events-none"
+                className="absolute inset-0 z-30 pointer-events-none"
                 style={{
                   backgroundImage:
                     "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px)",
@@ -121,10 +122,10 @@ export default function V2SneakPeek() {
 
               {/* Radial vignette */}
               <div
-                className="absolute inset-0 z-10 pointer-events-none"
+                className="absolute inset-0 z-30 pointer-events-none"
                 style={{
                   background:
-                    "radial-gradient(ellipse at center, transparent 30%, rgba(8,8,8,0.85) 100%)",
+                    "radial-gradient(ellipse at center, transparent 30%, rgba(8,8,8,0.95) 100%)",
                 }}
               />
 
@@ -132,22 +133,27 @@ export default function V2SneakPeek() {
               <CrosshairCorners />
 
               {/* Product silhouette */}
-              <div className="relative z-20 w-40 md:w-52 aspect-[1/2.4]">
+              <div 
+                className="relative z-10 w-40 md:w-52 aspect-[1/2.4] -rotate-12 scale-110 transition-transform duration-[2000ms] hover:-rotate-6 hover:scale-125 ease-out"
+                style={{
+                  maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)"
+                }}
+              >
                 <Image
                   src="/images/v2-silhouette.png"
-                  alt="core. v2 stealth black edition silhouette"
+                  alt="CORE. v2 stealth black edition silhouette"
                   fill
-                  className="object-contain brightness-[0.06] contrast-150 blur-[1.5px] saturate-0"
+                  className="object-contain"
+                  unoptimized
                   sizes="(max-width: 768px) 160px, 208px"
                 />
-                {/* Glow behind the silhouette */}
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-white/5 blur-3xl rounded-full" />
               </div>
 
-              {/* Redacted label floating over image */}
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20">
+              {/* Redacted label floating over everything */}
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40">
                 <span className="font-mono text-[9px] tracking-[0.3em] text-white/20 lowercase px-3 py-1 border border-white/10 bg-[#0D0D0D]/60 backdrop-blur-sm">
-                  [ image redacted ]
+                  image redacted
                 </span>
               </div>
             </div>
@@ -170,6 +176,23 @@ export default function V2SneakPeek() {
                 custom formulation and matte black tooling of v2.
               </p>
 
+              {/* Funding Progress Tracker */}
+              <div className="flex flex-col gap-2 my-2">
+                <div className="flex items-center justify-between font-mono text-[10px] lowercase text-white/40">
+                  <span>custom batch funding</span>
+                  <span className="text-white">42%</span>
+                </div>
+                <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-white w-[42%] relative">
+                    {/* Animated shine effect */}
+                    <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+                  </div>
+                </div>
+                <div className="font-mono text-[9px] tracking-[0.1em] text-white/30 lowercase mt-1">
+                  105 / 250 pre-orders unlocked
+                </div>
+              </div>
+
               {/* CTA */}
               <button
                 id="v2-waitlist-cta"
@@ -178,7 +201,7 @@ export default function V2SneakPeek() {
                 onMouseLeave={() => setIsHovered(false)}
                 className={`
                   group self-start relative font-mono text-xs tracking-[0.25em] lowercase
-                  px-6 py-3.5 border transition-all duration-300 ease-out
+                  px-6 py-3.5 border transition-all duration-300 ease-out active:scale-[0.98]
                   ${
                     isHovered
                       ? "border-white/50 text-white shadow-[0_0_20px_rgba(255,255,255,0.08),inset_0_0_20px_rgba(255,255,255,0.03)]"
@@ -208,6 +231,9 @@ export default function V2SneakPeek() {
           </div>
 
         </div>
+
+        {/* ── BOTTOM: V2 Ingredients Grid ───────────────────────────────── */}
+        <V2IngredientsGrid />
       </div>
     </section>
   );

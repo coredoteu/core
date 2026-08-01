@@ -1,9 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Ticker from "@/components/Ticker";
-import SystemSpecSheet from "@/components/SystemSpecSheet";
-import V2SneakPeek from "@/components/V2SneakPeek";
+import ProductHoverSection from "@/components/ProductHoverSection";
+import ThreeStepSystem from "@/components/ThreeStepSystem";
+import dynamic from "next/dynamic";
+
+const SystemSpecSheet = dynamic(() => import("@/components/SystemSpecSheet"));
+const V2SneakPeek = dynamic(() => import("@/components/V2SneakPeek"));
+const FaqSection = dynamic(() => import("@/components/FaqSection"));
+const WaitlistForm = dynamic(() => import("@/components/WaitlistForm"));
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 const traditionalRows = [
@@ -27,14 +34,13 @@ const standards = [
   { value: "eu", label: "engineered & bottled" },
 ];
 
-const footerLinks = ["shop", "science", "roadmap", "cart"];
 
 // ─── Small presentational primitives ───────────────────────────────────────
 function SectionEyebrow({ index, title }: { index: string; title: string }) {
   return (
     <div className="flex items-center gap-4">
       <span className="font-mono text-xs tracking-[0.2em] text-white/40">
-        {index} /
+        {index} {"//"}
       </span>
       <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
         {title}
@@ -63,15 +69,30 @@ export default function Home() {
       <Ticker />
 
       {/* ──────────────────────────────────────────────────────────────────
-          02 / THE COMPARISON
+          01 / SYSTEM SPEC SHEET (PRODUCTS, ADD TO CART, ACTIVES)
+      ────────────────────────────────────────────────────────────────── */}
+      <SystemSpecSheet />
+
+      {/* ──────────────────────────────────────────────────────────────────
+          02 / USAGE PROTOCOL
+      ────────────────────────────────────────────────────────────────── */}
+      <ThreeStepSystem />
+
+      {/* ──────────────────────────────────────────────────────────────────
+          03 / PRODUCT HOVER INSPECTOR
+      ────────────────────────────────────────────────────────────────── */}
+      <ProductHoverSection />
+
+      {/* ──────────────────────────────────────────────────────────────────
+          04 / THE COMPARISON
       ────────────────────────────────────────────────────────────────── */}
       <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
-        <SectionEyebrow index="02" title="the comparison" />
+        <SectionEyebrow index="04" title="the comparison" />
 
         <div className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2">
           <div className="border border-white/10 md:border-r-0 p-8 md:p-14">
             <span className="text-xs font-mono tracking-[0.2em] text-white/30">
-              [ baseline ]
+              baseline
             </span>
             <h3 className="mt-4 text-2xl md:text-3xl font-light lowercase text-white/40">
               traditional hair care
@@ -90,11 +111,11 @@ export default function Home() {
           </div>
 
           <div className="border border-white/20 bg-white/[0.02] p-8 md:p-14 relative">
-            <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white lowercase">
-              [ core. spec ]
+            <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 flex items-center gap-2 text-[10px] font-mono tracking-[0.25em] text-white">
+              <Image src="/CORE_logo_trans.svg" alt="CORE." width={48} height={11} className="h-2.5 w-auto" /> spec
             </span>
-            <h3 className="mt-4 text-2xl md:text-3xl font-light lowercase text-white">
-              core. engineered
+            <h3 className="mt-4 text-2xl md:text-3xl font-light text-white flex items-center gap-3">
+              <Image src="/CORE_logo_trans.svg" alt="CORE." width={110} height={26} className="h-5 md:h-7 w-auto" /> engineered
             </h3>
             <ul className="mt-10 flex flex-col divide-y divide-white/10">
               {coreRows.map((row) => (
@@ -112,16 +133,11 @@ export default function Home() {
       </section>
 
       {/* ──────────────────────────────────────────────────────────────────
-          SYSTEM SPEC SHEET (PRODUCTS, ADD TO CART, ACTIVES)
-      ────────────────────────────────────────────────────────────────── */}
-      <SystemSpecSheet />
-
-      {/* ──────────────────────────────────────────────────────────────────
-          03 / STANDARDS
+          05 / STANDARDS
       ────────────────────────────────────────────────────────────────── */}
       <section className="border-b border-white/10 bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28">
-          <SectionEyebrow index="03" title="standards" />
+          <SectionEyebrow index="05" title="standards" />
 
           <div className="mt-12 md:mt-16 grid grid-cols-2 lg:grid-cols-4 border-t border-l border-white/10">
             {standards.map((s) => (
@@ -142,52 +158,28 @@ export default function Home() {
       </section>
 
       {/* ──────────────────────────────────────────────────────────────────
-          04 / WHAT COMES NEXT
+          06 / TECHNICAL FAQ
+      ────────────────────────────────────────────────────────────────── */}
+      <FaqSection />
+
+      {/* ──────────────────────────────────────────────────────────────────
+          07 / WHAT COMES NEXT
       ────────────────────────────────────────────────────────────────── */}
       <V2SneakPeek />
 
       {/* ──────────────────────────────────────────────────────────────────
-          FOOTER
+          WAITLIST
       ────────────────────────────────────────────────────────────────── */}
-      <footer className="bg-[#0D0D0D]">
+      <section className="bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-white/10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
             <h3 className="text-3xl md:text-5xl font-light tracking-tight lowercase max-w-lg">
               get early access to the next system drop.
             </h3>
-            <form className="flex items-stretch border border-white/20 max-w-md w-full lg:ml-auto">
-              <input
-                type="email"
-                placeholder="you@domain.com"
-                className="flex-1 bg-transparent px-4 py-4 text-sm text-white placeholder:text-white/30 lowercase outline-none"
-              />
-              <button
-                type="submit"
-                className="px-6 text-sm tracking-[0.15em] lowercase bg-white text-[#0D0D0D] hover:bg-white/90 transition-colors duration-300"
-              >
-                notify me
-              </button>
-            </form>
+            <WaitlistForm />
           </div>
         </div>
-
-        <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs text-white/30 font-mono tracking-[0.1em] lowercase">
-            © {new Date().getFullYear()} core. refined to the core.
-          </span>
-          <div className="flex items-center gap-6">
-            {footerLinks.map((l) => (
-              <Link
-                key={l}
-                href={`/${l}`}
-                className="text-xs tracking-[0.15em] text-white/40 hover:text-white transition-colors duration-300 lowercase"
-              >
-                {l}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </footer>
+      </section>
     </main>
   );
 }
