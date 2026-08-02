@@ -60,7 +60,6 @@ function CartItemRow({
       transition={{ duration: 0.28, ease: "easeOut" }}
       className="grid grid-cols-[80px_1fr] md:grid-cols-[100px_1fr_auto_auto] items-start gap-6 py-8 border-b border-white/[0.07] last:border-b-0"
     >
-      {/* image */}
       <div className="relative aspect-[3/4] w-full bg-white/[0.025] border border-white/[0.05] overflow-hidden flex items-center justify-center">
         {isDuo ? (
           <div className="flex items-center justify-center w-full h-full gap-0.5 px-1 py-2">
@@ -78,7 +77,6 @@ function CartItemRow({
         )}
       </div>
 
-      {/* info */}
       <div className="flex flex-col gap-2 min-w-0">
         <div className="flex flex-col gap-0.5">
           <span className="text-[10px] font-mono tracking-[0.2em] text-white/25 lowercase">
@@ -90,11 +88,10 @@ function CartItemRow({
           <span className="text-xs text-white/30 lowercase">{product.size}</span>
         </div>
         <div className="flex items-center gap-1.5 mt-1">
-          <div className="w-1 h-1 rounded-full bg-white/15 shrink-0" />
+          <div className="w-1 h-1 rounded-[50%] bg-white/15 shrink-0" />
           <span className="text-[11px] text-white/35 lowercase">{product.function}</span>
         </div>
 
-        {/* mobile: qty + remove inline */}
         <div className="flex items-center gap-4 mt-3 md:hidden">
           <QuantityControl
             quantity={quantity}
@@ -110,7 +107,6 @@ function CartItemRow({
         </div>
       </div>
 
-      {/* desktop: qty */}
       <div className="hidden md:block">
         <QuantityControl
           quantity={quantity}
@@ -119,7 +115,6 @@ function CartItemRow({
         />
       </div>
 
-      {/* price + remove */}
       <div className="hidden md:flex flex-col items-end gap-3">
         <span className="text-base font-light text-white tabular-nums">
           €{(product.price * quantity).toFixed(2)}
@@ -135,7 +130,7 @@ function CartItemRow({
   );
 }
 
-// ─── Empty state ─────────────────────────────────────────────────────────────
+// ─── Empty State ─────────────────────────────────────────────────────────────
 
 function EmptyCart() {
   return (
@@ -166,7 +161,7 @@ function EmptyCart() {
   );
 }
 
-// ─── Suggested products ──────────────────────────────────────────────────────
+// ─── Suggested Products ──────────────────────────────────────────────────────
 
 function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
   const suggestions = CATALOG.filter((p) => !currentIds.includes(p.id)).slice(0, 2);
@@ -209,7 +204,7 @@ function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
   );
 }
 
-// ─── Main client component ────────────────────────────────────────────────────
+// ─── Main Component ────────────────────────────────────────────────────────────
 
 export default function CartPageClient() {
   const { items, subtotal, clearCart } = useCart();
@@ -222,7 +217,6 @@ export default function CartPageClient() {
   return (
     <div className="max-w-[1600px] mx-auto px-6 md:px-10 pt-28 md:pt-36 pb-24">
 
-      {/* ── Page header ── */}
       <div className="flex items-start justify-between gap-4 mb-12 md:mb-16 pb-8 border-b border-white/10">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-3">
@@ -252,9 +246,7 @@ export default function CartPageClient() {
       ) : (
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-24 items-start">
 
-          {/* ── Items column ── */}
           <div className="flex-1 min-w-0">
-            {/* free shipping bar */}
             <div className="mb-8 border border-white/[0.06] p-5">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[10px] font-mono tracking-[0.15em] text-white/35 lowercase">
@@ -276,7 +268,6 @@ export default function CartPageClient() {
               </div>
             </div>
 
-            {/* column headers (desktop) */}
             <div className="hidden md:grid grid-cols-[100px_1fr_auto_auto] gap-6 mb-2 pb-3 border-b border-white/[0.06]">
               {["product", "", "qty", "total"].map((h, i) => (
                 <span key={i} className="text-[10px] font-mono tracking-[0.2em] text-white/20 lowercase">
@@ -285,14 +276,12 @@ export default function CartPageClient() {
               ))}
             </div>
 
-            {/* items list */}
             <AnimatePresence mode="popLayout">
               {items.map((item) => (
                 <CartItemRow key={item.product.id} item={item} />
               ))}
             </AnimatePresence>
 
-            {/* continue shopping */}
             <div className="mt-8 pt-6 border-t border-white/[0.06]">
               <Link
                 href="/shop"
@@ -308,21 +297,17 @@ export default function CartPageClient() {
               </Link>
             </div>
 
-            {/* suggested */}
             <SuggestedProducts currentIds={items.map((i) => i.product.id)} />
           </div>
 
-          {/* ── Order summary column ── */}
           <div className="w-full lg:w-[340px] xl:w-[380px] shrink-0 sticky top-28">
             <div className="border border-white/10">
-              {/* summary header */}
               <div className="px-7 py-5 border-b border-white/[0.07] bg-white/[0.015]">
                 <span className="text-xs font-mono tracking-[0.2em] text-white/40 lowercase">
                   order summary
                 </span>
               </div>
 
-              {/* line items */}
               <div className="px-7 py-6 flex flex-col gap-4">
                 {items.map((item) => (
                   <div key={item.product.id} className="flex items-start justify-between gap-3">
@@ -343,7 +328,6 @@ export default function CartPageClient() {
 
               <div className="h-px bg-white/[0.07] mx-7" />
 
-              {/* totals */}
               <div className="px-7 py-6 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-white/40 lowercase font-mono tracking-[0.1em]">
@@ -373,7 +357,6 @@ export default function CartPageClient() {
 
               <div className="h-px bg-white/10 mx-7" />
 
-              {/* grand total */}
               <div className="px-7 py-5 flex items-center justify-between">
                 <span className="text-xs font-mono tracking-[0.15em] text-white/60 lowercase">
                   total
@@ -383,7 +366,6 @@ export default function CartPageClient() {
                 </span>
               </div>
 
-              {/* CTA */}
               <div className="px-7 pb-7 flex flex-col gap-3">
                 <button className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 transition-colors duration-300">
                   [ proceed to checkout ]
@@ -396,7 +378,6 @@ export default function CartPageClient() {
                 </Link>
               </div>
 
-              {/* trust indicators */}
               <div className="px-7 pb-6 flex flex-col gap-2.5">
                 <div className="h-px bg-white/[0.06] mb-1" />
                 {[

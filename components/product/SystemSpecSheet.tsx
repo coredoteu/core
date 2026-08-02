@@ -1,11 +1,7 @@
 import Image from "next/image";
-import AddToCartButton from "./AddToCartButton";
+import AddToCartButton from "@/components/product/AddToCartButton";
 import { CATALOG } from "@/lib/catalog";
 
-// 3. Replaced missing custom icons with available equivalents from /icons directory:
-// cruelty-free → badge-check.svg | nut-free → ban.svg | silicone-free → ban.svg
-// leaf-organic → leaf.svg | ph-level → flask-conical.svg | scent-drop → flower.svg
-// origin-pin → map-pin-check.svg
 const badges = [
   { icon: "/icons/vegan.svg",        label: "vegan" },
   { icon: "/icons/badge-check.svg",  label: "cruelty-free" },
@@ -15,11 +11,11 @@ const badges = [
 ];
 
 const specs = [
-  { icon: "/icons/cylinder.svg",         key: "volume",        value: "290ml x 2" },
-  { icon: "/icons/flask-conical.svg",   key: "ph range",      value: "4.5 - 5.5" },
-  { icon: "/icons/flower.svg",          key: "scent",         value: "juicy fruits & warm woods" },
-  { icon: "/icons/map-pin-check.svg",   key: "origin",        value: "netherlands / eu" },
-  { icon: "/icons/leaf.svg",            key: "certification", value: "ecocert cosmos, 98-99%" },
+  { icon: "/icons/layers-minimalistic.svg", key: "volume",        value: "290ml x 2" },
+  { icon: "/icons/flask-conical.svg",       key: "ph range",      value: "4.5 - 5.5" },
+  { icon: "/icons/flower.svg",              key: "scent",         value: "juicy fruits & warm woods" },
+  { icon: "/icons/map-pin-check.svg",       key: "origin",        value: "netherlands / eu" },
+  { icon: "/icons/leaf.svg",                key: "certification", value: "ecocert cosmos, 98-99%" },
 ];
 
 const shampooRitual = ["massage", "cleanse", "rinse"];
@@ -79,7 +75,6 @@ function IngredientList({
         {items.map((item) => (
           <div key={item.code} className="flex flex-col gap-1.5 px-6 md:px-8 py-5">
             <div className="flex items-center gap-2">
-              {/* 3. molecule.svg missing → replaced with atom.svg; white filter applied */}
               <img src="/icons/atom.svg" alt="" className="h-3.5 w-3.5 opacity-50 shrink-0" style={{ filter: "brightness(0) invert(1)" }} />
               <span className="text-sm text-white uppercase tracking-wider">{item.name}</span>
               <span className="ml-auto font-mono text-[10px] text-white/30 lowercase shrink-0">
@@ -98,7 +93,7 @@ function IngredientList({
 
 export default function SystemSpecSheet() {
   return (
-    <section id="formula" className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
+    <section id="formula" data-mobile-sticky-trigger="true" className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
       <div className="flex items-center gap-4">
         <span className="font-mono text-xs tracking-[0.2em] text-white/40">01 //</span>
         <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
@@ -116,14 +111,12 @@ export default function SystemSpecSheet() {
             key={b.label}
             className="flex items-center gap-2 border border-white/15 px-3 py-1.5 text-[11px] font-mono tracking-[0.15em] text-white/60 lowercase"
           >
-            {/* 3. White filter on all badge icons */}
             <img src={b.icon} alt="" className="h-3.5 w-3.5 opacity-70" style={{ filter: "brightness(0) invert(1)" }} />
             {b.label}
           </span>
         ))}
       </div>
 
-      {/* product grid: shampoo / conditioner / duo bundle */}
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 border-t border-l border-white/10">
         <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6">
           <span className="text-xs font-mono tracking-[0.2em] text-white/30">unit 01</span>
@@ -178,7 +171,6 @@ export default function SystemSpecSheet() {
             recommended
           </span>
           <span className="text-xs font-mono tracking-[0.2em] text-white/30">system 001</span>
-          {/* 5. Duo bundle graphic: styled white + between the two bottles */}
           <div className="relative aspect-square w-full max-w-[220px] mx-auto flex items-center justify-center">
             <div className="relative h-full w-[44%]">
               <Image
@@ -189,7 +181,6 @@ export default function SystemSpecSheet() {
                 sizes="100px"
               />
             </div>
-            {/* Plus sign — white, positioned centrally between the bottles */}
             <div className="flex items-center justify-center w-[12%] shrink-0 z-10">
               <span
                 className="text-white font-extralight select-none leading-none"
@@ -228,12 +219,10 @@ export default function SystemSpecSheet() {
         </div>
       </div>
 
-      {/* spec grid */}
       <div className="mt-12 grid grid-cols-2 md:grid-cols-5 border-t border-l border-white/10">
         {specs.map((s) => (
           <div key={s.key} className="border-r border-b border-white/10 p-6 flex flex-col gap-3">
-            {/* 3. White filter on all spec icons */}
-          <img src={s.icon} alt="" className="h-4 w-4 opacity-60" style={{ filter: "brightness(0) invert(1)" }} />
+            <img src={s.icon} alt="" className="h-4 w-4 opacity-60" style={{ filter: "brightness(0) invert(1)" }} />
             <span className="text-[10px] font-mono tracking-[0.15em] text-white/30 lowercase">
               {s.key}
             </span>

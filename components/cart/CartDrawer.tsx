@@ -77,7 +77,6 @@ function CartItemRow({
       transition={{ duration: 0.25, ease: "easeOut" }}
       className="flex gap-4 py-6 border-b border-white/[0.07] last:border-b-0"
     >
-      {/* product image */}
       <div className="relative shrink-0 w-16 h-20 bg-white/[0.03] border border-white/[0.06] overflow-hidden flex items-center justify-center">
         {isDuo ? (
           <div className="flex items-center justify-center w-full h-full gap-0.5 px-1">
@@ -113,7 +112,6 @@ function CartItemRow({
         )}
       </div>
 
-      {/* product info */}
       <div className="flex flex-col flex-1 min-w-0 gap-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-0.5 min-w-0">
@@ -190,7 +188,6 @@ export default function CartDrawer() {
   const drawerRef = useRef<HTMLDivElement>(null);
   const isEmpty = items.length === 0;
 
-  // close on escape key
   useEffect(() => {
     if (!isDrawerOpen) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -200,7 +197,6 @@ export default function CartDrawer() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [isDrawerOpen, closeDrawer]);
 
-  // lock body scroll when open
   useEffect(() => {
     if (isDrawerOpen) {
       document.body.style.overflow = "hidden";
@@ -231,7 +227,6 @@ export default function CartDrawer() {
             transition={{ duration: 0.38, ease: [0.32, 0, 0.08, 1] }}
             className="fixed top-0 right-0 bottom-0 z-[70] w-full max-w-[440px] bg-[#0D0D0D] border-l border-white/10 flex flex-col shadow-[-40px_0_80px_rgba(0,0,0,0.6)]"
           >
-            {/* ── Header ── */}
             <div className="flex items-center justify-between px-7 py-5 border-b border-white/10 shrink-0">
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-white/30">
@@ -260,7 +255,6 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            {/* ── Free shipping progress ── */}
             {!isEmpty && (
               <div className="px-7 py-3 border-b border-white/[0.06] shrink-0">
                 <div className="flex items-center justify-between mb-2">
@@ -284,7 +278,6 @@ export default function CartDrawer() {
               </div>
             )}
 
-            {/* ── Items ── */}
             <div className="flex-1 overflow-y-auto px-7">
               {isEmpty ? (
                 <EmptyState onClose={closeDrawer} />
@@ -299,10 +292,8 @@ export default function CartDrawer() {
               )}
             </div>
 
-            {/* ── Order Summary + Actions ── */}
             {!isEmpty && (
               <div className="shrink-0 border-t border-white/10 px-7 py-6 flex flex-col gap-5">
-                {/* summary lines */}
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-white/40 lowercase font-mono tracking-[0.1em]">
@@ -331,7 +322,6 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
-                {/* CTA */}
                 <Link
                   href="/cart"
                   onClick={closeDrawer}
@@ -340,7 +330,6 @@ export default function CartDrawer() {
                   [ proceed to checkout ]
                 </Link>
 
-                {/* trust indicators */}
                 <div className="flex items-center justify-center gap-6">
                   <span className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.1em] text-white/25 lowercase">
                     <img

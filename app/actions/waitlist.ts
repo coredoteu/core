@@ -10,8 +10,5 @@ export async function joinWaitlist(formData: FormData) {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  // In a real app, integrate with Resend, Mailchimp, or database here.
-  console.log("Waitlist entry:", email);
-
   return { success: true };
 }

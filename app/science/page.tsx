@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import ScienceContent from "@/components/ScienceContent";
+import Navbar from "@/components/layout/Navbar";
+import ScienceContent from "@/components/sections/ScienceContent";
 
 export const metadata: Metadata = {
   title: "science / 01 - CORE.",

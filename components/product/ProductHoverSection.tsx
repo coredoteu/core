@@ -1,15 +1,15 @@
-import ProductHoverViewer from "./ProductHoverViewer";
+import ProductHoverViewer from "@/components/product/ProductHoverViewer";
 
 const shampooMarkers = [
-  { icon: "/icons/cylinder.svg",       label: "vol: 290ml",       top: "8%",  left: "-10%" },
-  { icon: "/icons/flask-conical.svg",label: "ph 4.5 - 5.5",     top: "46%", left: "80%"  },
-  { icon: "/icons/dropper.svg",      label: "precise dosage",   top: "86%", left: "-10%" },
+  { icon: "/icons/layers-minimalistic.svg", label: "vol: 290ml",     top: "8%",  left: "-10%" },
+  { icon: "/icons/flask-conical.svg",       label: "ph 4.5 - 5.5",   top: "46%", left: "80%"  },
+  { icon: "/icons/dropper.svg",             label: "precise dosage",  top: "86%", left: "-10%" },
 ];
 
 const conditionerMarkers = [
-  { icon: "/icons/cylinder.svg",       label: "vol: 290ml",       top: "8%",  left: "82%" },
-  { icon: "/icons/flask-conical.svg",label: "ph 4.5 - 5.5",     top: "46%", left: "-14%" },
-  { icon: "/icons/dropper.svg",      label: "precise dosage",   top: "86%", left: "82%" },
+  { icon: "/icons/layers-minimalistic.svg", label: "vol: 290ml",     top: "8%",  left: "82%" },
+  { icon: "/icons/flask-conical.svg",       label: "ph 4.5 - 5.5",   top: "46%", left: "-14%" },
+  { icon: "/icons/dropper.svg",             label: "precise dosage",  top: "86%", left: "82%" },
 ];
 
 export default function ProductHoverSection() {

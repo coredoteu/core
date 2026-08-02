@@ -4,8 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ─── Icon helper ────────────────────────────────────────────────────────────
-
 function Icon({
   src,
   size = 16,
@@ -49,8 +47,6 @@ function SectionLabel({ index, title }: { index: string; title: string }) {
     </div>
   );
 }
-
-// ─── Data ───────────────────────────────────────────────────────────────────
 
 type Unit = "shampoo" | "conditioner";
 
@@ -115,23 +111,23 @@ const actives: Active[] = [
 ];
 
 const clinicalSpecs = [
-  { icon: "/icons/flask-conical.svg", key: "ph range", value: "4.5 - 5.5" },
-  { icon: "/icons/leaf.svg", key: "natural origin", value: "98 - 99%" },
-  { icon: "/icons/ban.svg", key: "silicones", value: "0" },
-  { icon: "/icons/ban.svg", key: "sulfates (sls)", value: "0" },
-  { icon: "/icons/medal-star.svg", key: "organic-farmed actives", value: "4 / 6" },
-  { icon: "/icons/map-pin-check.svg", key: "formulated", value: "netherlands / eu" },
-  { icon: "/icons/scan.svg", key: "inci standard", value: "eu 1223/2009" },
-  { icon: "/icons/microscope.svg", key: "batch validation", value: "per production run" },
+  { icon: "/icons/flask-conical.svg",   key: "ph range",            value: "4.5 - 5.5" },
+  { icon: "/icons/leaf.svg",            key: "natural origin",      value: "98 - 99%" },
+  { icon: "/icons/ban.svg",             key: "silicones",           value: "0" },
+  { icon: "/icons/ban.svg",             key: "sulfates (sls)",      value: "0" },
+  { icon: "/icons/medal-star.svg",      key: "organic-farmed actives", value: "4 / 6" },
+  { icon: "/icons/map-pin-check.svg",   key: "formulated",          value: "netherlands / eu" },
+  { icon: "/icons/scan.svg",            key: "inci standard",       value: "eu 1223/2009" },
+  { icon: "/icons/microscope.svg",      key: "batch validation",    value: "per production run" },
 ];
 
 const badges = [
-  { icon: "/icons/vegan.svg", label: "vegan" },
-  { icon: "/icons/badge-check.svg", label: "cruelty-free" },
-  { icon: "/icons/ban.svg", label: "nut-free" },
-  { icon: "/icons/ban.svg", label: "gluten-free" },
-  { icon: "/icons/ban.svg", label: "silicone-free" },
-  { icon: "/icons/leaf.svg", label: "ecocert cosmos natural" },
+  { icon: "/icons/vegan.svg",        label: "vegan" },
+  { icon: "/icons/badge-check.svg",  label: "cruelty-free" },
+  { icon: "/icons/ban.svg",          label: "nut-free" },
+  { icon: "/icons/ban.svg",          label: "gluten-free" },
+  { icon: "/icons/ban.svg",          label: "silicone-free" },
+  { icon: "/icons/leaf.svg",         label: "ecocert cosmos natural" },
 ];
 
 const faqs = [
@@ -153,8 +149,6 @@ const faqs = [
   },
 ];
 
-// ─── Component ──────────────────────────────────────────────────────────────
-
 export default function ScienceContent() {
   const [filter, setFilter] = useState<"all" | Unit>("all");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -165,13 +159,12 @@ export default function ScienceContent() {
 
   return (
     <>
-      {/* ── Hero ── */}
       <section className="pt-28 md:pt-36 pb-16 md:pb-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-white/35 pb-8 md:pb-14 border-b border-white/10">
-            <span>CORE. {"//"} formulation index</span>
+            <span>CORE. {"//"}  formulation index</span>
             <span className="hidden sm:inline">technical hair care.</span>
-            <span>ph 4.5 {"//"} 5.5</span>
+            <span>ph 4.5 {"//"}  5.5</span>
           </div>
 
           <div className="pt-12 md:pt-16 flex flex-col gap-6 max-w-3xl">
@@ -197,8 +190,8 @@ export default function ScienceContent() {
             >
               [ shop the duo ]
             </Link>
-            
-              <a href="#actives"
+            <a
+              href="#actives"
               className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
             >
               [ view the compound index ]
@@ -207,7 +200,6 @@ export default function ScienceContent() {
         </div>
       </section>
 
-      {/* ── 01 // formulation philosophy ── */}
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <SectionLabel index="01" title="formulation philosophy" />
@@ -230,20 +222,13 @@ export default function ScienceContent() {
                 desc: "formulated inside the scalp's natural 4.5 to 5.5 range, so the barrier is supported, not stripped.",
               },
             ].map((card) => (
-              <div
-                key={card.title}
-                className="bg-[#0D0D0D] p-8 md:p-10 flex flex-col gap-5"
-              >
+              <div key={card.title} className="bg-[#0D0D0D] p-8 md:p-10 flex flex-col gap-5">
                 <div className="w-9 h-9 border border-white/[0.1] flex items-center justify-center">
                   <Icon src={card.icon} size={15} opacity={0.5} />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-lg font-light lowercase text-white/90">
-                    {card.title}
-                  </h3>
-                  <p className="text-sm text-white/40 lowercase leading-relaxed">
-                    {card.desc}
-                  </p>
+                  <h3 className="text-lg font-light lowercase text-white/90">{card.title}</h3>
+                  <p className="text-sm text-white/40 lowercase leading-relaxed">{card.desc}</p>
                 </div>
               </div>
             ))}
@@ -251,11 +236,7 @@ export default function ScienceContent() {
         </div>
       </section>
 
-      {/* ── 02 // active compound index ── */}
-      <section
-        id="actives"
-        className="border-t border-white/10 py-16 md:py-24 bg-white/[0.015] scroll-mt-24"
-      >
+      <section id="actives" className="border-t border-white/10 py-16 md:py-24 bg-white/[0.015] scroll-mt-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <SectionLabel index="02" title="active compound index" />
 
@@ -335,24 +316,16 @@ export default function ScienceContent() {
         </div>
       </section>
 
-      {/* ── 03 // clinical parameters & standards ── */}
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <SectionLabel index="03" title="clinical parameters" />
 
           <div className="grid grid-cols-2 md:grid-cols-4 border-t border-l border-white/10">
             {clinicalSpecs.map((s) => (
-              <div
-                key={s.key}
-                className="border-r border-b border-white/10 p-5 md:p-6 flex flex-col gap-3"
-              >
+              <div key={s.key} className="border-r border-b border-white/10 p-5 md:p-6 flex flex-col gap-3">
                 <Icon src={s.icon} size={15} opacity={0.5} />
-                <span className="text-[10px] font-mono tracking-[0.15em] text-white/30 lowercase">
-                  {s.key}
-                </span>
-                <span className="text-sm text-white/80 lowercase">
-                  {s.value}
-                </span>
+                <span className="text-[10px] font-mono tracking-[0.15em] text-white/30 lowercase">{s.key}</span>
+                <span className="text-sm text-white/80 lowercase">{s.value}</span>
               </div>
             ))}
           </div>
@@ -376,7 +349,6 @@ export default function ScienceContent() {
         </div>
       </section>
 
-      {/* ── 04 // faq ── */}
       <section className="border-t border-white/10 py-16 md:py-24 bg-white/[0.015]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <SectionLabel index="04" title="faq" />
@@ -395,9 +367,7 @@ export default function ScienceContent() {
               {faqs.map((faq, i) => (
                 <div
                   key={i}
-                  className={
-                    i < faqs.length - 1 ? "border-b border-white/[0.06]" : ""
-                  }
+                  className={i < faqs.length - 1 ? "border-b border-white/[0.06]" : ""}
                 >
                   <button
                     id={`science-faq-${i}`}
@@ -439,7 +409,6 @@ export default function ScienceContent() {
         </div>
       </section>
 
-      {/* ── closing CTA ── */}
       <section className="border-t border-white/10">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">

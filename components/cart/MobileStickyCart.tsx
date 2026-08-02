@@ -1,23 +1,36 @@
 "use client";
 
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { useState } from "react";
-import AddToCartButton from "./AddToCartButton";
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import AddToCartButton from "@/components/product/AddToCartButton";
 import { CATALOG } from "@/lib/catalog";
 
 const duoProduct = CATALOG.find((p) => p.id === "duo-system-001")!;
 
 export default function MobileStickyCart() {
-  const { scrollY } = useScroll();
   const [visible, setVisible] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 600) {
-      setVisible(true);
-    } else {
-      setVisible(false);
-    }
-  });
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let isVisible = false;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isVisible = true;
+          }
+        });
+        setVisible(isVisible);
+      },
+      { threshold: 0 }
+    );
+
+    const elements = document.querySelectorAll("[data-mobile-sticky-trigger='true']");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <motion.div

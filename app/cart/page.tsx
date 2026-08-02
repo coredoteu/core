@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import CartPageClient from "@/components/CartPageClient";
+import Navbar from "@/components/layout/Navbar";
+import CartPageClient from "@/components/cart/CartPageClient";
 
 export const metadata: Metadata = {
   title: "02 // your system — CORE.",

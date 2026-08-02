@@ -4,26 +4,10 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const ingredients = [
-  {
-    name: "baobab protein",
-    function: "cuticle repair & strength",
-    id: "v2-01",
-  },
-  {
-    name: "plant squalane",
-    function: "moisture lock & shine",
-    id: "v2-02",
-  },
-  {
-    name: "marshmallow root",
-    function: "instant slip & detangle",
-    id: "v2-03",
-  },
-  {
-    name: "organic aloe vera",
-    function: "deep core hydration",
-    id: "v2-04",
-  },
+  { name: "baobab protein",   function: "cuticle repair & strength",  id: "v2-01" },
+  { name: "plant squalane",   function: "moisture lock & shine",      id: "v2-02" },
+  { name: "marshmallow root", function: "instant slip & detangle",    id: "v2-03" },
+  { name: "organic aloe vera",function: "deep core hydration",        id: "v2-04" },
 ];
 
 export default function V2IngredientsGrid() {
@@ -36,7 +20,7 @@ export default function V2IngredientsGrid() {
           v2 active ingredients grid
         </span>
       </div>
-      
+
       <div className="grid grid-cols-2 divide-x divide-y divide-white/10 border-b border-white/10">
         {ingredients.map((ing, idx) => (
           <motion.div
@@ -45,20 +29,17 @@ export default function V2IngredientsGrid() {
             onHoverStart={() => setHoveredIdx(idx)}
             onHoverEnd={() => setHoveredIdx(null)}
           >
-            {/* Background highlight */}
             <motion.div
               className="absolute inset-0 bg-white/5 pointer-events-none"
               initial={{ opacity: 0 }}
               animate={{ opacity: hoveredIdx === idx ? 1 : 0 }}
               transition={{ duration: 0.2 }}
             />
-            
-            {/* Top ID */}
+
             <span className="font-mono text-[9px] tracking-[0.2em] text-white/20 lowercase z-10 group-hover:text-white/40 transition-colors">
               id: {ing.id}
             </span>
-            
-            {/* Content */}
+
             <div className="z-10 mt-auto">
               <h4 className="text-sm md:text-base font-medium text-white/90 lowercase mb-1 group-hover:text-white transition-colors">
                 {ing.name}
@@ -67,8 +48,7 @@ export default function V2IngredientsGrid() {
                 {ing.function}
               </p>
             </div>
-            
-            {/* Decorator corner */}
+
             <div className="absolute bottom-2 right-2 w-1.5 h-1.5 border-b border-r border-white/30 group-hover:border-white/70 transition-colors" />
           </motion.div>
         ))}

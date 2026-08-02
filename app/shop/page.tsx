@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import ShopAddToCart from "@/components/ShopAddToCart";
+import Navbar from "@/components/layout/Navbar";
+import ShopAddToCart from "@/components/product/ShopAddToCart";
 import { CATALOG } from "@/lib/catalog";
 import { PRODUCTS } from "@/lib/products";
 

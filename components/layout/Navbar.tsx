@@ -31,7 +31,6 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  // close on escape
   useEffect(() => {
     if (!menuOpen) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -41,7 +40,6 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [menuOpen]);
 
-  // lock body scroll while menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -60,7 +58,6 @@ export default function Navbar() {
       className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0D0D0D]/70 backdrop-blur-xl supports-[backdrop-filter]:bg-[#0D0D0D]/50"
     >
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
-        {/* Logo */}
         <Link
           href="/"
           className="shrink-0 flex items-center"
@@ -77,7 +74,6 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Centre nav (desktop) */}
         <nav className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
           {navLinks.map((label) => (
             <Link
@@ -91,7 +87,6 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 md:gap-2.5">
-          {/* Cart trigger — desktop (drawer) */}
           <button
             onClick={toggleDrawer}
             aria-label="open cart"
@@ -109,7 +104,6 @@ export default function Navbar() {
             </span>
           </button>
 
-          {/* Cart trigger — mobile (link to /cart) */}
           <Link
             href="/cart"
             onClick={closeMenu}
@@ -128,7 +122,6 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Mobile menu toggle */}
           <button
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? "close menu" : "open menu"}
@@ -155,7 +148,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile nav panel */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div

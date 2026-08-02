@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Providers } from "@/components/Providers";
-import CustomCursor from "@/components/CustomCursor";
-import MobileStickyCart from "@/components/MobileStickyCart";
-import CartDrawer from "@/components/CartDrawer";
-import Footer from "@/components/Footer";
+import { Providers } from "@/components/layout/Providers";
+import CustomCursor from "@/components/layout/CustomCursor";
+import MobileStickyCart from "@/components/cart/MobileStickyCart";
+import CartDrawer from "@/components/cart/CartDrawer";
+import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
 const geistSans = Geist({

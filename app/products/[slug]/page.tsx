@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductBySlug, PRODUCTS } from "@/lib/products";
-import ProductPageTemplate from "@/components/ProductPageTemplate";
+import ProductPageTemplate from "@/components/product/ProductPageTemplate";
 
 // ─── Static params ────────────────────────────────────────────────────────────
 

@@ -46,8 +46,8 @@ export default function AddToCartButton({
 
   const iconFilter =
     status === "success"
-      ? "brightness(0)"       // black icon on white button
-      : "brightness(0) invert(1)"; // white icon on dark button
+      ? "brightness(0)"
+      : "brightness(0) invert(1)";
 
   return (
     <button

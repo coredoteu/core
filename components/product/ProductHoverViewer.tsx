@@ -45,7 +45,7 @@ export default function ProductHoverViewer({
         >
           <span className="h-px w-4 bg-white/40" />
           <span className="flex items-center gap-1.5 border border-white/20 bg-[#0D0D0D]/90 backdrop-blur-sm px-2 py-1">
-            <img src={m.icon} alt="" className="h-3 w-3 opacity-70" />
+            <img src={m.icon} alt="" className="h-3 w-3 opacity-70" style={{ filter: "brightness(0) invert(1)" }} />
             <span className="text-[10px] font-mono tracking-[0.1em] text-white/80 lowercase whitespace-nowrap">
               [ {m.label} ]
             </span>

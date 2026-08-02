@@ -8,7 +8,6 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
-  // only ever activate on devices with a real mouse
   useEffect(() => {
     const mq = window.matchMedia("(pointer: fine)");
     setEnabled(mq.matches);
@@ -54,7 +53,7 @@ export default function CustomCursor() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 w-3 h-3 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference"
+      className="fixed top-0 left-0 w-3 h-3 bg-white rounded-[50%] pointer-events-none z-[100] mix-blend-difference"
       animate={{
         x: mousePosition.x - 6,
         y: mousePosition.y - 6,

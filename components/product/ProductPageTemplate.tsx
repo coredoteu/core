@@ -4,8 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/Navbar";
-import AddToCartButton from "@/components/AddToCartButton";
+import Navbar from "@/components/layout/Navbar";
+import AddToCartButton from "@/components/product/AddToCartButton";
 import { ProductPageData } from "@/lib/products";
 import { CATALOG } from "@/lib/catalog";
 
@@ -41,7 +41,7 @@ function Icon({
   );
 }
 
-// ─── Section label with icon ──────────────────────────────────────────────────
+// ─── Section label ────────────────────────────────────────────────────────────
 
 function SectionLabel({
   index,
@@ -79,9 +79,7 @@ function ProductGallery({
 
   return (
     <div className="flex flex-col gap-4 sticky top-28">
-      {/* Main image */}
       <div className="relative w-full aspect-square bg-white/[0.02] border border-white/[0.06] overflow-hidden group">
-        {/* Corner decorators */}
         <span className="absolute top-3 left-3 w-4 h-4 border-t border-l border-white/20 z-10" />
         <span className="absolute top-3 right-3 w-4 h-4 border-t border-r border-white/20 z-10" />
         <span className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-white/20 z-10" />
@@ -107,14 +105,12 @@ function ProductGallery({
           </motion.div>
         </AnimatePresence>
 
-        {/* image index */}
         <span className="absolute bottom-4 right-5 font-mono text-[10px] tracking-[0.2em] text-white/20">
           {String(selected + 1).padStart(2, "0")} /{" "}
           {String(images.length).padStart(2, "0")}
         </span>
       </div>
 
-      {/* Thumbnails */}
       {images.length > 1 && (
         <div className="flex gap-2">
           {images.map((img, i) => (
@@ -143,7 +139,6 @@ function ProductGallery({
         </div>
       )}
 
-      {/* product name watermark below gallery */}
       <p className="font-mono text-[10px] tracking-[0.2em] text-white/15 lowercase text-center">
         CORE. — {name}
       </p>
@@ -151,33 +146,25 @@ function ProductGallery({
   );
 }
 
-// ─── Hero Info Panel ──────────────────────────────────────────────────────────
+// ─── Hero Panel ───────────────────────────────────────────────────────────────
 
 function HeroPanel({ product }: { product: ProductPageData }) {
   const catalogProduct = CATALOG.find((p) => p.id === product.id)!;
 
   return (
     <div className="flex flex-col gap-8">
-      {/* breadcrumb */}
       <nav className="flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-white/25">
-        <Link
-          href="/"
-          className="hover:text-white/50 transition-colors duration-200"
-        >
+        <Link href="/" className="hover:text-white/50 transition-colors duration-200">
           home
         </Link>
         <span>/</span>
-        <Link
-          href="/shop"
-          className="hover:text-white/50 transition-colors duration-200"
-        >
+        <Link href="/shop" className="hover:text-white/50 transition-colors duration-200">
           shop
         </Link>
         <span>/</span>
         <span className="text-white/40">{product.name}</span>
       </nav>
 
-      {/* unit badge */}
       <div className="flex items-center gap-3">
         <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 border border-white/10 px-3 py-1.5">
           {product.unit}
@@ -187,7 +174,6 @@ function HeroPanel({ product }: { product: ProductPageData }) {
         </span>
       </div>
 
-      {/* name */}
       <div className="flex flex-col gap-2">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extralight leading-[1.05] tracking-tight lowercase">
           <span className="text-white font-normal">CORE.</span>
@@ -199,29 +185,12 @@ function HeroPanel({ product }: { product: ProductPageData }) {
         </p>
       </div>
 
-      {/* size + scent */}
       <div className="grid grid-cols-2 gap-px border border-white/[0.06]">
         {[
-          {
-            icon: "/icons/layers-minimalistic.svg",
-            label: "volume",
-            value: product.size,
-          },
-          {
-            icon: "/icons/wind.svg",
-            label: "scent profile",
-            value: product.scent,
-          },
-          {
-            icon: "/icons/leaf.svg",
-            label: "natural origin",
-            value: product.naturalOrigin,
-          },
-          {
-            icon: "/icons/atom.svg",
-            label: "system",
-            value: product.function,
-          },
+          { icon: "/icons/layers-minimalistic.svg", label: "volume",       value: product.size },
+          { icon: "/icons/wind.svg",                label: "scent profile", value: product.scent },
+          { icon: "/icons/leaf.svg",                label: "natural origin",value: product.naturalOrigin },
+          { icon: "/icons/atom.svg",                label: "system",        value: product.function },
         ].map((spec, i) => (
           <div
             key={spec.label}
@@ -240,7 +209,6 @@ function HeroPanel({ product }: { product: ProductPageData }) {
         ))}
       </div>
 
-      {/* certification pills */}
       <div className="flex flex-wrap gap-2">
         {product.certifications.map((cert) => (
           <span
@@ -253,19 +221,14 @@ function HeroPanel({ product }: { product: ProductPageData }) {
         ))}
       </div>
 
-      {/* price + CTA */}
       <div className="flex flex-col gap-4 pt-4 border-t border-white/[0.06]">
         <div className="flex items-baseline justify-between">
           <span className="text-4xl font-extralight text-white tracking-tight">
             €{product.price.toFixed(2)}
           </span>
           <div className="flex flex-col items-end gap-1">
-            <span className="text-[10px] font-mono text-white/20 lowercase">
-              incl. vat
-            </span>
-            <span className="text-[10px] font-mono text-white/20 lowercase">
-              free shipping over €50
-            </span>
+            <span className="text-[10px] font-mono text-white/20 lowercase">incl. vat</span>
+            <span className="text-[10px] font-mono text-white/20 lowercase">free shipping over €50</span>
           </div>
         </div>
         <AddToCartButton
@@ -277,7 +240,6 @@ function HeroPanel({ product }: { product: ProductPageData }) {
         </p>
       </div>
 
-      {/* target audience note */}
       <div className="border border-white/[0.06] p-4 flex items-start gap-3">
         <Icon src="/icons/target.svg" size={14} opacity={0.2} className="mt-0.5" />
         <div className="flex flex-col gap-1">
@@ -295,28 +257,22 @@ function HeroPanel({ product }: { product: ProductPageData }) {
 
 // ─── Formulation Section ──────────────────────────────────────────────────────
 
-// Maps active ingredient names to a fitting icon
 const ACTIVE_ICONS: Record<string, string> = {
-  "aloe vera juice": "/icons/droplet.svg",
-  "sea kale extract": "/icons/waves-horizontal.svg",
-  "ginkgo biloba leaf extract": "/icons/activity.svg",
-  "burdock root extract": "/icons/waterdrops.svg",
-  "hydrolyzed wheat protein": "/icons/wheat.svg",
-  "argan oil": "/icons/droplets.svg",
+  "aloe vera juice":              "/icons/droplet.svg",
+  "sea kale extract":             "/icons/waves-horizontal.svg",
+  "ginkgo biloba leaf extract":   "/icons/activity.svg",
+  "burdock root extract":         "/icons/waterdrops.svg",
+  "hydrolyzed wheat protein":     "/icons/wheat.svg",
+  "argan oil":                    "/icons/droplets.svg",
 };
 
 function FormulationSection({ product }: { product: ProductPageData }) {
   return (
     <section className="border-t border-white/10 py-20 md:py-32">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-        <SectionLabel
-          index="01"
-          title="formulation"
-          icon="/icons/flask-conical.svg"
-        />
+        <SectionLabel index="01" title="formulation" icon="/icons/flask-conical.svg" />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
-          {/* left: intro */}
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
@@ -331,15 +287,12 @@ function FormulationSection({ product }: { product: ProductPageData }) {
               </p>
             </div>
 
-            {/* claims list */}
             <div className="flex flex-col gap-0 border border-white/[0.06]">
               {product.claims.map((claim, i) => (
                 <div
                   key={claim}
                   className={`flex items-center gap-3 px-4 py-3 ${
-                    i < product.claims.length - 1
-                      ? "border-b border-white/[0.05]"
-                      : ""
+                    i < product.claims.length - 1 ? "border-b border-white/[0.05]" : ""
                   }`}
                 >
                   <Icon src="/icons/check-circle.svg" size={12} opacity={0.2} />
@@ -349,11 +302,9 @@ function FormulationSection({ product }: { product: ProductPageData }) {
             </div>
           </div>
 
-          {/* right: actives breakdown */}
           <div className="flex flex-col gap-0">
             {product.actives.map((active, i) => {
-              const icon =
-                ACTIVE_ICONS[active.name] || "/icons/flask-round.svg";
+              const icon = ACTIVE_ICONS[active.name] || "/icons/flask-round.svg";
               return (
                 <motion.div
                   key={active.name}
@@ -362,12 +313,9 @@ function FormulationSection({ product }: { product: ProductPageData }) {
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className={`grid grid-cols-[auto_1fr] gap-6 md:gap-10 py-8 ${
-                    i < product.actives.length - 1
-                      ? "border-b border-white/[0.06]"
-                      : ""
+                    i < product.actives.length - 1 ? "border-b border-white/[0.06]" : ""
                   }`}
                 >
-                  {/* index + connector */}
                   <div className="flex flex-col items-center pt-1 gap-2">
                     <div className="w-8 h-8 border border-white/[0.08] flex items-center justify-center shrink-0">
                       <Icon src={icon} size={14} opacity={0.35} />
@@ -377,7 +325,6 @@ function FormulationSection({ product }: { product: ProductPageData }) {
                     )}
                   </div>
 
-                  {/* content */}
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-base md:text-lg font-light text-white/90 lowercase tracking-tight">
@@ -403,11 +350,7 @@ function FormulationSection({ product }: { product: ProductPageData }) {
 
 // ─── Usage Section ────────────────────────────────────────────────────────────
 
-// Contextual icons per usage step index
-const STEP_ICONS: Record<
-  string,
-  { shampoo: string; conditioner: string }
-> = {
+const STEP_ICONS: Record<string, { shampoo: string; conditioner: string }> = {
   "01": { shampoo: "/icons/soap-dispenser-droplet.svg", conditioner: "/icons/dropper-minimalistic.svg" },
   "02": { shampoo: "/icons/bubbles.svg",                conditioner: "/icons/waterdrop.svg" },
   "03": { shampoo: "/icons/wind.svg",                   conditioner: "/icons/droplet.svg" },
@@ -419,19 +362,13 @@ function UsageSection({ product }: { product: ProductPageData }) {
   return (
     <section className="border-t border-white/10 py-20 md:py-32 bg-white/[0.015]">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-        <SectionLabel
-          index="02"
-          title="system usage"
-          icon="/icons/layers-minimalistic.svg"
-        />
+        <SectionLabel index="02" title="system usage" icon="/icons/layers-minimalistic.svg" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
           {product.usageSteps.map((step, i) => {
             const iconMap = STEP_ICONS[step.index];
             const icon = iconMap
-              ? isConditioner
-                ? iconMap.conditioner
-                : iconMap.shampoo
+              ? isConditioner ? iconMap.conditioner : iconMap.shampoo
               : "/icons/flask-conical.svg";
 
             return (
@@ -447,19 +384,16 @@ function UsageSection({ product }: { product: ProductPageData }) {
                     : ""
                 }`}
               >
-                {/* step number */}
                 <div className="flex items-center gap-4">
                   <span className="font-mono text-4xl font-extralight text-white/10 tabular-nums leading-none">
                     {step.index}
                   </span>
                   <div className="h-px flex-1 bg-white/[0.06]" />
-                  {/* step icon */}
                   <div className="w-9 h-9 border border-white/[0.08] flex items-center justify-center shrink-0">
                     <Icon src={icon} size={16} opacity={0.3} />
                   </div>
                 </div>
 
-                {/* step label */}
                 <div className="flex flex-col gap-3">
                   <h3 className="text-2xl md:text-3xl font-light lowercase text-white tracking-tight">
                     {step.label}
@@ -473,7 +407,6 @@ function UsageSection({ product }: { product: ProductPageData }) {
           })}
         </div>
 
-        {/* System note */}
         <div className="mt-10 border border-white/[0.06] p-5 flex items-start gap-4">
           <Icon src="/icons/flask-conical.svg" size={16} opacity={0.2} className="mt-0.5" />
           <p className="text-xs text-white/30 lowercase leading-relaxed">
@@ -493,79 +426,40 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
   const inciIngredients = product.inci.split(", ");
 
   const specRows = [
-    {
-      icon: "/icons/scan.svg",
-      key: "INCI STANDARD",
-      value: "eu cosmetics regulation 1223/2009",
-    },
-    {
-      icon: "/icons/layers-minimalistic.svg",
-      key: "VOLUME",
-      value: product.size,
-    },
-    {
-      icon: "/icons/activity.svg",
-      key: "PH RANGE",
-      value: "4.5 - 5.5",
-    },
-    {
-      icon: "/icons/leaf.svg",
-      key: "NATURAL ORIGIN",
-      value: product.naturalOrigin,
-    },
-    {
-      icon: "/icons/map-pin-check.svg",
-      key: "ORIGIN",
-      value: "netherlands / eu",
-    },
-    {
-      icon: "/icons/medal-star.svg",
-      key: "CERTIFICATION",
-      value: "ecocert cosmos natural",
-    },
+    { icon: "/icons/scan.svg",                key: "INCI STANDARD",  value: "eu cosmetics regulation 1223/2009" },
+    { icon: "/icons/layers-minimalistic.svg", key: "VOLUME",         value: product.size },
+    { icon: "/icons/activity.svg",            key: "PH RANGE",       value: "4.5 - 5.5" },
+    { icon: "/icons/leaf.svg",                key: "NATURAL ORIGIN",  value: product.naturalOrigin },
+    { icon: "/icons/map-pin-check.svg",       key: "ORIGIN",         value: "netherlands / eu" },
+    { icon: "/icons/medal-star.svg",          key: "CERTIFICATION",  value: "ecocert cosmos natural" },
   ];
 
   return (
     <section className="border-t border-white/10 py-20 md:py-32">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-        <SectionLabel
-          index="03"
-          title="technical specs"
-          icon="/icons/scan.svg"
-        />
+        <SectionLabel index="03" title="technical specs" icon="/icons/scan.svg" />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
-          {/* Left: specs grid */}
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-0 border border-white/[0.08]">
               {specRows.map((spec, i) => (
                 <div
                   key={spec.key}
                   className={`flex items-start gap-4 px-5 py-4 ${
-                    i < specRows.length - 1
-                      ? "border-b border-white/[0.06]"
-                      : ""
+                    i < specRows.length - 1 ? "border-b border-white/[0.06]" : ""
                   }`}
                 >
-                  <Icon
-                    src={spec.icon}
-                    size={12}
-                    opacity={0.2}
-                    className="mt-[3px]"
-                  />
+                  <Icon src={spec.icon} size={12} opacity={0.2} className="mt-[3px]" />
                   <div className="flex flex-col gap-1">
                     <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 uppercase">
                       {spec.key}
                     </span>
-                    <span className="text-sm text-white/60 lowercase">
-                      {spec.value}
-                    </span>
+                    <span className="text-sm text-white/60 lowercase">{spec.value}</span>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* scent tech note */}
             <div className="border border-white/[0.06] p-5 flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Icon src="/icons/wind.svg" size={12} opacity={0.2} />
@@ -580,7 +474,6 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
             </div>
           </div>
 
-          {/* Right: INCI */}
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
@@ -596,24 +489,16 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
             </div>
 
             <div className="border border-white/[0.08]">
-              {/* header row */}
               <div className="grid grid-cols-[auto_1fr] border-b border-white/[0.08] px-5 py-3 bg-white/[0.02]">
-                <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 w-10">
-                  #
-                </span>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-white/25">
-                  INGREDIENT
-                </span>
+                <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 w-10">#</span>
+                <span className="font-mono text-[10px] tracking-[0.2em] text-white/25">INGREDIENT</span>
               </div>
 
-              {/* ingredients */}
               {inciIngredients.map((ing, i) => (
                 <div
                   key={i}
                   className={`grid grid-cols-[auto_1fr] items-start gap-4 px-5 py-3 hover:bg-white/[0.015] transition-colors duration-200 ${
-                    i < inciIngredients.length - 1
-                      ? "border-b border-white/[0.04]"
-                      : ""
+                    i < inciIngredients.length - 1 ? "border-b border-white/[0.04]" : ""
                   }`}
                 >
                   <span className="font-mono text-[10px] text-white/15 tabular-nums w-10 pt-px">
@@ -625,7 +510,6 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
                 </div>
               ))}
 
-              {/* footnote row */}
               <div className="px-5 py-3 border-t border-white/[0.08] bg-white/[0.02] flex items-center gap-2">
                 <Icon src="/icons/info-circle.svg" size={11} opacity={0.2} />
                 <p className="font-mono text-[10px] tracking-[0.1em] text-white/20 lowercase">
@@ -648,14 +532,9 @@ function FAQSection({ product }: { product: ProductPageData }) {
   return (
     <section className="border-t border-white/10 py-20 md:py-32 bg-white/[0.015]">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-        <SectionLabel
-          index="04"
-          title="faq"
-          icon="/icons/info-circle.svg"
-        />
+        <SectionLabel index="04" title="faq" icon="/icons/info-circle.svg" />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24 items-start">
-          {/* Left */}
           <div className="flex flex-col gap-4">
             <h2 className="text-2xl md:text-3xl font-light lowercase text-white/80 leading-snug">
               common questions
@@ -665,22 +544,15 @@ function FAQSection({ product }: { product: ProductPageData }) {
             </p>
           </div>
 
-          {/* Right: accordion */}
           <div className="flex flex-col gap-0 border border-white/[0.06]">
             {product.faqs.map((faq, i) => (
               <div
                 key={i}
-                className={
-                  i < product.faqs.length - 1
-                    ? "border-b border-white/[0.06]"
-                    : ""
-                }
+                className={i < product.faqs.length - 1 ? "border-b border-white/[0.06]" : ""}
               >
                 <button
                   id={`faq-${product.slug}-${i}`}
-                  onClick={() =>
-                    setOpenIndex(openIndex === i ? null : i)
-                  }
+                  onClick={() => setOpenIndex(openIndex === i ? null : i)}
                   aria-expanded={openIndex === i}
                   className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left group hover:bg-white/[0.02] transition-colors duration-300"
                 >
@@ -700,11 +572,7 @@ function FAQSection({ product }: { product: ProductPageData }) {
                     transition={{ duration: 0.25, ease: "easeInOut" }}
                     className="shrink-0"
                   >
-                    <Icon
-                      src="/icons/chevron-down.svg"
-                      size={14}
-                      opacity={0.3}
-                    />
+                    <Icon src="/icons/chevron-down.svg" size={14} opacity={0.3} />
                   </motion.div>
                 </button>
 
@@ -714,10 +582,7 @@ function FAQSection({ product }: { product: ProductPageData }) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{
-                        duration: 0.3,
-                        ease: [0.25, 0.46, 0.45, 0.94],
-                      }}
+                      transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
                       className="overflow-hidden"
                     >
                       <div className="flex items-start gap-3 px-6 pb-5">
@@ -828,8 +693,7 @@ export default function ProductPageTemplate({
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
       <Navbar />
 
-      {/* ── Hero ── */}
-      <section className="pt-28 md:pt-36 pb-20 md:pb-28">
+      <section data-mobile-sticky-trigger="true" className="pt-28 md:pt-36 pb-20 md:pb-28">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 xl:gap-28 items-start">
             <ProductGallery images={product.images} name={product.name} />
@@ -838,19 +702,10 @@ export default function ProductPageTemplate({
         </div>
       </section>
 
-      {/* ── 01 // formulation ── */}
       <FormulationSection product={product} />
-
-      {/* ── 02 // system usage ── */}
       <UsageSection product={product} />
-
-      {/* ── 03 // technical specs ── */}
       <TechnicalSpecsSection product={product} />
-
-      {/* ── 04 // faq ── */}
       <FAQSection product={product} />
-
-      {/* ── Cross-sell ── */}
       <CrossSell currentSlug={product.slug} />
     </main>
   );

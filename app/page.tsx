@@ -1,18 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Ticker from "@/components/Ticker";
-import ProductHoverSection from "@/components/ProductHoverSection";
-import ThreeStepSystem from "@/components/ThreeStepSystem";
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/sections/Hero";
+import Ticker from "@/components/sections/Ticker";
+import ProductHoverSection from "@/components/product/ProductHoverSection";
+import ThreeStepSystem from "@/components/sections/ThreeStepSystem";
 import dynamic from "next/dynamic";
 
-const SystemSpecSheet = dynamic(() => import("@/components/SystemSpecSheet"));
-const V2SneakPeek = dynamic(() => import("@/components/V2SneakPeek"));
-const FaqSection = dynamic(() => import("@/components/FaqSection"));
-const WaitlistForm = dynamic(() => import("@/components/WaitlistForm"));
+const SystemSpecSheet = dynamic(() => import("@/components/product/SystemSpecSheet"));
+const V2SneakPeek = dynamic(() => import("@/components/sections/V2SneakPeek"));
+const FaqSection = dynamic(() => import("@/components/sections/FaqSection"));
+const WaitlistForm = dynamic(() => import("@/components/sections/WaitlistForm"));
 
-// ─── Data ───────────────────────────────────────────────────────────────────
+// ─── Data ────────────────────────────────────────────────────────────────────
+
 const traditionalRows = [
   "synthetic silicones & sulfates",
   "strips your natural scalp barrier",
@@ -49,38 +50,15 @@ function SectionEyebrow({ index, title }: { index: string; title: string }) {
   );
 }
 
-// ─── Page ───────────────────────────────────────────────────────────────────
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-      {/* ──────────────────────────────────────────────────────────────────
-          HEADER & NAVBAR
-      ────────────────────────────────────────────────────────────────── */}
       <Navbar />
-
-      {/* ──────────────────────────────────────────────────────────────────
-          HERO & PRODUCT HOVER INSPECTOR
-      ────────────────────────────────────────────────────────────────── */}
       <Hero />
 
-      {/* ──────────────────────────────────────────────────────────────────
-          MARQUEE TICKER
-      ────────────────────────────────────────────────────────────────── */}
       <Ticker />
-
-      {/* ──────────────────────────────────────────────────────────────────
-          01 / SYSTEM SPEC SHEET (PRODUCTS, ADD TO CART, ACTIVES)
-      ────────────────────────────────────────────────────────────────── */}
       <SystemSpecSheet />
-
-      {/* ──────────────────────────────────────────────────────────────────
-          02 / USAGE PROTOCOL
-      ────────────────────────────────────────────────────────────────── */}
       <ThreeStepSystem />
-
-      {/* ──────────────────────────────────────────────────────────────────
-          03 / PRODUCT HOVER INSPECTOR
-      ────────────────────────────────────────────────────────────────── */}
       <ProductHoverSection />
 
       {/* ──────────────────────────────────────────────────────────────────
@@ -157,14 +135,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ──────────────────────────────────────────────────────────────────
-          06 / TECHNICAL FAQ
-      ────────────────────────────────────────────────────────────────── */}
       <FaqSection />
-
-      {/* ──────────────────────────────────────────────────────────────────
-          07 / WHAT COMES NEXT
-      ────────────────────────────────────────────────────────────────── */}
       <V2SneakPeek />
 
       {/* ──────────────────────────────────────────────────────────────────

@@ -30,19 +30,16 @@ export default function Hero() {
 
           <div className="lg:col-span-4 flex flex-col gap-4">
             <Link
-              href="/shop/duo"
+              href="/shop"
               className="group flex items-center justify-between px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white active:scale-[0.98] transition-all duration-300"
             >
               <span>[ shop the duo ]</span>
-              {/* 3. Arrow icon — white filter applied, inverts on hover when bg is dark */}
               <img
                 src="/icons/arrow-right.svg"
                 alt=""
                 aria-hidden="true"
                 className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300"
-                style={{
-                  filter: "brightness(0)", // black on white bg by default
-                }}
+                style={{ filter: "brightness(0)" }}
               />
             </Link>
             <Link
@@ -56,14 +53,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/*
-        4. Hero Image Layout Fix:
-        The container defines a fixed aspect ratio for page flow.
-        The image uses absolute positioning with w-full and h-auto to scale 
-        naturally and overflow the top and bottom bounds seamlessly without 
-        shrinking or cropping.
-      */}
-      {/* Hero image — edge-to-edge on all viewports, aspect ratio adapts per breakpoint */}
       <div
         className="relative z-0 border-t border-white/10 pointer-events-none mb-0 md:mb-4 lg:mb-8"
         style={{
@@ -71,7 +60,6 @@ export default function Hero() {
           marginRight: "calc(-1 * max(0px, (100vw - 1600px) / 2))",
         }}
       >
-        {/* Mobile / tablet: taller 4:3 crop keeps product centred. Desktop: wide-cinema 21:9 */}
         <div className="relative w-full overflow-hidden aspect-[4/3] lg:aspect-[21/9]">
           <div className="absolute inset-0">
             <Image
@@ -81,7 +69,7 @@ export default function Hero() {
               className="object-cover object-center lg:object-contain lg:object-center"
               style={{
                 WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)",
-                maskImage: "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)"
+                maskImage: "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)",
               }}
               priority
               sizes="100vw"

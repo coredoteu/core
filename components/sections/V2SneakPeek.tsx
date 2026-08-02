@@ -2,9 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import V2IngredientsGrid from "./V2IngredientsGrid";
-
-// ─── Static data ──────────────────────────────────────────────────────────────
+import V2IngredientsGrid from "@/components/sections/V2IngredientsGrid";
 
 const logLines = [
   { id: "L01", text: "project_codename: void", redact: false },
@@ -21,42 +19,29 @@ const statusNodes = [
   { key: "status", value: "in development" },
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function V2SneakPeek() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section
-      id="roadmap"
-      className="border-b border-white/10 bg-[#0D0D0D] overflow-hidden"
-    >
+    <section id="roadmap" className="border-b border-white/10 bg-[#0D0D0D] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36">
 
-        {/* ── Eyebrow / section label ───────────────────────────────────── */}
         <div className="flex items-center gap-4">
-          <span className="font-mono text-xs tracking-[0.2em] text-white/40">
-            07 //
-          </span>
+          <span className="font-mono text-xs tracking-[0.2em] text-white/40">07 //</span>
           <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
             what comes next
           </h2>
         </div>
 
-        {/* ── Main grid ─────────────────────────────────────────────────── */}
         <div className="mt-12 md:mt-20 grid grid-cols-1 lg:grid-cols-2 border border-white/10">
 
-          {/* ── LEFT: classified log ────────────────────────────────────── */}
           <div className="border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col">
-
-            {/* Folder header */}
             <div className="flex items-center justify-between px-6 md:px-8 py-4 border-b border-white/10 bg-white/[0.02]">
               <div className="flex items-center gap-3">
-                {/* Traffic-light dots */}
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-white/10" />
-                  <span className="h-2 w-2 rounded-full bg-white/10" />
-                  <span className="h-2 w-2 rounded-full bg-white/10" />
+                  <span className="h-2 w-2 rounded-[50%] bg-white/10" />
+                  <span className="h-2 w-2 rounded-[50%] bg-white/10" />
+                  <span className="h-2 w-2 rounded-[50%] bg-white/10" />
                 </span>
                 <span className="font-mono text-[10px] tracking-[0.25em] text-white/30 lowercase">
                   project v2 // stealth black edition
@@ -67,13 +52,9 @@ export default function V2SneakPeek() {
               </span>
             </div>
 
-            {/* System log lines */}
             <div className="flex-1 px-6 md:px-8 py-6 flex flex-col gap-3">
               {logLines.map((line) => (
-                <div
-                  key={line.id}
-                  className="flex items-start gap-4"
-                >
+                <div key={line.id} className="flex items-start gap-4">
                   <span className="font-mono text-[10px] text-white/20 shrink-0 mt-px">
                     {line.id}
                   </span>
@@ -90,7 +71,6 @@ export default function V2SneakPeek() {
               ))}
             </div>
 
-            {/* Status nodes at the bottom */}
             <div className="border-t border-white/10 grid grid-cols-3 divide-x divide-white/10">
               {statusNodes.map((node) => (
                 <div key={node.key} className="px-5 py-4 flex flex-col gap-1">
@@ -105,13 +85,8 @@ export default function V2SneakPeek() {
             </div>
           </div>
 
-          {/* ── RIGHT: silhouette + narrative + CTA ─────────────────────── */}
           <div className="flex flex-col">
-
-            {/* Image panel */}
             <div className="relative flex-1 min-h-[300px] md:min-h-[360px] flex items-center justify-center overflow-hidden bg-[#080808]">
-
-              {/* Scan-line overlay */}
               <div
                 className="absolute inset-0 z-30 pointer-events-none"
                 style={{
@@ -119,8 +94,6 @@ export default function V2SneakPeek() {
                     "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px)",
                 }}
               />
-
-              {/* Radial vignette */}
               <div
                 className="absolute inset-0 z-30 pointer-events-none"
                 style={{
@@ -129,15 +102,13 @@ export default function V2SneakPeek() {
                 }}
               />
 
-              {/* Corner crosshairs */}
               <CrosshairCorners />
 
-              {/* Product silhouette */}
-              <div 
+              <div
                 className="relative z-10 w-40 md:w-52 aspect-[1/2.4] -rotate-12 scale-110 transition-transform duration-[2000ms] hover:-rotate-6 hover:scale-125 ease-out"
                 style={{
                   maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
-                  WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)"
+                  WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
                 }}
               >
                 <Image
@@ -150,7 +121,6 @@ export default function V2SneakPeek() {
                 />
               </div>
 
-              {/* Redacted label floating over everything */}
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40">
                 <span className="font-mono text-[9px] tracking-[0.3em] text-white/20 lowercase px-3 py-1 border border-white/10 bg-[#0D0D0D]/60 backdrop-blur-sm">
                   image redacted
@@ -158,10 +128,7 @@ export default function V2SneakPeek() {
               </div>
             </div>
 
-            {/* Narrative + CTA panel */}
             <div className="border-t border-white/10 px-6 md:px-8 py-8 flex flex-col gap-6">
-
-              {/* Classification tag */}
               <div className="flex items-center gap-3">
                 <span className="h-px flex-1 bg-white/10" />
                 <span className="font-mono text-[9px] tracking-[0.3em] text-white/25 lowercase">
@@ -170,13 +137,11 @@ export default function V2SneakPeek() {
                 <span className="h-px flex-1 bg-white/10" />
               </div>
 
-              {/* Narrative copy */}
               <p className="text-sm text-white/50 lowercase leading-relaxed max-w-prose">
                 we are launching lean. every v1 purchase directly funds the
                 custom formulation and matte black tooling of v2.
               </p>
 
-              {/* Funding Progress Tracker */}
               <div className="flex flex-col gap-2 my-2">
                 <div className="flex items-center justify-between font-mono text-[10px] lowercase text-white/40">
                   <span>custom batch funding</span>
@@ -184,7 +149,6 @@ export default function V2SneakPeek() {
                 </div>
                 <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                   <div className="h-full bg-white w-[42%] relative">
-                    {/* Animated shine effect */}
                     <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                   </div>
                 </div>
@@ -193,7 +157,6 @@ export default function V2SneakPeek() {
                 </div>
               </div>
 
-              {/* CTA */}
               <button
                 id="v2-waitlist-cta"
                 aria-label="join the v2 waitlist"
@@ -209,21 +172,17 @@ export default function V2SneakPeek() {
                   }
                 `}
               >
-                {/* Animated sweep line top-left to right */}
                 <span
                   className="absolute top-0 left-0 h-[1px] bg-white transition-all duration-500 ease-out"
                   style={{ width: isHovered ? "100%" : "0%" }}
                 />
-                {/* Animated sweep line bottom-right to left */}
                 <span
                   className="absolute bottom-0 right-0 h-[1px] bg-white transition-all duration-500 ease-out"
                   style={{ width: isHovered ? "100%" : "0%" }}
                 />
-
                 <span className="relative z-10">[ join the v2 waitlist ]</span>
               </button>
 
-              {/* Small disclaimer */}
               <p className="font-mono text-[9px] tracking-[0.15em] text-white/20 lowercase">
                 no spam. one announcement. when it drops, you will know.
               </p>
@@ -232,14 +191,11 @@ export default function V2SneakPeek() {
 
         </div>
 
-        {/* ── BOTTOM: V2 Ingredients Grid ───────────────────────────────── */}
         <V2IngredientsGrid />
       </div>
     </section>
   );
 }
-
-// ─── Sub-component: corner crosshair decorators ───────────────────────────────
 
 function CrosshairCorners() {
   const corners = [
@@ -251,10 +207,7 @@ function CrosshairCorners() {
   return (
     <>
       {corners.map((pos, i) => (
-        <span
-          key={i}
-          className={`absolute ${pos} z-20 pointer-events-none opacity-20`}
-        >
+        <span key={i} className={`absolute ${pos} z-20 pointer-events-none opacity-20`}>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
             <path d="M0 6H5M6 0V5M6 7V12M7 6H12" stroke="white" strokeWidth="0.75" />
           </svg>

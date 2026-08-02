@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
   {
@@ -51,9 +52,7 @@ export default function FaqSection() {
   return (
     <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
       <div className="flex items-center gap-4">
-        <span className="font-mono text-xs tracking-[0.2em] text-white/40">
-          06 //
-        </span>
+        <span className="font-mono text-xs tracking-[0.2em] text-white/40">06 //</span>
         <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
           technical faq
         </h2>
