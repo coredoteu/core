@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { useEffect, useState } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { useCart } from "@/context/CartContext";
 
 const navLinks = ["shop", "science", "roadmap"] as const;
@@ -12,15 +17,37 @@ export default function Navbar() {
   const { itemCount, toggleDrawer } = useCart();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
+    if (menuOpen) return;
     if (latest > previous && latest > 150) {
       setHidden(true);
     } else {
       setHidden(false);
     }
   });
+
+  const closeMenu = () => setMenuOpen(false);
+
+  // close on escape
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [menuOpen]);
+
+  // lock body scroll while menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <motion.header
@@ -34,7 +61,12 @@ export default function Navbar() {
     >
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="shrink-0 flex items-center" aria-label="CORE. home">
+        <Link
+          href="/"
+          className="shrink-0 flex items-center"
+          aria-label="CORE. home"
+          onClick={closeMenu}
+        >
           <Image
             src="/CORE_logo_trans.svg"
             alt="CORE."
@@ -45,55 +77,118 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Centre nav */}
+        {/* Centre nav (desktop) */}
         <nav className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
           {navLinks.map((label) => (
             <Link
               key={label}
               href={`/${label}`}
-              className="text-xs tracking-[0.25em] lowercase text-white/50 hover:text-white transition-colors duration-200"
+              className="text-xs tracking-[0.25em] lowercase text-white/50 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-4"
             >
               {label}
             </Link>
           ))}
         </nav>
 
-        {/* Cart trigger — opens drawer on desktop, links to /cart on mobile */}
-        <button
-          onClick={toggleDrawer}
-          aria-label="open cart"
-          className="hidden md:flex items-center gap-2.5 text-white/70 hover:text-white transition-colors duration-200 cursor-pointer"
-        >
-          <img
-            src="/icons/cart-large-minimalistic.svg"
-            alt=""
-            aria-hidden="true"
-            className="h-5 w-5 opacity-80"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-          <span className="text-xs font-mono tracking-[0.1em] text-white/40">
-            ({itemCount})
-          </span>
-        </button>
+        <div className="flex items-center gap-4 md:gap-2.5">
+          {/* Cart trigger — desktop (drawer) */}
+          <button
+            onClick={toggleDrawer}
+            aria-label="open cart"
+            className="hidden md:flex items-center gap-2.5 text-white/70 hover:text-white transition-colors duration-200 cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+          >
+            <img
+              src="/icons/cart-large-minimalistic.svg"
+              alt=""
+              aria-hidden="true"
+              className="h-5 w-5 opacity-80"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
+            <span className="text-xs font-mono tracking-[0.1em] text-white/40">
+              ({itemCount})
+            </span>
+          </button>
 
-        {/* Mobile: link directly to /cart page */}
-        <Link
-          href="/cart"
-          className="md:hidden flex items-center gap-2.5 text-white/70 hover:text-white transition-colors duration-200"
-          aria-label="shopping cart"
-        >
-          <img
-            src="/icons/cart-large-minimalistic.svg"
-            alt=""
-            aria-hidden="true"
-            className="h-5 w-5 opacity-80"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-          <span className="text-xs font-mono tracking-[0.1em] text-white/40">
-            ({itemCount})
-          </span>
-        </Link>
+          {/* Cart trigger — mobile (link to /cart) */}
+          <Link
+            href="/cart"
+            onClick={closeMenu}
+            className="md:hidden flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-200"
+            aria-label={`shopping cart, ${itemCount} items`}
+          >
+            <img
+              src="/icons/cart-large-minimalistic.svg"
+              alt=""
+              aria-hidden="true"
+              className="h-5 w-5 opacity-80"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
+            <span className="text-xs font-mono tracking-[0.1em] text-white/40">
+              ({itemCount})
+            </span>
+          </Link>
+
+          {/* Mobile menu toggle */}
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? "close menu" : "open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav-panel"
+            className="md:hidden flex flex-col items-center justify-center gap-[5px] w-9 h-9 text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+          >
+            <motion.span
+              animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 6 : 0 }}
+              transition={{ duration: 0.25 }}
+              className="block h-px w-5 bg-current"
+            />
+            <motion.span
+              animate={{ opacity: menuOpen ? 0 : 1 }}
+              transition={{ duration: 0.2 }}
+              className="block h-px w-5 bg-current"
+            />
+            <motion.span
+              animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -6 : 0 }}
+              transition={{ duration: 0.25 }}
+              className="block h-px w-5 bg-current"
+            />
+          </button>
+        </div>
       </div>
+
+      {/* Mobile nav panel */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            id="mobile-nav-panel"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden border-t border-white/10 bg-[#0D0D0D]"
+          >
+            <nav className="flex flex-col px-6 py-4">
+              {navLinks.map((label, i) => (
+                <Link
+                  key={label}
+                  href={`/${label}`}
+                  onClick={closeMenu}
+                  className="flex items-center justify-between py-4 border-b border-white/[0.06] last:border-b-0 text-lg font-light lowercase text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+                >
+                  <span>{label}</span>
+                  <span className="font-mono text-[10px] text-white/20">
+                    0{i + 1}
+                  </span>
+                </Link>
+              ))}
+            </nav>
+            <div className="px-6 pb-6">
+              <span className="text-[10px] font-mono tracking-[0.2em] text-white/20 lowercase">
+                refined to the core.
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

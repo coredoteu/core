@@ -30,6 +30,13 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  width: 100%;
+  position: relative;
 }
 
 /* ─── 7. Glassmorphic custom scrollbar ───────────────────────────────────── */

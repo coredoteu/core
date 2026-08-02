@@ -55,7 +55,7 @@ function SectionLabel({
   return (
     <div className="flex items-center gap-3 mb-10 md:mb-14">
       <span className="font-mono text-[11px] tracking-[0.25em] text-white/30">
-        {index} //
+        {index} {"//"}
       </span>
       <Icon src={icon} size={13} opacity={0.2} />
       <div className="flex-1 h-px bg-white/10" />

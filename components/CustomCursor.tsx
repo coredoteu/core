@@ -6,9 +6,20 @@ import { motion } from "framer-motion";
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+
+  // only ever activate on devices with a real mouse
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: fine)");
+    setEnabled(mq.matches);
+    const handleChange = (e: MediaQueryListEvent) => setEnabled(e.matches);
+    mq.addEventListener("change", handleChange);
+    return () => mq.removeEventListener("change", handleChange);
+  }, []);
 
   useEffect(() => {
-    // Hide default cursor on desktop
+    if (!enabled) return;
+
     document.body.style.cursor = "none";
 
     const updateMousePosition = (e: MouseEvent) => {
@@ -37,9 +48,10 @@ export default function CustomCursor() {
       window.removeEventListener("mousemove", updateMousePosition);
       window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, []);
+  }, [enabled]);
 
-  // Use a subtle dot cursor
+  if (!enabled) return null;
+
   return (
     <motion.div
       className="fixed top-0 left-0 w-3 h-3 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference"
