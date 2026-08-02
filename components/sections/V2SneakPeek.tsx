@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import V2IngredientsGrid from "@/components/sections/V2IngredientsGrid";
+import { getFundingStats } from "@/app/actions/funding";
 
 const logLines = [
   { id: "L01", text: "project_codename: void", redact: false },
@@ -21,6 +22,17 @@ const statusNodes = [
 
 export default function V2SneakPeek() {
   const [isHovered, setIsHovered] = useState(false);
+  const [funding, setFunding] = useState({ unlocked: 105, total: 250, isLoading: true });
+
+  useEffect(() => {
+    async function loadStats() {
+      const stats = await getFundingStats();
+      setFunding({ ...stats, isLoading: false });
+    }
+    loadStats();
+  }, []);
+
+  const percentage = Math.round((funding.unlocked / funding.total) * 100);
 
   return (
     <section id="roadmap" className="border-b border-white/10 bg-[#0D0D0D] overflow-hidden">
@@ -145,15 +157,15 @@ export default function V2SneakPeek() {
               <div className="flex flex-col gap-2 my-2">
                 <div className="flex items-center justify-between font-mono text-[10px] lowercase text-white/40">
                   <span>custom batch funding</span>
-                  <span className="text-white">42%</span>
+                  <span className="text-white">{percentage}%</span>
                 </div>
                 <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-white w-[42%] relative">
+                  <div className="h-full bg-white relative transition-all duration-1000 ease-out" style={{ width: `${percentage}%` }}>
                     <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                   </div>
                 </div>
                 <div className="font-mono text-[9px] tracking-[0.1em] text-white/30 lowercase mt-1">
-                  105 / 250 pre-orders unlocked
+                  {funding.unlocked} / {funding.total} pre-orders unlocked
                 </div>
               </div>
 
