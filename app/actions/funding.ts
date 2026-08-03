@@ -1,6 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase";
+import { revalidatePath } from "next/cache";
 
 export async function getFundingStats() {
   try {
@@ -11,11 +12,13 @@ export async function getFundingStats() {
       .single();
 
     if (error) {
-      console.error("Error fetching funding stats:", error);
+      console.error("Supabase Error (Funding Stats):", error.message, error.details, error.hint);
       return { unlocked: 105, total: 250 }; // fallback
     }
 
     if (data) {
+      // Revalidate the path to ensure Next.js doesn't cache the old data
+      revalidatePath("/");
       return { unlocked: data.unlocked, total: data.total };
     }
   } catch (err) {

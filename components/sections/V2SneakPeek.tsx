@@ -39,7 +39,7 @@ export default function V2SneakPeek() {
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36">
 
         <div className="flex items-center gap-4">
-          <span className="font-mono text-xs tracking-[0.2em] text-white/40">07 //</span>
+          <span className="font-mono text-xs tracking-[0.2em] text-white/60">07 //</span>
           <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
             what comes next
           </h2>
@@ -55,11 +55,11 @@ export default function V2SneakPeek() {
                   <span className="h-2 w-2 rounded-[50%] bg-white/10" />
                   <span className="h-2 w-2 rounded-[50%] bg-white/10" />
                 </span>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-white/30 lowercase">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-white/60 lowercase">
                   project v2 // stealth black edition
                 </span>
               </div>
-              <span className="font-mono text-[10px] tracking-[0.15em] text-white/20 lowercase">
+              <span className="font-mono text-[10px] tracking-[0.15em] text-white/60 lowercase">
                 live
               </span>
             </div>
@@ -67,14 +67,14 @@ export default function V2SneakPeek() {
             <div className="flex-1 px-6 md:px-8 py-6 flex flex-col gap-3">
               {logLines.map((line) => (
                 <div key={line.id} className="flex items-start gap-4">
-                  <span className="font-mono text-[10px] text-white/20 shrink-0 mt-px">
+                  <span className="font-mono text-[10px] text-white/60 shrink-0 mt-px">
                     {line.id}
                   </span>
                   <span
                     className={`font-mono text-xs leading-relaxed lowercase ${
                       line.redact
                         ? "text-transparent bg-white/20 select-none rounded-sm px-1"
-                        : "text-white/50"
+                        : "text-white/60"
                     }`}
                   >
                     {line.text}
@@ -86,7 +86,7 @@ export default function V2SneakPeek() {
             <div className="border-t border-white/10 grid grid-cols-3 divide-x divide-white/10">
               {statusNodes.map((node) => (
                 <div key={node.key} className="px-5 py-4 flex flex-col gap-1">
-                  <span className="font-mono text-[9px] tracking-[0.2em] text-white/25 lowercase">
+                  <span className="font-mono text-[9px] tracking-[0.2em] text-white/60 lowercase">
                     {node.key}
                   </span>
                   <span className="font-mono text-[11px] text-white/60 lowercase">
@@ -134,7 +134,7 @@ export default function V2SneakPeek() {
               </div>
 
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40">
-                <span className="font-mono text-[9px] tracking-[0.3em] text-white/20 lowercase px-3 py-1 border border-white/10 bg-[#0D0D0D]/60 backdrop-blur-sm">
+                <span className="font-mono text-[9px] tracking-[0.3em] text-white/60 lowercase px-3 py-1 border border-white/10 bg-[#0D0D0D]/60 backdrop-blur-sm">
                   image redacted
                 </span>
               </div>
@@ -143,19 +143,19 @@ export default function V2SneakPeek() {
             <div className="border-t border-white/10 px-6 md:px-8 py-8 flex flex-col gap-6">
               <div className="flex items-center gap-3">
                 <span className="h-px flex-1 bg-white/10" />
-                <span className="font-mono text-[9px] tracking-[0.3em] text-white/25 lowercase">
+                <span className="font-mono text-[9px] tracking-[0.3em] text-white/60 lowercase">
                   build in public // v2 roadmap
                 </span>
                 <span className="h-px flex-1 bg-white/10" />
               </div>
 
-              <p className="text-sm text-white/50 lowercase leading-relaxed max-w-prose">
+              <p className="text-sm text-white/60 lowercase leading-relaxed max-w-prose">
                 we are launching lean. every v1 purchase directly funds the
                 custom formulation and matte black tooling of v2.
               </p>
 
               <div className="flex flex-col gap-2 my-2">
-                <div className="flex items-center justify-between font-mono text-[10px] lowercase text-white/40">
+                <div className="flex items-center justify-between font-mono text-[10px] lowercase text-white/60">
                   <span>custom batch funding</span>
                   <span className="text-white">{percentage}%</span>
                 </div>
@@ -164,7 +164,7 @@ export default function V2SneakPeek() {
                     <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                   </div>
                 </div>
-                <div className="font-mono text-[9px] tracking-[0.1em] text-white/30 lowercase mt-1">
+                <div className="font-mono text-[9px] tracking-[0.1em] text-white/60 lowercase mt-1">
                   {funding.unlocked} / {funding.total} pre-orders unlocked
                 </div>
               </div>
@@ -172,6 +172,13 @@ export default function V2SneakPeek() {
               <button
                 id="v2-waitlist-cta"
                 aria-label="join the v2 waitlist"
+                onClick={() => {
+                  document.getElementById("waitlist-section")?.scrollIntoView({ behavior: "smooth" });
+                  // Focus the email input after scrolling
+                  setTimeout(() => {
+                    document.getElementById("waitlist-email")?.focus();
+                  }, 500);
+                }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 className={`
@@ -180,7 +187,7 @@ export default function V2SneakPeek() {
                   ${
                     isHovered
                       ? "border-white/50 text-white shadow-[0_0_20px_rgba(255,255,255,0.08),inset_0_0_20px_rgba(255,255,255,0.03)]"
-                      : "border-white/15 text-white/50"
+                      : "border-white/15 text-white/60"
                   }
                 `}
               >
@@ -195,7 +202,7 @@ export default function V2SneakPeek() {
                 <span className="relative z-10">[ join the v2 waitlist ]</span>
               </button>
 
-              <p className="font-mono text-[9px] tracking-[0.15em] text-white/20 lowercase">
+              <p className="font-mono text-[9px] tracking-[0.15em] text-white/60 lowercase">
                 no spam. one announcement. when it drops, you will know.
               </p>
             </div>

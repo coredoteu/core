@@ -23,7 +23,7 @@ export default function Ticker() {
       <div className="flex w-max animate-marquee">
         {[...tickerItems, ...tickerItems].map((item, i) => (
           <div key={i} className="flex items-center gap-3 px-8">
-            <span className="text-xs tracking-[0.2em] text-white/40 lowercase whitespace-nowrap">
+            <span className="text-xs tracking-[0.2em] text-white/60 lowercase whitespace-nowrap">
               {item}
             </span>
             <span className="text-white/15">/</span>

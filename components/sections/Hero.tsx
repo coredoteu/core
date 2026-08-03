@@ -7,7 +7,7 @@ export default function Hero() {
       <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:56px_56px] pointer-events-none" />
 
       <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 pt-10 md:pt-16">
-        <div className="flex items-center justify-between text-[11px] font-mono tracking-[0.2em] text-white/35 pb-8 md:pb-14 border-b border-white/10">
+        <div className="flex items-center justify-between text-[11px] font-mono tracking-[0.2em] text-white/60 pb-8 md:pb-14 border-b border-white/10">
           <span>CORE. // system 001</span>
           <span className="hidden sm:inline">technical hair care.</span>
           <span>lat 51.92 // lon 4.47</span>
@@ -20,7 +20,7 @@ export default function Hero() {
               <br />
               to the core.
             </h1>
-            <p className="mt-8 text-white/50 text-base md:text-lg leading-relaxed lowercase max-w-sm sm:max-w-md lg:max-w-none">
+            <p className="mt-8 text-white/60 text-base md:text-lg leading-relaxed lowercase max-w-sm sm:max-w-md lg:max-w-none">
               technical hair care, engineered right.
               a shampoo and conditioner system
               built from 98-99% natural origin
@@ -47,7 +47,7 @@ export default function Hero() {
               className="flex items-center justify-between px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300"
             >
               <span>[ see the formulation ]</span>
-              <span className="font-mono text-white/30">→</span>
+              <span className="font-mono text-white/60">→</span>
             </Link>
           </div>
         </div>

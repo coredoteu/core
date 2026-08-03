@@ -67,6 +67,34 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#0D0D0D] text-white selection:bg-white/20 selection:text-white overflow-x-hidden">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "CORE.",
+              url: "https://bycore.eu",
+              logo: "https://bycore.eu/CORE_logo_trans.png",
+              description: "technical, high-performance hair care",
+              sameAs: [
+                "https://instagram.com/bycore.eu",
+                "https://twitter.com/bycore_eu"
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "CORE.",
+              url: "https://bycore.eu"
+            })
+          }}
+        />
         <Providers>
           <CustomCursor />
           <CartDrawer />

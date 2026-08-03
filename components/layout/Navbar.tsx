@@ -10,11 +10,14 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useCart } from "@/context/CartContext";
+import { useSupabaseSession } from "@/context/AuthContext";
 
 const navLinks = ["shop", "science", "roadmap"] as const;
 
 export default function Navbar() {
   const { itemCount, toggleDrawer } = useCart();
+  const { session } = useSupabaseSession();
+  const accountHref = session ? "/account" : "/login";
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -79,7 +82,7 @@ export default function Navbar() {
             <Link
               key={label}
               href={`/${label}`}
-              className="text-xs tracking-[0.25em] lowercase text-white/50 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-4"
+              className="text-xs tracking-[0.25em] lowercase text-white/60 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-4"
             >
               {label}
             </Link>
@@ -87,6 +90,29 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 md:gap-2.5">
+          {/* Desktop: User account icon */}
+          <Link
+            href={accountHref}
+            aria-label={session ? "my account" : "sign in"}
+            className="hidden md:flex items-center justify-center text-white/50 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+          >
+            <svg
+              className="h-[18px] w-[18px]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.4}
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+              />
+            </svg>
+          </Link>
+
+          {/* Desktop: Cart button */}
           <button
             onClick={toggleDrawer}
             aria-label="open cart"
@@ -99,7 +125,7 @@ export default function Navbar() {
               className="h-5 w-5 opacity-80"
               style={{ filter: "brightness(0) invert(1)" }}
             />
-            <span className="text-xs font-mono tracking-[0.1em] text-white/40">
+            <span className="text-xs font-mono tracking-[0.1em] text-white/60">
               ({itemCount})
             </span>
           </button>
@@ -117,7 +143,7 @@ export default function Navbar() {
               className="h-5 w-5 opacity-80"
               style={{ filter: "brightness(0) invert(1)" }}
             />
-            <span className="text-xs font-mono tracking-[0.1em] text-white/40">
+            <span className="text-xs font-mono tracking-[0.1em] text-white/60">
               ({itemCount})
             </span>
           </Link>
@@ -167,14 +193,35 @@ export default function Navbar() {
                   className="flex items-center justify-between py-4 border-b border-white/[0.06] last:border-b-0 text-lg font-light lowercase text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
                 >
                   <span>{label}</span>
-                  <span className="font-mono text-[10px] text-white/20">
+                  <span className="font-mono text-[10px] text-white/60">
                     0{i + 1}
                   </span>
                 </Link>
               ))}
+              {/* Account link in mobile menu */}
+              <Link
+                href={accountHref}
+                onClick={closeMenu}
+                className="flex items-center justify-between py-4 border-t border-white/[0.06] text-lg font-light lowercase text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+              >
+                <span>{session ? "account" : "sign in"}</span>
+                <svg
+                  className="h-4 w-4 opacity-40"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.4}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                  />
+                </svg>
+              </Link>
             </nav>
             <div className="px-6 pb-6">
-              <span className="text-[10px] font-mono tracking-[0.2em] text-white/20 lowercase">
+              <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
                 refined to the core.
               </span>
             </div>

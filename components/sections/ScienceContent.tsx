@@ -37,11 +37,11 @@ function Icon({
 function SectionLabel({ index, title }: { index: string; title: string }) {
   return (
     <div className="flex items-center gap-3 md:gap-4 mb-10 md:mb-14">
-      <span className="font-mono text-[11px] md:text-xs tracking-[0.25em] text-white/30 shrink-0">
+      <span className="font-mono text-[11px] md:text-xs tracking-[0.25em] text-white/60 shrink-0">
         {index} {"//"}
       </span>
       <div className="flex-1 h-px bg-white/10" />
-      <span className="text-[11px] font-mono tracking-[0.25em] text-white/30 lowercase shrink-0">
+      <span className="text-[11px] font-mono tracking-[0.25em] text-white/60 lowercase shrink-0">
         {title}
       </span>
     </div>
@@ -161,14 +161,14 @@ export default function ScienceContent() {
     <>
       <section className="pt-28 md:pt-36 pb-16 md:pb-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-white/35 pb-8 md:pb-14 border-b border-white/10">
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-white/60 pb-8 md:pb-14 border-b border-white/10">
             <span>CORE. {"//"}  formulation index</span>
             <span className="hidden sm:inline">technical hair care.</span>
             <span>ph 4.5 {"//"}  5.5</span>
           </div>
 
           <div className="pt-12 md:pt-16 flex flex-col gap-6 max-w-3xl">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/40">
+            <span className="font-mono text-xs tracking-[0.2em] text-white/60">
               01 {"//"}
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] tracking-tight lowercase text-white">
@@ -176,7 +176,7 @@ export default function ScienceContent() {
               <br />
               the system.
             </h1>
-            <p className="text-white/50 text-sm sm:text-base md:text-lg leading-relaxed lowercase max-w-xl">
+            <p className="text-white/60 text-sm sm:text-base md:text-lg leading-relaxed lowercase max-w-xl">
               every active declared at a functional concentration. no
               proprietary blends. no filler claims. this is the formulation
               index for the CORE. system.
@@ -228,7 +228,7 @@ export default function ScienceContent() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <h3 className="text-lg font-light lowercase text-white/90">{card.title}</h3>
-                  <p className="text-sm text-white/40 lowercase leading-relaxed">{card.desc}</p>
+                  <p className="text-sm text-white/60 lowercase leading-relaxed">{card.desc}</p>
                 </div>
               </div>
             ))}
@@ -241,7 +241,7 @@ export default function ScienceContent() {
           <SectionLabel index="02" title="active compound index" />
 
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
-            <p className="text-sm text-white/40 lowercase leading-relaxed max-w-md">
+            <p className="text-sm text-white/60 lowercase leading-relaxed max-w-md">
               six core actives, shared and split across the duo system. filter
               by unit to see exactly what is in each formula.
             </p>
@@ -255,7 +255,7 @@ export default function ScienceContent() {
                   className={`flex-1 sm:flex-none px-4 sm:px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${
                     filter === tab
                       ? "bg-white text-[#0D0D0D]"
-                      : "text-white/40 hover:text-white"
+                      : "text-white/60 hover:text-white"
                   }`}
                 >
                   {tab === "all" ? "all actives" : `unit / ${tab}`}
@@ -280,7 +280,7 @@ export default function ScienceContent() {
                     <div className="w-8 h-8 border border-white/[0.08] flex items-center justify-center shrink-0">
                       <Icon src={active.icon} size={13} opacity={0.4} />
                     </div>
-                    <span className="font-mono text-[10px] text-white/25 lowercase pt-1.5">
+                    <span className="font-mono text-[10px] text-white/60 lowercase pt-1.5">
                       {active.code}
                     </span>
                   </div>
@@ -289,21 +289,21 @@ export default function ScienceContent() {
                     <h3 className="text-sm text-white/90 uppercase tracking-wide leading-snug">
                       {active.name}
                     </h3>
-                    <p className="text-xs text-white/35 lowercase leading-relaxed">
+                    <p className="text-xs text-white/60 lowercase leading-relaxed">
                       {active.desc}
                     </p>
                   </div>
 
                   <div className="flex flex-wrap gap-1.5 mt-1">
                     {active.organic && (
-                      <span className="text-[9px] font-mono tracking-[0.1em] text-white/40 border border-white/10 px-2 py-1 lowercase">
+                      <span className="text-[9px] font-mono tracking-[0.1em] text-white/60 border border-white/10 px-2 py-1 lowercase">
                         organically farmed
                       </span>
                     )}
                     {active.units.map((u) => (
                       <span
                         key={u}
-                        className="text-[9px] font-mono tracking-[0.1em] text-white/25 border border-white/[0.06] px-2 py-1 lowercase"
+                        className="text-[9px] font-mono tracking-[0.1em] text-white/60 border border-white/[0.06] px-2 py-1 lowercase"
                       >
                         {u}
                       </span>
@@ -324,14 +324,14 @@ export default function ScienceContent() {
             {clinicalSpecs.map((s) => (
               <div key={s.key} className="border-r border-b border-white/10 p-5 md:p-6 flex flex-col gap-3">
                 <Icon src={s.icon} size={15} opacity={0.5} />
-                <span className="text-[10px] font-mono tracking-[0.15em] text-white/30 lowercase">{s.key}</span>
+                <span className="text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase">{s.key}</span>
                 <span className="text-sm text-white/80 lowercase">{s.value}</span>
               </div>
             ))}
           </div>
 
           <div className="mt-12 flex flex-col gap-4">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
               certifications & claims
             </span>
             <div className="flex flex-wrap gap-2">
@@ -358,7 +358,7 @@ export default function ScienceContent() {
               <h2 className="text-2xl md:text-3xl font-light lowercase text-white/80 leading-snug">
                 formulation questions
               </h2>
-              <p className="text-sm text-white/30 lowercase leading-relaxed">
+              <p className="text-sm text-white/60 lowercase leading-relaxed">
                 direct answers. no filler copy.
               </p>
             </div>
@@ -396,7 +396,7 @@ export default function ScienceContent() {
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <p className="px-5 md:px-6 pb-5 text-sm text-white/40 lowercase leading-relaxed">
+                        <p className="px-5 md:px-6 pb-5 text-sm text-white/60 lowercase leading-relaxed">
                           {faq.a}
                         </p>
                       </motion.div>

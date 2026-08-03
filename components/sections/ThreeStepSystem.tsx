@@ -106,7 +106,7 @@ export default function ThreeStepSystem() {
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 md:mb-24">
           <div className="flex items-center gap-4">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/40">02 //</span>
+            <span className="font-mono text-xs tracking-[0.2em] text-white/60">02 //</span>
             <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
               usage protocol
             </h2>
@@ -118,7 +118,7 @@ export default function ThreeStepSystem() {
               className={`px-6 py-2 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 ${
                 activeUnit === "shampoo"
                   ? "bg-white text-[#0D0D0D]"
-                  : "text-white/40 hover:text-white"
+                  : "text-white/60 hover:text-white"
               }`}
             >
               unit 01 / shampoo
@@ -128,7 +128,7 @@ export default function ThreeStepSystem() {
               className={`px-6 py-2 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 ${
                 activeUnit === "conditioner"
                   ? "bg-white text-[#0D0D0D]"
-                  : "text-white/40 hover:text-white"
+                  : "text-white/60 hover:text-white"
               }`}
             >
               unit 02 / conditioner
@@ -146,15 +146,15 @@ export default function ThreeStepSystem() {
               whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.03)" }}
               transition={{ duration: 0.3 }}
             >
-              <div className="text-white/40 group-hover:text-white transition-colors duration-300">
+              <div className="text-white/60 group-hover:text-white transition-colors duration-300">
                 {step.icon}
               </div>
               <div className="mt-12 w-full">
                 <div className="flex items-baseline gap-3 mb-4">
-                  <span className="font-mono text-xs tracking-[0.2em] text-white/30">{step.id}.</span>
+                  <span className="font-mono text-xs tracking-[0.2em] text-white/60">{step.id}.</span>
                   <h3 className="text-2xl font-light text-white tracking-tight lowercase">{step.title}</h3>
                 </div>
-                <p className="text-sm text-white/50 lowercase leading-relaxed max-w-[250px]">
+                <p className="text-sm text-white/60 lowercase leading-relaxed max-w-[250px]">
                   {step.description}
                 </p>
               </div>

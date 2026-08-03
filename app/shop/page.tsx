@@ -33,7 +33,7 @@ const conditionerActives = [
 function SectionEyebrow({ index, title }: { index: string; title: string }) {
   return (
     <div className="flex items-center gap-4">
-      <span className="font-mono text-xs tracking-[0.2em] text-white/40">
+      <span className="font-mono text-xs tracking-[0.2em] text-white/60">
         {index} {"//"}
       </span>
       <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
@@ -48,10 +48,10 @@ function ActivesList({ actives }: { actives: string[] }) {
     <div className="flex flex-col gap-2">
       {actives.map((active, i) => (
         <div key={active} className="flex items-center gap-3">
-          <span className="font-mono text-[10px] text-white/20 tabular-nums">
+          <span className="font-mono text-[10px] text-white/60 tabular-nums">
             {String(i + 1).padStart(2, "0")}
           </span>
-          <span className="text-xs text-white/50 lowercase">{active}</span>
+          <span className="text-xs text-white/60 lowercase">{active}</span>
         </div>
       ))}
     </div>
@@ -96,7 +96,7 @@ function SingleProductCard({
       )}
 
       {/* unit label */}
-      <span className="text-[10px] font-mono tracking-[0.2em] text-white/25 lowercase">
+      <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
         {unit}
       </span>
 
@@ -117,7 +117,7 @@ function SingleProductCard({
           <h3 className="text-xl md:text-2xl font-light lowercase text-white leading-snug">
             <span className="text-white font-normal">CORE.</span> {name}
           </h3>
-          <p className="text-xs text-white/30 lowercase font-mono tracking-[0.1em]">
+          <p className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
             {size}
           </p>
         </div>
@@ -125,14 +125,14 @@ function SingleProductCard({
         {/* function tag */}
         <div className="flex items-center gap-2">
           <div className="w-1 h-1 rounded-full bg-white/20 shrink-0" />
-          <span className="text-xs text-white/40 lowercase tracking-[0.05em]">
+          <span className="text-xs text-white/60 lowercase tracking-[0.05em]">
             {func}
           </span>
         </div>
 
         {/* key actives */}
         <div className="mt-3 border border-white/[0.06] p-4">
-          <span className="text-[10px] font-mono tracking-[0.2em] text-white/25 lowercase">
+          <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
             key actives
           </span>
           <div className="mt-3">
@@ -147,13 +147,13 @@ function SingleProductCard({
           <span className="text-2xl md:text-3xl font-light text-white">
             €{price.toFixed(2)}
           </span>
-          <span className="text-xs text-white/25 font-mono lowercase">eur</span>
+          <span className="text-xs text-white/60 font-mono lowercase">eur</span>
         </div>
         <ShopAddToCart product={product} />
         {productPage && (
           <Link
             href={`/products/${productPage.slug}`}
-            className="text-center text-[10px] font-mono tracking-[0.2em] text-white/25 hover:text-white/50 transition-colors duration-200 lowercase py-1"
+            className="text-center text-[10px] font-mono tracking-[0.2em] text-white/60 hover:text-white/60 transition-colors duration-200 lowercase py-1"
           >
             view product details
           </Link>
@@ -186,7 +186,7 @@ function DuoCard() {
           </div>
           <div className="flex items-center self-center mb-4">
             <span
-              className="text-white/40 font-extralight leading-none"
+              className="text-white/60 font-extralight leading-none"
               style={{ fontSize: "1.2rem" }}
               aria-hidden="true"
             >
@@ -208,13 +208,13 @@ function DuoCard() {
       {/* Duo info */}
       <div className="flex flex-col flex-1 gap-6 justify-between">
         <div className="flex flex-col gap-3">
-          <span className="text-[10px] font-mono tracking-[0.2em] text-white/30 lowercase">
+          <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
             system 001
           </span>
           <h3 className="text-2xl md:text-3xl font-light text-white lowercase leading-snug">
             <span className="font-normal">CORE.</span> the duo
           </h3>
-          <p className="text-sm text-white/40 lowercase leading-relaxed">
+          <p className="text-sm text-white/60 lowercase leading-relaxed">
             shampoo + conditioner. the complete daily system.
             engineered to work in sequence - cleanse, then seal.
           </p>
@@ -229,7 +229,7 @@ function DuoCard() {
             ].map((tag) => (
               <span
                 key={tag}
-                className="border border-white/10 px-3 py-1 text-[10px] font-mono tracking-[0.15em] text-white/40 lowercase"
+                className="border border-white/10 px-3 py-1 text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase"
               >
                 {tag}
               </span>
@@ -242,16 +242,16 @@ function DuoCard() {
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.07]">
             <div className="flex flex-col gap-0.5">
               <span className="text-xs text-white/70 lowercase">daily balancing shampoo</span>
-              <span className="text-[10px] font-mono text-white/25">unit 01 / 290ml</span>
+              <span className="text-[10px] font-mono text-white/60">unit 01 / 290ml</span>
             </div>
-            <span className="text-xs text-white/30 font-mono">€28.00</span>
+            <span className="text-xs text-white/60 font-mono">€28.00</span>
           </div>
           <div className="flex items-center justify-between px-5 py-3.5">
             <div className="flex flex-col gap-0.5">
               <span className="text-xs text-white/70 lowercase">daily nourishing conditioner</span>
-              <span className="text-[10px] font-mono text-white/25">unit 02 / 290ml</span>
+              <span className="text-[10px] font-mono text-white/60">unit 02 / 290ml</span>
             </div>
-            <span className="text-xs text-white/30 font-mono">€28.00</span>
+            <span className="text-xs text-white/60 font-mono">€28.00</span>
           </div>
         </div>
 
@@ -259,8 +259,8 @@ function DuoCard() {
         <div className="flex flex-col gap-4">
           <div className="flex items-baseline gap-3">
             <span className="text-3xl font-light text-white">€44.95</span>
-            <span className="text-sm text-white/30 line-through">€56.00</span>
-            <span className="text-xs font-mono text-white/40 lowercase border border-white/10 px-2 py-0.5">
+            <span className="text-sm text-white/60 line-through">€56.00</span>
+            <span className="text-xs font-mono text-white/60 lowercase border border-white/10 px-2 py-0.5">
               save €11.05
             </span>
           </div>
@@ -296,7 +296,7 @@ export default function ShopPage() {
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex flex-col gap-6 max-w-3xl">
             <SectionEyebrow index="01" title="shop" />
-            <p className="text-sm text-white/35 lowercase max-w-lg leading-relaxed">
+            <p className="text-sm text-white/60 lowercase max-w-lg leading-relaxed">
               the v1 system. clinical, ph-balanced formulations built from a short
               list of natural actives. nothing hidden behind a blend name. engineered
               in the netherlands.
@@ -312,7 +312,7 @@ export default function ShopPage() {
               ].map((b) => (
                 <span
                   key={b.label}
-                  className="flex items-center gap-2 border border-white/10 px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-white/50 lowercase"
+                  className="flex items-center gap-2 border border-white/10 px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase"
                 >
                   <img
                     src={b.icon}
@@ -331,10 +331,10 @@ export default function ShopPage() {
       {/* ── Product grid ── */}
       <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-32 border-b border-white/10">
         <div className="flex items-center justify-between mb-12">
-          <span className="text-xs font-mono tracking-[0.2em] text-white/30 lowercase">
+          <span className="text-xs font-mono tracking-[0.2em] text-white/60 lowercase">
             v1 lineup / 3 products
           </span>
-          <span className="text-xs font-mono tracking-[0.15em] text-white/20 lowercase">
+          <span className="text-xs font-mono tracking-[0.15em] text-white/60 lowercase">
             290ml formulation
           </span>
         </div>
@@ -372,7 +372,7 @@ export default function ShopPage() {
       <section className="border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-16 md:py-24">
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/40">
+            <span className="font-mono text-xs tracking-[0.2em] text-white/60">
               02 //
             </span>
             <h2 className="text-xl font-light lowercase text-white">
@@ -386,7 +386,7 @@ export default function ShopPage() {
                 key={s.key}
                 className="border-r border-b border-white/10 p-6 flex flex-col gap-2 hover:bg-white/[0.015] transition-colors duration-300"
               >
-                <span className="text-[10px] font-mono tracking-[0.2em] text-white/25 lowercase">
+                <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
                   {s.key}
                 </span>
                 <span className="text-sm text-white/70 lowercase">{s.value}</span>
@@ -429,7 +429,7 @@ export default function ShopPage() {
               />
               <div className="flex flex-col gap-1.5">
                 <span className="text-sm text-white/70 lowercase">{item.title}</span>
-                <p className="text-xs text-white/30 lowercase leading-relaxed">{item.desc}</p>
+                <p className="text-xs text-white/60 lowercase leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}

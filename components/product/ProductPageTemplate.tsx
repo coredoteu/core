@@ -54,12 +54,12 @@ function SectionLabel({
 }) {
   return (
     <div className="flex items-center gap-3 mb-10 md:mb-14">
-      <span className="font-mono text-[11px] tracking-[0.25em] text-white/30">
+      <span className="font-mono text-[11px] tracking-[0.25em] text-white/60">
         {index} {"//"}
       </span>
       <Icon src={icon} size={13} opacity={0.2} />
       <div className="flex-1 h-px bg-white/10" />
-      <span className="text-[11px] font-mono tracking-[0.25em] text-white/30 lowercase">
+      <span className="text-[11px] font-mono tracking-[0.25em] text-white/60 lowercase">
         {title}
       </span>
     </div>
@@ -105,7 +105,7 @@ function ProductGallery({
           </motion.div>
         </AnimatePresence>
 
-        <span className="absolute bottom-4 right-5 font-mono text-[10px] tracking-[0.2em] text-white/20">
+        <span className="absolute bottom-4 right-5 font-mono text-[10px] tracking-[0.2em] text-white/60">
           {String(selected + 1).padStart(2, "0")} /{" "}
           {String(images.length).padStart(2, "0")}
         </span>
@@ -153,23 +153,23 @@ function HeroPanel({ product }: { product: ProductPageData }) {
 
   return (
     <div className="flex flex-col gap-8">
-      <nav className="flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-white/25">
-        <Link href="/" className="hover:text-white/50 transition-colors duration-200">
+      <nav className="flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-white/60">
+        <Link href="/" className="hover:text-white/60 transition-colors duration-200">
           home
         </Link>
         <span>/</span>
-        <Link href="/shop" className="hover:text-white/50 transition-colors duration-200">
+        <Link href="/shop" className="hover:text-white/60 transition-colors duration-200">
           shop
         </Link>
         <span>/</span>
-        <span className="text-white/40">{product.name}</span>
+        <span className="text-white/60">{product.name}</span>
       </nav>
 
       <div className="flex items-center gap-3">
-        <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 border border-white/10 px-3 py-1.5">
+        <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 border border-white/10 px-3 py-1.5">
           {product.unit}
         </span>
-        <span className="font-mono text-[10px] tracking-[0.2em] text-white/20">
+        <span className="font-mono text-[10px] tracking-[0.2em] text-white/60">
           v1 catalog
         </span>
       </div>
@@ -180,7 +180,7 @@ function HeroPanel({ product }: { product: ProductPageData }) {
           <br />
           <span className="text-white/80">{product.name}</span>
         </h1>
-        <p className="text-sm text-white/35 lowercase leading-relaxed max-w-sm mt-2">
+        <p className="text-sm text-white/60 lowercase leading-relaxed max-w-sm mt-2">
           {product.tagline}
         </p>
       </div>
@@ -200,7 +200,7 @@ function HeroPanel({ product }: { product: ProductPageData }) {
           >
             <div className="flex items-center gap-1.5">
               <Icon src={spec.icon} size={11} opacity={0.2} />
-              <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase">
+              <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
                 {spec.label}
               </span>
             </div>
@@ -213,7 +213,7 @@ function HeroPanel({ product }: { product: ProductPageData }) {
         {product.certifications.map((cert) => (
           <span
             key={cert.label}
-            className="flex items-center gap-2 border border-white/[0.08] px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-white/40 lowercase"
+            className="flex items-center gap-2 border border-white/[0.08] px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase"
           >
             <Icon src="/icons/shield-check.svg" size={11} opacity={0.35} />
             {cert.label}
@@ -227,15 +227,15 @@ function HeroPanel({ product }: { product: ProductPageData }) {
             €{product.price.toFixed(2)}
           </span>
           <div className="flex flex-col items-end gap-1">
-            <span className="text-[10px] font-mono text-white/20 lowercase">incl. vat</span>
-            <span className="text-[10px] font-mono text-white/20 lowercase">free shipping over €50</span>
+            <span className="text-[10px] font-mono text-white/60 lowercase">incl. vat</span>
+            <span className="text-[10px] font-mono text-white/60 lowercase">free shipping over €50</span>
           </div>
         </div>
         <AddToCartButton
           product={catalogProduct}
           className="w-full py-4 text-sm tracking-[0.2em]"
         />
-        <p className="text-[10px] font-mono text-white/20 lowercase text-center">
+        <p className="text-[10px] font-mono text-white/60 lowercase text-center">
           secure checkout. free returns.
         </p>
       </div>
@@ -243,7 +243,7 @@ function HeroPanel({ product }: { product: ProductPageData }) {
       <div className="border border-white/[0.06] p-4 flex items-start gap-3">
         <Icon src="/icons/target.svg" size={14} opacity={0.2} className="mt-0.5" />
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
             designed for
           </span>
           <p className="text-xs text-white/45 lowercase leading-relaxed">
@@ -281,7 +281,7 @@ function FormulationSection({ product }: { product: ProductPageData }) {
                   key actives
                 </h2>
               </div>
-              <p className="text-sm text-white/35 lowercase leading-relaxed">
+              <p className="text-sm text-white/60 lowercase leading-relaxed">
                 every active is declared at a functional concentration. no filler
                 claims. no proprietary blends hiding a half-percent trace.
               </p>
@@ -296,7 +296,7 @@ function FormulationSection({ product }: { product: ProductPageData }) {
                   }`}
                 >
                   <Icon src="/icons/check-circle.svg" size={12} opacity={0.2} />
-                  <span className="text-xs text-white/50 lowercase">{claim}</span>
+                  <span className="text-xs text-white/60 lowercase">{claim}</span>
                 </div>
               ))}
             </div>
@@ -334,7 +334,7 @@ function FormulationSection({ product }: { product: ProductPageData }) {
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
-                    <p className="text-xs text-white/35 lowercase leading-relaxed max-w-sm">
+                    <p className="text-xs text-white/60 lowercase leading-relaxed max-w-sm">
                       {active.benefit}
                     </p>
                   </div>
@@ -398,7 +398,7 @@ function UsageSection({ product }: { product: ProductPageData }) {
                   <h3 className="text-2xl md:text-3xl font-light lowercase text-white tracking-tight">
                     {step.label}
                   </h3>
-                  <p className="text-sm text-white/40 lowercase leading-relaxed">
+                  <p className="text-sm text-white/60 lowercase leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -409,7 +409,7 @@ function UsageSection({ product }: { product: ProductPageData }) {
 
         <div className="mt-10 border border-white/[0.06] p-5 flex items-start gap-4">
           <Icon src="/icons/flask-conical.svg" size={16} opacity={0.2} className="mt-0.5" />
-          <p className="text-xs text-white/30 lowercase leading-relaxed">
+          <p className="text-xs text-white/60 lowercase leading-relaxed">
             for best results: use as a complete duo system. the shampoo opens
             and cleanses. the conditioner seals and nourishes. engineered to
             work in sequence.
@@ -451,7 +451,7 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
                 >
                   <Icon src={spec.icon} size={12} opacity={0.2} className="mt-[3px]" />
                   <div className="flex flex-col gap-1">
-                    <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 uppercase">
+                    <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">
                       {spec.key}
                     </span>
                     <span className="text-sm text-white/60 lowercase">{spec.value}</span>
@@ -463,12 +463,12 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
             <div className="border border-white/[0.06] p-5 flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Icon src="/icons/wind.svg" size={12} opacity={0.2} />
-                <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 uppercase">
+                <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">
                   SCENT PROFILE
                 </span>
               </div>
-              <p className="text-sm text-white/50 lowercase">{product.scent}</p>
-              <p className="text-xs text-white/25 lowercase leading-relaxed mt-1">
+              <p className="text-sm text-white/60 lowercase">{product.scent}</p>
+              <p className="text-xs text-white/60 lowercase leading-relaxed mt-1">
                 phthalate-free. 100% natural raw material fragrance composition.
               </p>
             </div>
@@ -482,7 +482,7 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
                   inci ingredient declaration
                 </h3>
               </div>
-              <p className="text-xs text-white/30 lowercase leading-relaxed">
+              <p className="text-xs text-white/60 lowercase leading-relaxed">
                 full transparency. listed highest to lowest concentration per eu
                 cosmetics regulation.
               </p>
@@ -490,8 +490,8 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
 
             <div className="border border-white/[0.08]">
               <div className="grid grid-cols-[auto_1fr] border-b border-white/[0.08] px-5 py-3 bg-white/[0.02]">
-                <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 w-10">#</span>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-white/25">INGREDIENT</span>
+                <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 w-10">#</span>
+                <span className="font-mono text-[10px] tracking-[0.2em] text-white/60">INGREDIENT</span>
               </div>
 
               {inciIngredients.map((ing, i) => (
@@ -504,7 +504,7 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
                   <span className="font-mono text-[10px] text-white/15 tabular-nums w-10 pt-px">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-xs text-white/50 leading-relaxed">
+                  <span className="text-xs text-white/60 leading-relaxed">
                     {ing.trim()}
                   </span>
                 </div>
@@ -512,7 +512,7 @@ function TechnicalSpecsSection({ product }: { product: ProductPageData }) {
 
               <div className="px-5 py-3 border-t border-white/[0.08] bg-white/[0.02] flex items-center gap-2">
                 <Icon src="/icons/info-circle.svg" size={11} opacity={0.2} />
-                <p className="font-mono text-[10px] tracking-[0.1em] text-white/20 lowercase">
+                <p className="font-mono text-[10px] tracking-[0.1em] text-white/60 lowercase">
                   {product.inciNote}
                 </p>
               </div>
@@ -539,7 +539,7 @@ function FAQSection({ product }: { product: ProductPageData }) {
             <h2 className="text-2xl md:text-3xl font-light lowercase text-white/80 leading-snug">
               common questions
             </h2>
-            <p className="text-sm text-white/30 lowercase leading-relaxed">
+            <p className="text-sm text-white/60 lowercase leading-relaxed">
               direct answers. no filler copy.
             </p>
           </div>
@@ -592,7 +592,7 @@ function FAQSection({ product }: { product: ProductPageData }) {
                           opacity={0.25}
                           className="mt-0.5 shrink-0"
                         />
-                        <p className="text-sm text-white/40 lowercase leading-relaxed">
+                        <p className="text-sm text-white/60 lowercase leading-relaxed">
                           {faq.answer}
                         </p>
                       </div>
@@ -635,7 +635,7 @@ function CrossSell({ currentSlug }: { currentSlug: string }) {
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="flex items-center gap-3 mb-8">
           <Icon src="/icons/layers-minimalistic.svg" size={12} opacity={0.2} />
-          <span className="font-mono text-[11px] tracking-[0.25em] text-white/25 lowercase">
+          <span className="font-mono text-[11px] tracking-[0.25em] text-white/60 lowercase">
             complete the system
           </span>
           <div className="flex-1 h-px bg-white/[0.06]" />
@@ -656,18 +656,18 @@ function CrossSell({ currentSlug }: { currentSlug: string }) {
           </div>
 
           <div className="flex flex-col gap-1 flex-1">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
               {link.unit}
             </span>
             <span className="text-sm text-white/70 lowercase group-hover:text-white transition-colors duration-200">
               CORE. {link.name}
             </span>
-            <span className="text-xs font-mono text-white/25 lowercase">
+            <span className="text-xs font-mono text-white/60 lowercase">
               {link.size}
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] font-mono tracking-[0.2em] text-white/40 group-hover:text-white/70 transition-colors duration-300 lowercase shrink-0">
+          <div className="flex items-center gap-3 text-[11px] font-mono tracking-[0.2em] text-white/60 group-hover:text-white/70 transition-colors duration-300 lowercase shrink-0">
             {link.label}
             <Icon
               src="/icons/arrow-right.svg"
@@ -691,6 +691,54 @@ export default function ProductPageTemplate({
 }) {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: `CORE. ${product.name}`,
+            image: product.images.map((img) => `https://bycore.eu${img.src}`),
+            description: product.tagline,
+            sku: product.id,
+            brand: {
+              "@type": "Brand",
+              name: "CORE."
+            },
+            offers: {
+              "@type": "Offer",
+              url: `https://bycore.eu/products/${product.slug}`,
+              priceCurrency: "EUR",
+              price: product.price,
+              itemCondition: "https://schema.org/NewCondition",
+              availability: "https://schema.org/InStock",
+              shippingDetails: {
+                "@type": "OfferShippingDetails",
+                shippingRate: {
+                  "@type": "MonetaryAmount",
+                  value: 0,
+                  currency: "EUR"
+                },
+                deliveryTime: {
+                  "@type": "ShippingDeliveryTime",
+                  handlingTime: {
+                    "@type": "QuantitativeValue",
+                    minValue: 0,
+                    maxValue: 1,
+                    unitCode: "d"
+                  },
+                  transitTime: {
+                    "@type": "QuantitativeValue",
+                    minValue: 1,
+                    maxValue: 5,
+                    unitCode: "d"
+                  }
+                }
+              }
+            }
+          })
+        }}
+      />
       <Navbar />
 
       <section data-mobile-sticky-trigger="true" className="pt-28 md:pt-36 pb-20 md:pb-28">

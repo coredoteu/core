@@ -60,7 +60,7 @@ export default function ProductHoverViewer({
         className="absolute inset-0 cursor-default focus:outline-none focus-visible:ring-1 focus-visible:ring-white/40"
       />
 
-      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-[0.2em] text-white/25 lowercase whitespace-nowrap">
+      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase whitespace-nowrap">
         [ hover to inspect ]
       </span>
     </div>

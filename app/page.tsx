@@ -40,7 +40,7 @@ const standards = [
 function SectionEyebrow({ index, title }: { index: string; title: string }) {
   return (
     <div className="flex items-center gap-4">
-      <span className="font-mono text-xs tracking-[0.2em] text-white/40">
+      <span className="font-mono text-xs tracking-[0.2em] text-white/60">
         {index} {"//"}
       </span>
       <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
@@ -69,20 +69,20 @@ export default function Home() {
 
         <div className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2">
           <div className="border border-white/10 md:border-r-0 p-8 md:p-14">
-            <span className="text-xs font-mono tracking-[0.2em] text-white/30">
+            <span className="text-xs font-mono tracking-[0.2em] text-white/60">
               baseline
             </span>
-            <h3 className="mt-4 text-2xl md:text-3xl font-light lowercase text-white/40">
+            <h3 className="mt-4 text-2xl md:text-3xl font-light lowercase text-white/60">
               traditional hair care
             </h3>
             <ul className="mt-10 flex flex-col divide-y divide-white/5">
               {traditionalRows.map((row) => (
                 <li
                   key={row}
-                  className="flex items-center justify-between py-4 text-sm text-white/35 lowercase"
+                  className="flex items-center justify-between py-4 text-sm text-white/60 lowercase"
                 >
                   <span>{row}</span>
-                  <span className="font-mono text-white/20 text-xs">fail</span>
+                  <span className="font-mono text-white/60 text-xs">fail</span>
                 </li>
               ))}
             </ul>
@@ -126,7 +126,7 @@ export default function Home() {
                 <span className="text-3xl md:text-4xl font-light tracking-tight text-white">
                   {s.value}
                 </span>
-                <span className="text-xs tracking-[0.15em] text-white/40 lowercase">
+                <span className="text-xs tracking-[0.15em] text-white/60 lowercase">
                   {s.label}
                 </span>
               </div>
@@ -141,7 +141,7 @@ export default function Home() {
       {/* ──────────────────────────────────────────────────────────────────
           WAITLIST
       ────────────────────────────────────────────────────────────────── */}
-      <section className="bg-[#0D0D0D]">
+      <section id="waitlist" className="bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-white/10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
             <h3 className="text-3xl md:text-5xl font-light tracking-tight lowercase max-w-lg">

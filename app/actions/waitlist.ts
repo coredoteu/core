@@ -16,11 +16,11 @@ export async function joinWaitlist(formData: FormData) {
 
   if (error) {
     console.error("Supabase insert error:", error);
-    // If it's a unique constraint violation, we can just pretend it succeeded
-    // or return a specific message. We'll return success to avoid leaking info.
-    if (error.code !== "23505") { // 23505 is unique violation in Postgres
-      return { error: "failed to join waitlist" };
+    // 23505 is unique violation in Postgres
+    if (error.code === "23505") {
+      return { error: "already registered" };
     }
+    return { error: "failed to join waitlist" };
   }
 
   return { success: true };

@@ -39,7 +39,7 @@ function QuantityControl({
       <button
         onClick={onDecrement}
         aria-label="decrease quantity"
-        className="w-8 h-8 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-colors duration-200 text-xs font-mono"
+        className="w-8 h-8 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-200 text-xs font-mono"
       >
         −
       </button>
@@ -49,7 +49,7 @@ function QuantityControl({
       <button
         onClick={onIncrement}
         aria-label="increase quantity"
-        className="w-8 h-8 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-colors duration-200 text-xs font-mono"
+        className="w-8 h-8 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-200 text-xs font-mono"
       >
         +
       </button>
@@ -115,14 +115,14 @@ function CartItemRow({
       <div className="flex flex-col flex-1 min-w-0 gap-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-0.5 min-w-0">
-            <span className="text-[10px] font-mono tracking-[0.2em] text-white/30 lowercase">
+            <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
               {product.unit}
             </span>
             <span className="text-sm font-light text-white lowercase leading-snug">
               <span className="text-white">CORE.</span>{" "}
               {product.name}
             </span>
-            <span className="text-[10px] text-white/30 lowercase mt-0.5">
+            <span className="text-[10px] text-white/60 lowercase mt-0.5">
               {product.size}
             </span>
           </div>
@@ -139,7 +139,7 @@ function CartItemRow({
           />
           <button
             onClick={() => removeItem(product.id)}
-            className="text-[10px] font-mono tracking-[0.15em] text-white/25 hover:text-white/60 transition-colors duration-200 lowercase"
+            className="text-[10px] font-mono tracking-[0.15em] text-white/60 hover:text-white/60 transition-colors duration-200 lowercase"
           >
             [ remove ]
           </button>
@@ -163,10 +163,10 @@ function EmptyState({ onClose }: { onClose: () => void }) {
         />
       </div>
       <div className="text-center flex flex-col gap-2">
-        <p className="text-sm text-white/30 lowercase font-light">
+        <p className="text-sm text-white/60 lowercase font-light">
           your system is empty.
         </p>
-        <p className="text-xs text-white/20 lowercase font-mono tracking-[0.1em]">
+        <p className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
           add products to begin.
         </p>
       </div>
@@ -229,14 +229,14 @@ export default function CartDrawer() {
           >
             <div className="flex items-center justify-between px-7 py-5 border-b border-white/10 shrink-0">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-[10px] tracking-[0.25em] text-white/30">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-white/60">
                   02 //
                 </span>
                 <h2 className="text-sm tracking-[0.15em] text-white lowercase">
                   your system
                 </h2>
                 {!isEmpty && (
-                  <span className="font-mono text-[10px] text-white/30 tabular-nums">
+                  <span className="font-mono text-[10px] text-white/60 tabular-nums">
                     ({items.reduce((s, i) => s + i.quantity, 0)})
                   </span>
                 )}
@@ -244,7 +244,7 @@ export default function CartDrawer() {
               <button
                 onClick={closeDrawer}
                 aria-label="close cart"
-                className="w-8 h-8 flex items-center justify-center text-white/30 hover:text-white transition-colors duration-200"
+                className="w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors duration-200"
               >
                 <img
                   src="/icons/alt-arrow-right.svg"
@@ -258,13 +258,13 @@ export default function CartDrawer() {
             {!isEmpty && (
               <div className="px-7 py-3 border-b border-white/[0.06] shrink-0">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-mono tracking-[0.15em] text-white/30 lowercase">
+                  <span className="text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase">
                     {qualifiesForFreeShipping
                       ? "free shipping unlocked"
                       : `€${freeShippingRemaining.toFixed(2)} away from free shipping`}
                   </span>
                   {qualifiesForFreeShipping && (
-                    <span className="text-[10px] font-mono text-white/50 lowercase">pass</span>
+                    <span className="text-[10px] font-mono text-white/60 lowercase">pass</span>
                   )}
                 </div>
                 <div className="h-px bg-white/[0.08] relative overflow-hidden">
@@ -296,7 +296,7 @@ export default function CartDrawer() {
               <div className="shrink-0 border-t border-white/10 px-7 py-6 flex flex-col gap-5">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-white/40 lowercase font-mono tracking-[0.1em]">
+                    <span className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
                       subtotal
                     </span>
                     <span className="text-sm text-white tabular-nums font-light">
@@ -304,10 +304,10 @@ export default function CartDrawer() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-white/40 lowercase font-mono tracking-[0.1em]">
+                    <span className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
                       shipping
                     </span>
-                    <span className="text-xs text-white/40 lowercase font-mono tracking-[0.05em]">
+                    <span className="text-xs text-white/60 lowercase font-mono tracking-[0.05em]">
                       {qualifiesForFreeShipping ? "free" : "calculated at checkout"}
                     </span>
                   </div>
@@ -322,16 +322,31 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
-                <Link
-                  href="/cart"
-                  onClick={closeDrawer}
+                <button
+                  onClick={async () => {
+                    try {
+                      const res = await fetch('/api/checkout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ items }),
+                      });
+                      const data = await res.json();
+                      if (data.url) {
+                        window.location.href = data.url;
+                      } else {
+                        console.error(data.error);
+                      }
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }}
                   className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 transition-colors duration-300"
                 >
                   [ proceed to checkout ]
-                </Link>
+                </button>
 
                 <div className="flex items-center justify-center gap-6">
-                  <span className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.1em] text-white/25 lowercase">
+                  <span className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.1em] text-white/60 lowercase">
                     <img
                       src="/icons/lock.svg"
                       alt=""
@@ -340,7 +355,7 @@ export default function CartDrawer() {
                     />
                     secure checkout
                   </span>
-                  <span className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.1em] text-white/25 lowercase">
+                  <span className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.1em] text-white/60 lowercase">
                     <img
                       src="/icons/truck.svg"
                       alt=""
