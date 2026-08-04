@@ -3,11 +3,11 @@ import Navbar from "@/components/layout/Navbar";
 import ScienceContent from "@/components/sections/ScienceContent";
 
 export const metadata: Metadata = {
-  title: "science / 01 - CORE.",
+  title: "science / 02 - CORE.",
   description:
     "the formulation philosophy, active compound index, and clinical parameters behind the CORE. system.",
   openGraph: {
-    title: "science / 01 - CORE.",
+    title: "science / 02 - CORE.",
     description:
       "the formulation philosophy, active compound index, and clinical parameters behind the CORE. system.",
     url: "https://bycore.eu/science",
