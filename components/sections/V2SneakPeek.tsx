@@ -160,7 +160,7 @@ export default function V2SneakPeek() {
                   <span className="text-white">{percentage}%</span>
                 </div>
                 <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-white relative transition-all duration-1000 ease-out" style={{ width: `${percentage}%` }}>
+                  <div className={`h-full bg-white relative transition-all duration-1000 ease-out ${funding.isLoading ? "animate-pulse opacity-50" : ""}`} style={{ width: `${percentage}%` }}>
                     <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                   </div>
                 </div>
@@ -184,6 +184,7 @@ export default function V2SneakPeek() {
                 className={`
                   group self-start relative font-mono text-xs tracking-[0.25em] lowercase
                   px-6 py-3.5 border transition-all duration-300 ease-out active:scale-[0.98]
+                  focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2
                   ${
                     isHovered
                       ? "border-white/50 text-white shadow-[0_0_20px_rgba(255,255,255,0.08),inset_0_0_20px_rgba(255,255,255,0.03)]"

@@ -6,11 +6,12 @@ import Ticker from "@/components/sections/Ticker";
 import ProductHoverSection from "@/components/product/ProductHoverSection";
 import ThreeStepSystem from "@/components/sections/ThreeStepSystem";
 import dynamic from "next/dynamic";
+import SystemSpecSheet from "@/components/product/SystemSpecSheet";
 
-const SystemSpecSheet = dynamic(() => import("@/components/product/SystemSpecSheet"));
 const V2SneakPeek = dynamic(() => import("@/components/sections/V2SneakPeek"));
 const FaqSection = dynamic(() => import("@/components/sections/FaqSection"));
 const WaitlistForm = dynamic(() => import("@/components/sections/WaitlistForm"));
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -36,19 +37,7 @@ const standards = [
 ];
 
 
-// ─── Small presentational primitives ───────────────────────────────────────
-function SectionEyebrow({ index, title }: { index: string; title: string }) {
-  return (
-    <div className="flex items-center gap-4">
-      <span className="font-mono text-xs tracking-[0.2em] text-white/60">
-        {index} {"//"}
-      </span>
-      <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
-        {title}
-      </h2>
-    </div>
-  );
-}
+
 
 export default function Home() {
   return (
@@ -65,7 +54,7 @@ export default function Home() {
           04 / THE COMPARISON
       ────────────────────────────────────────────────────────────────── */}
       <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
-        <SectionEyebrow index="04" title="the comparison" />
+        <SectionHeader index="04" title="the comparison" />
 
         <div className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2">
           <div className="border border-white/10 md:border-r-0 p-8 md:p-14">
@@ -115,7 +104,7 @@ export default function Home() {
       ────────────────────────────────────────────────────────────────── */}
       <section className="border-b border-white/10 bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28">
-          <SectionEyebrow index="05" title="standards" />
+          <SectionHeader index="05" title="standards" />
 
           <div className="mt-12 md:mt-16 grid grid-cols-2 lg:grid-cols-4 border-t border-l border-white/10">
             {standards.map((s) => (

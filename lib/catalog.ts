@@ -35,3 +35,11 @@ export const CATALOG: CartProduct[] = [
     unit: "system 001",
   },
 ];
+
+const catalogById = new Map(CATALOG.map((p) => [p.id, p]));
+
+export function getCatalogProduct(id: string): CartProduct {
+  const product = catalogById.get(id);
+  if (!product) throw new Error(`Unknown catalog product id: "${id}"`);
+  return product;
+}

@@ -1,275 +1,16 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
-import ShopAddToCart from "@/components/product/ShopAddToCart";
-import { CATALOG } from "@/lib/catalog";
-import { PRODUCTS } from "@/lib/products";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
+import SingleProductCard from "@/components/product/SingleProductCard";
+import DuoCard from "@/components/product/DuoCard";
+import { SHAMPOO_INGREDIENT_LIST, CONDITIONER_INGREDIENT_LIST } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "shop / 01 — CORE.",
   description:
     "the v1 system. clinical, ph-balanced formulations engineered for scalp and strand precision. shop the CORE. daily lineup.",
 };
-
-// ─── Key Actives data ─────────────────────────────────────────────────────────
-
-const shampooActives = [
-  "aloe vera juice",
-  "sea kale extract",
-  "ginkgo biloba leaf extract",
-  "burdock root extract",
-];
-
-const conditionerActives = [
-  "aloe vera juice",
-  "hydrolyzed wheat protein",
-  "argan oil",
-  "sea kale extract",
-];
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
-function SectionEyebrow({ index, title }: { index: string; title: string }) {
-  return (
-    <div className="flex items-center gap-4">
-      <span className="font-mono text-xs tracking-[0.2em] text-white/60">
-        {index} {"//"}
-      </span>
-      <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
-        {title}
-      </h2>
-    </div>
-  );
-}
-
-function ActivesList({ actives }: { actives: string[] }) {
-  return (
-    <div className="flex flex-col gap-2">
-      {actives.map((active, i) => (
-        <div key={active} className="flex items-center gap-3">
-          <span className="font-mono text-[10px] text-white/60 tabular-nums">
-            {String(i + 1).padStart(2, "0")}
-          </span>
-          <span className="text-xs text-white/60 lowercase">{active}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ─── Product Cards ────────────────────────────────────────────────────────────
-
-function SingleProductCard({
-  unit,
-  name,
-  size,
-  func,
-  price,
-  image,
-  actives,
-  productId,
-  isHighlighted,
-}: {
-  unit: string;
-  name: string;
-  size: string;
-  func: string;
-  price: number;
-  image: string;
-  actives: string[];
-  productId: string;
-  isHighlighted?: boolean;
-}) {
-  const product = CATALOG.find((p) => p.id === productId)!;
-  const productPage = PRODUCTS.find((p) => p.id === productId);
-
-  return (
-    <div
-      className={`flex flex-col border border-white/10 p-8 md:p-10 relative group transition-colors duration-500 ${isHighlighted ? "bg-white/[0.025]" : "hover:bg-white/[0.015]"
-        }`}
-    >
-      {isHighlighted && (
-        <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white/60 lowercase">
-          recommended
-        </span>
-      )}
-
-      {/* unit label */}
-      <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
-        {unit}
-      </span>
-
-      {/* image */}
-      <div className="relative w-full aspect-[3/4] max-w-[180px] mx-auto mt-6 mb-8">
-        <Image
-          src={image}
-          alt={`CORE. ${name}`}
-          fill
-          className="object-contain transition-transform duration-700 group-hover:scale-[1.03]"
-          sizes="(max-width: 768px) 180px, 200px"
-        />
-      </div>
-
-      {/* product name */}
-      <div className="border-t border-white/[0.06] pt-6 flex flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-xl md:text-2xl font-light lowercase text-white leading-snug">
-            <span className="text-white font-normal">CORE.</span> {name}
-          </h3>
-          <p className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
-            {size}
-          </p>
-        </div>
-
-        {/* function tag */}
-        <div className="flex items-center gap-2">
-          <div className="w-1 h-1 rounded-full bg-white/20 shrink-0" />
-          <span className="text-xs text-white/60 lowercase tracking-[0.05em]">
-            {func}
-          </span>
-        </div>
-
-        {/* key actives */}
-        <div className="mt-3 border border-white/[0.06] p-4">
-          <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
-            key actives
-          </span>
-          <div className="mt-3">
-            <ActivesList actives={actives} />
-          </div>
-        </div>
-      </div>
-
-      {/* price + CTA */}
-      <div className="mt-auto pt-6 flex flex-col gap-4">
-        <div className="flex items-baseline justify-between">
-          <span className="text-2xl md:text-3xl font-light text-white">
-            €{price.toFixed(2)}
-          </span>
-          <span className="text-xs text-white/60 font-mono lowercase">eur</span>
-        </div>
-        <ShopAddToCart product={product} />
-        {productPage && (
-          <Link
-            href={`/products/${productPage.slug}`}
-            className="text-center text-[10px] font-mono tracking-[0.2em] text-white/60 hover:text-white/60 transition-colors duration-200 lowercase py-1"
-          >
-            view product details
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function DuoCard() {
-  const duoProduct = CATALOG.find((p) => p.id === "duo-system-001")!;
-
-  return (
-    <div className="border border-white/20 bg-white/[0.02] p-8 md:p-10 relative flex flex-col lg:flex-row gap-10 group">
-      <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white lowercase">
-        system 001 / bundle
-      </span>
-
-      {/* Duo image group */}
-      <div className="flex items-center justify-center lg:w-[280px] shrink-0">
-        <div className="relative flex items-end justify-center gap-4 h-[260px] w-full max-w-[260px]">
-          <div className="relative w-[45%] h-full">
-            <Image
-              src="/images/shampoo-front.png"
-              alt="CORE. daily balancing shampoo"
-              fill
-              className="object-contain transition-transform duration-700 group-hover:translate-y-[-4px]"
-              sizes="130px"
-            />
-          </div>
-          <div className="flex items-center self-center mb-4">
-            <span
-              className="text-white/60 font-extralight leading-none"
-              style={{ fontSize: "1.2rem" }}
-              aria-hidden="true"
-            >
-              +
-            </span>
-          </div>
-          <div className="relative w-[45%] h-full">
-            <Image
-              src="/images/conditioner-front.png"
-              alt="CORE. daily nourishing conditioner"
-              fill
-              className="object-contain transition-transform duration-700 group-hover:translate-y-[4px]"
-              sizes="130px"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Duo info */}
-      <div className="flex flex-col flex-1 gap-6 justify-between">
-        <div className="flex flex-col gap-3">
-          <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
-            system 001
-          </span>
-          <h3 className="text-2xl md:text-3xl font-light text-white lowercase leading-snug">
-            <span className="font-normal">CORE.</span> the duo
-          </h3>
-          <p className="text-sm text-white/60 lowercase leading-relaxed">
-            shampoo + conditioner. the complete daily system.
-            engineered to work in sequence - cleanse, then seal.
-          </p>
-
-          {/* spec pills */}
-          <div className="flex flex-wrap gap-2 mt-1">
-            {[
-              "2 × 290 ml",
-              "ph 4.5 - 5.5",
-              "ecocert cosmos natural",
-              "eu engineered",
-            ].map((tag) => (
-              <span
-                key={tag}
-                className="border border-white/10 px-3 py-1 text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Included items list */}
-        <div className="flex flex-col gap-0 border border-white/[0.07]">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.07]">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-white/70 lowercase">daily balancing shampoo</span>
-              <span className="text-[10px] font-mono text-white/60">unit 01 / 290ml</span>
-            </div>
-            <span className="text-xs text-white/60 font-mono">€28.00</span>
-          </div>
-          <div className="flex items-center justify-between px-5 py-3.5">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-white/70 lowercase">daily nourishing conditioner</span>
-              <span className="text-[10px] font-mono text-white/60">unit 02 / 290ml</span>
-            </div>
-            <span className="text-xs text-white/60 font-mono">€28.00</span>
-          </div>
-        </div>
-
-        {/* Price + CTA */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-light text-white">€44.95</span>
-            <span className="text-sm text-white/60 line-through">€56.00</span>
-            <span className="text-xs font-mono text-white/60 lowercase border border-white/10 px-2 py-0.5">
-              save €11.05
-            </span>
-          </div>
-          <ShopAddToCart product={duoProduct} label="add the duo" />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── Spec Grid ────────────────────────────────────────────────────────────────
 
@@ -295,7 +36,7 @@ export default function ShopPage() {
       <section className="pt-32 md:pt-44 pb-16 md:pb-24 border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex flex-col gap-6 max-w-3xl">
-            <SectionEyebrow index="01" title="shop" />
+            <SectionHeader index="01" title="shop" />
             <p className="text-sm text-white/60 lowercase max-w-lg leading-relaxed">
               the v1 system. clinical, ph-balanced formulations built from a short
               list of natural actives. nothing hidden behind a blend name. engineered
@@ -348,7 +89,7 @@ export default function ShopPage() {
             func="cleanse & scalp equilibrium"
             price={28.00}
             image="/images/shampoo-front.png"
-            actives={shampooActives}
+            actives={SHAMPOO_INGREDIENT_LIST}
             productId="shampoo-290"
           />
           <SingleProductCard
@@ -358,7 +99,7 @@ export default function ShopPage() {
             func="repair, lipids & weightless seal"
             price={28.00}
             image="/images/conditioner-front.png"
-            actives={conditionerActives}
+            actives={CONDITIONER_INGREDIENT_LIST}
             productId="conditioner-290"
             isHighlighted
           />
@@ -403,7 +144,7 @@ export default function ShopPage() {
             {
               icon: "/icons/truck.svg",
               title: "free shipping",
-              desc: "on all orders over €50. tracked delivery.",
+              desc: `on all orders over €${FREE_SHIPPING_THRESHOLD_EUR}. tracked delivery.`,
             },
             {
               icon: "/icons/leaf.svg",

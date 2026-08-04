@@ -5,6 +5,8 @@ import React, {
   useContext,
   useState,
   useCallback,
+  useMemo,
+  useEffect,
   ReactNode,
 } from "react";
 
@@ -50,10 +52,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
-  const subtotal = items.reduce(
-    (sum, i) => sum + i.product.price * i.quantity,
-    0
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("core-cart");
+      if (saved) setItems(JSON.parse(saved));
+    } catch { /* corrupted/missing — start empty */ }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("core-cart", JSON.stringify(items));
+    } catch { /* storage unavailable (private mode, quota) — fail silently */ }
+  }, [items]);
+
+  const itemCount = useMemo(() => items.reduce((sum, i) => sum + i.quantity, 0), [items]);
+  const subtotal = useMemo(
+    () => items.reduce((sum, i) => sum + i.product.price * i.quantity, 0),
+    [items]
   );
 
   const openDrawer = useCallback(() => setIsDrawerOpen(true), []);
@@ -96,22 +111,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
+  const value = useMemo(
+    () => ({ items, itemCount, subtotal, isDrawerOpen, openDrawer, closeDrawer, toggleDrawer, addItem, removeItem, updateQuantity, clearCart }),
+    [items, itemCount, subtotal, isDrawerOpen, openDrawer, closeDrawer, toggleDrawer, addItem, removeItem, updateQuantity, clearCart]
+  );
+
   return (
-    <CartContext.Provider
-      value={{
-        items,
-        itemCount,
-        subtotal,
-        isDrawerOpen,
-        openDrawer,
-        closeDrawer,
-        toggleDrawer,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );

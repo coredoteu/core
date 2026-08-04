@@ -27,21 +27,28 @@ export default function WaitlistForm() {
   }
 
   return (
-    <form action={action} className="flex items-stretch border border-white/20 max-w-md w-full lg:ml-auto relative overflow-hidden group">
-      <input
-        id="waitlist-email"
-        type="email"
-        name="email"
-        required
-        placeholder="you@domain.com"
-        disabled={status === "loading"}
-        className="flex-1 bg-transparent px-4 py-4 text-sm text-white placeholder:text-white/60 lowercase outline-none focus:bg-white/5 transition-colors duration-300 disabled:opacity-50"
-      />
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="relative px-6 text-sm tracking-[0.15em] lowercase bg-white text-[#0D0D0D] hover:bg-white/90 transition-all duration-300 disabled:opacity-80 disabled:cursor-wait"
-      >
+    <div className="flex flex-col gap-2 max-w-md w-full lg:ml-auto">
+      {status === "error" && (
+        <p className="text-xs text-white/70 lowercase">
+          something went wrong. please try again.
+        </p>
+      )}
+      <form action={action} className="flex items-stretch border border-white/20 relative overflow-hidden group">
+        <input
+          id="waitlist-email"
+          type="email"
+          name="email"
+          required
+          placeholder="you@domain.com"
+          disabled={status === "loading"}
+          onFocus={() => { if (status === "error") setStatus("idle"); }}
+          className="flex-1 bg-transparent px-4 py-4 text-sm text-white placeholder:text-white/60 lowercase outline-none focus:bg-white/5 transition-colors duration-300 disabled:opacity-50"
+        />
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="relative px-6 text-sm tracking-[0.15em] lowercase bg-white text-background hover:bg-white/90 transition-all duration-300 disabled:opacity-80 disabled:cursor-wait focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
+        >
         <span className={status === "loading" ? "opacity-0" : "opacity-100"}>
           notify me
         </span>
@@ -50,7 +57,8 @@ export default function WaitlistForm() {
             ...
           </span>
         )}
-      </button>
-    </form>
+        </button>
+      </form>
+    </div>
   );
 }

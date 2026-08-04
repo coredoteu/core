@@ -1,6 +1,8 @@
 import Image from "next/image";
 import AddToCartButton from "@/components/product/AddToCartButton";
-import { CATALOG } from "@/lib/catalog";
+import { getCatalogProduct } from "@/lib/catalog";
+import { Icon } from "@/components/ui/Icon";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const badges = [
   { icon: "/icons/vegan.svg",        label: "vegan" },
@@ -39,14 +41,14 @@ const conditionerActives = [
 
 function RitualSteps({ steps }: { steps: string[] }) {
   return (
-    <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.1em] text-white/60 lowercase">
+    <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.1em] text-text-muted lowercase">
       {steps.map((step, i) => (
         <span key={step} className="flex items-center gap-2">
           <span>
             {String(i + 1).padStart(2, "0")}. {step}
           </span>
           {i < steps.length - 1 && (
-            <img src="/icons/arrow-right.svg" alt="" className="h-2.5 w-2.5 opacity-40" style={{ filter: "brightness(0) invert(1)" }} />
+            <Icon src="/icons/arrow-right.svg" size={10} opacity={0.4} />
           )}
         </span>
       ))}
@@ -67,7 +69,7 @@ function IngredientList({
     <div className="border border-white/10">
       <div className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-white/10 bg-white/[0.02]">
         <h3 className="text-lg font-light lowercase text-white">{title}</h3>
-        <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
+        <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
           {prefix}
         </span>
       </div>
@@ -75,13 +77,13 @@ function IngredientList({
         {items.map((item) => (
           <div key={item.code} className="flex flex-col gap-1.5 px-6 md:px-8 py-5">
             <div className="flex items-center gap-2">
-              <img src="/icons/atom.svg" alt="" className="h-3.5 w-3.5 opacity-50 shrink-0" style={{ filter: "brightness(0) invert(1)" }} />
+              <Icon src="/icons/atom.svg" size={14} opacity={0.5} />
               <span className="text-sm text-white uppercase tracking-wider">{item.name}</span>
-              <span className="ml-auto font-mono text-[10px] text-white/60 lowercase shrink-0">
+              <span className="ml-auto font-mono text-[10px] text-text-muted lowercase shrink-0">
                 {item.code}
               </span>
             </div>
-            <p className="text-xs text-white/60 leading-relaxed lowercase pl-6">
+            <p className="text-xs text-text-muted leading-relaxed lowercase pl-6">
               {item.desc}
             </p>
           </div>
@@ -92,15 +94,18 @@ function IngredientList({
 }
 
 export default function SystemSpecSheet() {
+  const shampoo = getCatalogProduct("shampoo-290");
+  const conditioner = getCatalogProduct("conditioner-290");
+  const duo = getCatalogProduct("duo-system-001");
+  const bundleListPrice = shampoo.price + conditioner.price;
+  const bundleSavings = bundleListPrice - duo.price;
+
   return (
     <section id="formula" data-mobile-sticky-trigger="true" className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
-      <div className="flex items-center gap-4">
-        <span className="font-mono text-xs tracking-[0.2em] text-white/60">01 //</span>
-        <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
-          system 001
-        </h2>
+      <div className="mb-6">
+        <SectionHeader index="01" title="system 001" />
       </div>
-      <p className="mt-6 text-white/60 text-sm lowercase max-w-xl">
+      <p className="mt-6 text-text-muted text-sm lowercase max-w-xl">
         the current v1 lineup. clinical, ph-balanced, and built from a short
         list of natural actives with nothing hidden behind a blend name.
       </p>
@@ -109,9 +114,9 @@ export default function SystemSpecSheet() {
         {badges.map((b) => (
           <span
             key={b.label}
-            className="flex items-center gap-2 border border-white/15 px-3 py-1.5 text-[11px] font-mono tracking-[0.15em] text-white/60 lowercase"
+            className="flex items-center gap-2 border border-white/15 px-3 py-1.5 text-[11px] font-mono tracking-[0.15em] text-text-muted lowercase"
           >
-            <img src={b.icon} alt="" className="h-3.5 w-3.5 opacity-70" style={{ filter: "brightness(0) invert(1)" }} />
+            <Icon src={b.icon} size={14} opacity={0.7} />
             {b.label}
           </span>
         ))}
@@ -119,7 +124,7 @@ export default function SystemSpecSheet() {
 
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 border-t border-l border-white/10">
         <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6">
-          <span className="text-xs font-mono tracking-[0.2em] text-white/60">unit 01</span>
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 01</span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
               src="/images/shampoo-front.png"
@@ -131,19 +136,19 @@ export default function SystemSpecSheet() {
           </div>
           <div>
             <h3 className="text-xl font-light lowercase text-white">shampoo</h3>
-            <p className="mt-2 text-xs text-white/60 lowercase leading-relaxed">
+            <p className="mt-2 text-xs text-text-muted lowercase leading-relaxed">
               daily balancing, ph-equilibrated, 290ml.
             </p>
           </div>
           <RitualSteps steps={shampooRitual} />
           <div className="mt-auto flex items-center justify-between pt-2">
-            <span className="text-2xl font-light text-white">€28.00</span>
+            <span className="text-2xl font-light text-white">€{shampoo.price.toFixed(2)}</span>
           </div>
-          <AddToCartButton product={CATALOG.find((p) => p.id === "shampoo-290")!} />
+          <AddToCartButton product={shampoo} />
         </div>
 
         <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6">
-          <span className="text-xs font-mono tracking-[0.2em] text-white/60">unit 02</span>
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 02</span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
               src="/images/conditioner-front.png"
@@ -155,22 +160,22 @@ export default function SystemSpecSheet() {
           </div>
           <div>
             <h3 className="text-xl font-light lowercase text-white">conditioner</h3>
-            <p className="mt-2 text-xs text-white/60 lowercase leading-relaxed">
+            <p className="mt-2 text-xs text-text-muted lowercase leading-relaxed">
               daily nourishing, weightless seal, 290ml.
             </p>
           </div>
           <RitualSteps steps={conditionerRitual} />
           <div className="mt-auto flex items-center justify-between pt-2">
-            <span className="text-2xl font-light text-white">€28.00</span>
+            <span className="text-2xl font-light text-white">€{conditioner.price.toFixed(2)}</span>
           </div>
-          <AddToCartButton product={CATALOG.find((p) => p.id === "conditioner-290")!} />
+          <AddToCartButton product={conditioner} />
         </div>
 
         <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6 bg-white/[0.02] relative">
           <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white lowercase">
             recommended
           </span>
-          <span className="text-xs font-mono tracking-[0.2em] text-white/60">system 001</span>
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">system 001</span>
           <div className="relative aspect-square w-full max-w-[220px] mx-auto flex items-center justify-center">
             <div className="relative h-full w-[44%]">
               <Image
@@ -206,24 +211,24 @@ export default function SystemSpecSheet() {
           </div>
           <div>
             <h3 className="text-xl font-light lowercase text-white">the duo bundle</h3>
-            <p className="mt-2 text-xs text-white/60 lowercase leading-relaxed">
+            <p className="mt-2 text-xs text-text-muted lowercase leading-relaxed">
               shampoo + conditioner, the full daily system.
             </p>
           </div>
           <div className="mt-auto flex items-baseline gap-3 pt-2">
-            <span className="text-2xl font-light text-white">€52.00</span>
-            <span className="text-xs text-white/60 line-through">€56.00</span>
-            <span className="text-[10px] font-mono text-white/60 lowercase">save €4</span>
+            <span className="text-2xl font-light text-white">€{duo.price.toFixed(2)}</span>
+            <span className="text-xs text-text-muted line-through">€{bundleListPrice.toFixed(2)}</span>
+            <span className="text-[10px] font-mono text-text-muted lowercase">save €{bundleSavings.toFixed(2)}</span>
           </div>
-          <AddToCartButton product={CATALOG.find((p) => p.id === "duo-system-001")!} label="add the duo" className="border-white" />
+          <AddToCartButton product={duo} label="add the duo" className="border-white" />
         </div>
       </div>
 
       <div className="mt-12 grid grid-cols-2 md:grid-cols-5 border-t border-l border-white/10">
         {specs.map((s) => (
           <div key={s.key} className="border-r border-b border-white/10 p-6 flex flex-col gap-3">
-            <img src={s.icon} alt="" className="h-4 w-4 opacity-60" style={{ filter: "brightness(0) invert(1)" }} />
-            <span className="text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase">
+            <Icon src={s.icon} size={16} opacity={0.6} />
+            <span className="text-[10px] font-mono tracking-[0.15em] text-text-muted lowercase">
               {s.key}
             </span>
             <span className="text-sm text-white/80 lowercase">{s.value}</span>

@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { QuantityControl } from "@/components/cart/QuantityControl";
+import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 
 // ─── Backdrop ────────────────────────────────────────────────────────────────
 
@@ -25,37 +27,7 @@ function Backdrop({ onClose }: { onClose: () => void }) {
 
 // ─── Quantity Control ─────────────────────────────────────────────────────────
 
-function QuantityControl({
-  quantity,
-  onDecrement,
-  onIncrement,
-}: {
-  quantity: number;
-  onDecrement: () => void;
-  onIncrement: () => void;
-}) {
-  return (
-    <div className="flex items-center gap-0 border border-white/15">
-      <button
-        onClick={onDecrement}
-        aria-label="decrease quantity"
-        className="w-8 h-8 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-200 text-xs font-mono"
-      >
-        −
-      </button>
-      <span className="w-8 text-center text-xs font-mono text-white tabular-nums">
-        {quantity}
-      </span>
-      <button
-        onClick={onIncrement}
-        aria-label="increase quantity"
-        className="w-8 h-8 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-200 text-xs font-mono"
-      >
-        +
-      </button>
-    </div>
-  );
-}
+
 
 // ─── Cart Item Row ────────────────────────────────────────────────────────────
 
@@ -119,7 +91,7 @@ function CartItemRow({
               {product.unit}
             </span>
             <span className="text-sm font-light text-white lowercase leading-snug">
-              <span className="text-white">CORE.</span>{" "}
+              <span className="text-white uppercase">CORE.</span>{" "}
               {product.name}
             </span>
             <span className="text-[10px] text-white/60 lowercase mt-0.5">
@@ -136,6 +108,7 @@ function CartItemRow({
             quantity={quantity}
             onDecrement={() => updateQuantity(product.id, quantity - 1)}
             onIncrement={() => updateQuantity(product.id, quantity + 1)}
+            size="sm"
           />
           <button
             onClick={() => removeItem(product.id)}
@@ -188,10 +161,38 @@ export default function CartDrawer() {
   const drawerRef = useRef<HTMLDivElement>(null);
   const isEmpty = items.length === 0;
 
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
-    if (!isDrawerOpen) return;
+    if (!isDrawerOpen) {
+      if (previousFocusRef.current) previousFocusRef.current.focus();
+      return;
+    }
+    
+    previousFocusRef.current = document.activeElement as HTMLElement;
+
+    if (!drawerRef.current) return;
+    const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable[0]) focusable[0].focus();
+
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeDrawer();
+      if (e.key === "Escape") {
+        closeDrawer();
+        return;
+      }
+      if (e.key === "Tab" && focusable.length > 0) {
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -206,8 +207,8 @@ export default function CartDrawer() {
     return () => { document.body.style.overflow = ""; };
   }, [isDrawerOpen]);
 
-  const freeShippingRemaining = Math.max(0, 50 - subtotal);
-  const qualifiesForFreeShipping = subtotal >= 50;
+  const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD_EUR - subtotal);
+  const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD_EUR;
 
   return (
     <AnimatePresence>
@@ -271,7 +272,7 @@ export default function CartDrawer() {
                   <motion.div
                     className="absolute inset-y-0 left-0 bg-white/40"
                     initial={false}
-                    animate={{ width: `${Math.min(100, (subtotal / 50) * 100)}%` }}
+                    animate={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%` }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                   />
                 </div>
@@ -340,7 +341,7 @@ export default function CartDrawer() {
                       console.error(err);
                     }
                   }}
-                  className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 transition-colors duration-300"
+                  className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
                   [ proceed to checkout ]
                 </button>
@@ -362,7 +363,7 @@ export default function CartDrawer() {
                       className="w-3 h-3"
                       style={{ filter: "brightness(0) invert(1)", opacity: 0.4 }}
                     />
-                    free shipping over €50
+                    free shipping over €{FREE_SHIPPING_THRESHOLD_EUR}
                   </span>
                 </div>
               </div>

@@ -9,6 +9,11 @@ export async function joinWaitlist(formData: FormData) {
     return { error: "invalid email" };
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { error: "invalid email format" };
+  }
+
   // Insert email into Supabase waitlist table
   const { error } = await supabase
     .from("waitlist")

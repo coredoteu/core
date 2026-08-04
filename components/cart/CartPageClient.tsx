@@ -5,40 +5,12 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { CATALOG } from "@/lib/catalog";
+import { QuantityControl } from "@/components/cart/QuantityControl";
+import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 
 // ─── Quantity Control ─────────────────────────────────────────────────────────
 
-function QuantityControl({
-  quantity,
-  onDecrement,
-  onIncrement,
-}: {
-  quantity: number;
-  onDecrement: () => void;
-  onIncrement: () => void;
-}) {
-  return (
-    <div className="flex items-center border border-white/15">
-      <button
-        onClick={onDecrement}
-        aria-label="decrease quantity"
-        className="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors duration-200 font-mono text-sm"
-      >
-        −
-      </button>
-      <span className="w-9 text-center text-xs font-mono text-white tabular-nums select-none">
-        {quantity}
-      </span>
-      <button
-        onClick={onIncrement}
-        aria-label="increase quantity"
-        className="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors duration-200 font-mono text-sm"
-      >
-        +
-      </button>
-    </div>
-  );
-}
+
 
 // ─── Cart Item Row ────────────────────────────────────────────────────────────
 
@@ -83,7 +55,7 @@ function CartItemRow({
             {product.unit}
           </span>
           <h3 className="text-base md:text-lg font-light text-white lowercase leading-snug">
-            <span className="font-normal">CORE.</span> {product.name}
+            <span className="font-normal uppercase">CORE.</span> {product.name}
           </h3>
           <span className="text-xs text-white/60 lowercase">{product.size}</span>
         </div>
@@ -187,7 +159,7 @@ function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
             <div className="flex flex-col gap-1 flex-1 min-w-0">
               <span className="text-[10px] font-mono text-white/60 lowercase">{p.unit}</span>
               <span className="text-sm text-white/70 lowercase leading-snug truncate">
-                CORE. {p.name}
+                <span className="uppercase">CORE.</span> {p.name}
               </span>
               <span className="text-xs text-white/60">€{p.price.toFixed(2)}</span>
             </div>
@@ -210,8 +182,8 @@ export default function CartPageClient() {
   const { items, subtotal, clearCart } = useCart();
   const isEmpty = items.length === 0;
 
-  const freeShippingRemaining = Math.max(0, 50 - subtotal);
-  const qualifiesForFreeShipping = subtotal >= 50;
+  const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD_EUR - subtotal);
+  const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD_EUR;
   const itemCount = items.reduce((s, i) => s + i.quantity, 0);
 
   return (
@@ -262,7 +234,7 @@ export default function CartPageClient() {
                 <motion.div
                   className="absolute inset-y-0 left-0 bg-white/30"
                   initial={false}
-                  animate={{ width: `${Math.min(100, (subtotal / 50) * 100)}%` }}
+                  animate={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%` }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 />
               </div>
@@ -313,7 +285,7 @@ export default function CartPageClient() {
                   <div key={item.product.id} className="flex items-start justify-between gap-3">
                     <div className="flex flex-col gap-0.5">
                       <span className="text-xs text-white/60 lowercase">
-                        CORE. {item.product.name}
+                        <span className="uppercase">CORE.</span> {item.product.name}
                       </span>
                       <span className="text-[10px] font-mono text-white/60">
                         × {item.quantity}
@@ -385,7 +357,7 @@ export default function CartPageClient() {
                       console.error(err);
                     }
                   }}
-                  className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 transition-colors duration-300"
+                  className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
                   [ proceed to checkout ]
                 </button>
@@ -401,7 +373,7 @@ export default function CartPageClient() {
                 <div className="h-px bg-white/[0.06] mb-1" />
                 {[
                   { icon: "/icons/lock.svg", text: "secure checkout" },
-                  { icon: "/icons/truck.svg", text: "free shipping over €50" },
+                  { icon: "/icons/truck.svg", text: `free shipping over €${FREE_SHIPPING_THRESHOLD_EUR}` },
                   { icon: "/icons/leaf.svg", text: "natural origin / eu certified" },
                 ].map((trust) => (
                   <div key={trust.text} className="flex items-center gap-2.5">

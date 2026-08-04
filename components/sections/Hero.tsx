@@ -15,7 +15,7 @@ export default function Hero() {
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 py-14 md:py-20 items-end">
           <div className="lg:col-span-8">
-            <h1 className="text-[15vw] sm:text-7xl md:text-8xl lg:text-[7rem] leading-[0.86] tracking-tighter font-light lowercase text-white">
+            <h1 className="leading-[0.86] tracking-tighter font-light lowercase text-white [font-size:clamp(2.75rem,15vw,4.5rem)] sm:text-7xl md:text-8xl lg:text-[7rem]">
               refined
               <br />
               to the core.
@@ -31,7 +31,7 @@ export default function Hero() {
           <div className="lg:col-span-4 flex flex-col gap-4">
             <Link
               href="/shop"
-              className="group flex items-center justify-between px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white active:scale-[0.98] transition-all duration-300"
+              className="group flex items-center justify-between px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
             >
               <span>[ shop the duo ]</span>
               <img
@@ -44,7 +44,7 @@ export default function Hero() {
             </Link>
             <Link
               href="#formula"
-              className="flex items-center justify-between px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300"
+              className="flex items-center justify-between px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
             >
               <span>[ see the formulation ]</span>
               <span className="font-mono text-white/60">→</span>

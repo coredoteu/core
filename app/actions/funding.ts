@@ -17,8 +17,6 @@ export async function getFundingStats() {
     }
 
     if (data) {
-      // Revalidate the path to ensure Next.js doesn't cache the old data
-      revalidatePath("/");
       return { unlocked: data.unlocked, total: data.total };
     }
   } catch (err) {

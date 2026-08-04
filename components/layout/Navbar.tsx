@@ -133,7 +133,7 @@ export default function Navbar() {
           <Link
             href="/cart"
             onClick={closeMenu}
-            className="md:hidden flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-200"
+            className="md:hidden flex items-center justify-center gap-2 min-h-[44px] px-2 text-white/70 hover:text-white transition-colors duration-200"
             aria-label={`shopping cart, ${itemCount} items`}
           >
             <img
@@ -153,7 +153,7 @@ export default function Navbar() {
             aria-label={menuOpen ? "close menu" : "open menu"}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav-panel"
-            className="md:hidden flex flex-col items-center justify-center gap-[5px] w-9 h-9 text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+            className="md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
           >
             <motion.span
               animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 6 : 0 }}
