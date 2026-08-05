@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { CATALOG } from '@/lib/catalog';
+import { FREE_SHIPPING_THRESHOLD_EUR } from '@/lib/constants';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_123', {
   apiVersion: '2026-07-29.dahlia',
@@ -38,7 +39,7 @@ export async function POST(req: Request) {
     });
 
     const subtotal = lineItems.reduce((acc: number, item: any) => acc + (item.price_data.unit_amount * item.quantity), 0);
-    const isFreeShipping = subtotal >= 5000;
+    const isFreeShipping = subtotal >= (FREE_SHIPPING_THRESHOLD_EUR * 100);
 
     // Create Checkout Session
     const session = await stripe.checkout.sessions.create({

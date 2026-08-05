@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import ShopAddToCart from "@/components/product/ShopAddToCart";
+import BatchCartSection from "@/components/product/BatchCartSection";
 import { getCatalogProduct } from "@/lib/catalog";
 import { PRODUCTS } from "@/lib/products";
 
@@ -100,15 +100,9 @@ export default function SingleProductCard({
         </div>
       </div>
 
-      {/* price + CTA */}
+      {/* Dynamic Batch Add-to-Cart Section */}
       <div className="mt-auto pt-6 flex flex-col gap-4">
-        <div className="flex items-baseline justify-between">
-          <span className="text-2xl md:text-3xl font-light text-white">
-            €{price.toFixed(2)}
-          </span>
-          <span className="text-xs text-white/60 font-mono lowercase">eur</span>
-        </div>
-        <ShopAddToCart product={product} />
+        <BatchCartSection productId={productId} product={product} />
         {productPage && (
           <Link
             href={`/products/${productPage.slug}`}

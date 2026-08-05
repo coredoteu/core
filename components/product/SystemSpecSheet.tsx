@@ -1,5 +1,5 @@
 import Image from "next/image";
-import AddToCartButton from "@/components/product/AddToCartButton";
+import BatchCartSection from "@/components/product/BatchCartSection";
 import { getCatalogProduct } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -97,8 +97,6 @@ export default function SystemSpecSheet() {
   const shampoo = getCatalogProduct("shampoo-290");
   const conditioner = getCatalogProduct("conditioner-290");
   const duo = getCatalogProduct("duo-system-001");
-  const bundleListPrice = shampoo.price + conditioner.price;
-  const bundleSavings = bundleListPrice - duo.price;
 
   return (
     <section id="formula" data-mobile-sticky-trigger="true" className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
@@ -122,8 +120,65 @@ export default function SystemSpecSheet() {
         ))}
       </div>
 
-      <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 border-t border-l border-white/10">
-        <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6">
+      <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 border-t border-l border-white/10">
+        <div className="border-r border-b border-white/10 p-8 md:p-12 flex flex-col gap-6 bg-white/[0.02] relative lg:col-span-2">
+          <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white/60 lowercase border border-white/10">
+            recommended
+          </span>
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">system 001</span>
+          
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20">
+            {/* Visual */}
+            <div className="relative aspect-square w-full max-w-[280px] flex items-center justify-center">
+              <div className="relative h-full w-[44%]">
+                <Image
+                  src="/images/shampoo-front.png"
+                  alt="shampoo"
+                  fill
+                  className="object-contain"
+                  sizes="140px"
+                />
+              </div>
+              <div className="flex items-center justify-center w-[12%] shrink-0 z-10">
+                <span
+                  className="text-white font-extralight select-none leading-none"
+                  style={{
+                    fontSize: "2rem",
+                    textShadow: "0 0 12px rgba(255,255,255,0.35)",
+                    letterSpacing: 0,
+                  }}
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </div>
+              <div className="relative h-full w-[44%]">
+                <Image
+                  src="/images/conditioner-front.png"
+                  alt="conditioner"
+                  fill
+                  className="object-contain"
+                  sizes="140px"
+                />
+              </div>
+            </div>
+
+            {/* Info & CTA */}
+            <div className="flex flex-col gap-6 lg:max-w-md w-full">
+              <div>
+                <h3 className="text-2xl font-light lowercase text-white">the duo bundle</h3>
+                <p className="mt-2 text-sm text-text-muted lowercase leading-relaxed">
+                  shampoo + conditioner. the complete daily system. engineered to work in sequence - cleanse, then seal.
+                </p>
+              </div>
+              <div className="mt-2">
+                <BatchCartSection productId={duo.id} product={duo} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6 lg:col-span-1">
           <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 01</span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
@@ -141,13 +196,12 @@ export default function SystemSpecSheet() {
             </p>
           </div>
           <RitualSteps steps={shampooRitual} />
-          <div className="mt-auto flex items-center justify-between pt-2">
-            <span className="text-2xl font-light text-white">€{shampoo.price.toFixed(2)}</span>
+          <div className="mt-auto pt-2">
+            <BatchCartSection productId={shampoo.id} product={shampoo} />
           </div>
-          <AddToCartButton product={shampoo} />
         </div>
 
-        <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6">
+        <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6 lg:col-span-1">
           <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 02</span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
@@ -165,62 +219,9 @@ export default function SystemSpecSheet() {
             </p>
           </div>
           <RitualSteps steps={conditionerRitual} />
-          <div className="mt-auto flex items-center justify-between pt-2">
-            <span className="text-2xl font-light text-white">€{conditioner.price.toFixed(2)}</span>
+          <div className="mt-auto pt-2">
+            <BatchCartSection productId={conditioner.id} product={conditioner} />
           </div>
-          <AddToCartButton product={conditioner} />
-        </div>
-
-        <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6 bg-white/[0.02] relative">
-          <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white lowercase">
-            recommended
-          </span>
-          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">system 001</span>
-          <div className="relative aspect-square w-full max-w-[220px] mx-auto flex items-center justify-center">
-            <div className="relative h-full w-[44%]">
-              <Image
-                src="/images/shampoo-front.png"
-                alt="shampoo"
-                fill
-                className="object-contain"
-                sizes="100px"
-              />
-            </div>
-            <div className="flex items-center justify-center w-[12%] shrink-0 z-10">
-              <span
-                className="text-white font-extralight select-none leading-none"
-                style={{
-                  fontSize: "1.4rem",
-                  textShadow: "0 0 12px rgba(255,255,255,0.35)",
-                  letterSpacing: 0,
-                }}
-                aria-hidden="true"
-              >
-                +
-              </span>
-            </div>
-            <div className="relative h-full w-[44%]">
-              <Image
-                src="/images/conditioner-front.png"
-                alt="conditioner"
-                fill
-                className="object-contain"
-                sizes="100px"
-              />
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-light lowercase text-white">the duo bundle</h3>
-            <p className="mt-2 text-xs text-text-muted lowercase leading-relaxed">
-              shampoo + conditioner, the full daily system.
-            </p>
-          </div>
-          <div className="mt-auto flex items-baseline gap-3 pt-2">
-            <span className="text-2xl font-light text-white">€{duo.price.toFixed(2)}</span>
-            <span className="text-xs text-text-muted line-through">€{bundleListPrice.toFixed(2)}</span>
-            <span className="text-[10px] font-mono text-text-muted lowercase">save €{bundleSavings.toFixed(2)}</span>
-          </div>
-          <AddToCartButton product={duo} label="add the duo" className="border-white" />
         </div>
       </div>
 

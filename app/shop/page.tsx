@@ -80,6 +80,11 @@ export default function ShopPage() {
           </span>
         </div>
 
+        {/* Duo bundle */}
+        <div className="mb-8">
+          <DuoCard isHighlighted />
+        </div>
+
         {/* Singles grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-white/10 mb-8">
           <SingleProductCard
@@ -101,12 +106,8 @@ export default function ShopPage() {
             image="/images/conditioner-front.png"
             actives={CONDITIONER_INGREDIENT_LIST}
             productId="conditioner-290"
-            isHighlighted
           />
         </div>
-
-        {/* Duo bundle */}
-        <DuoCard />
       </section>
 
       {/* ── Technical spec grid ── */}

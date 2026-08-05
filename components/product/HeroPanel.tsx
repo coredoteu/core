@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AddToCartButton from "@/components/product/AddToCartButton";
+import BatchCartSection from "@/components/product/BatchCartSection";
 import { ProductPageData } from "@/lib/products";
 import { CATALOG } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
@@ -78,19 +78,7 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
       </div>
 
       <div className="flex flex-col gap-4 pt-4 border-t border-white/[0.06]">
-        <div className="flex items-baseline justify-between">
-          <span className="text-4xl font-extralight text-white tracking-tight">
-            €{product.price.toFixed(2)}
-          </span>
-          <div className="flex flex-col items-end gap-1">
-            <span className="text-[10px] font-mono text-white/60 lowercase">incl. vat</span>
-            <span className="text-[10px] font-mono text-white/60 lowercase">free shipping over €50</span>
-          </div>
-        </div>
-        <AddToCartButton
-          product={catalogProduct}
-          className="w-full py-4 text-sm tracking-[0.2em]"
-        />
+        <BatchCartSection productId={product.id} product={catalogProduct} />
         <p className="text-[10px] font-mono text-white/60 lowercase text-center">
           secure checkout. free returns.
         </p>

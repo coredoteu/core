@@ -1,13 +1,24 @@
+"use client";
+
 import Image from "next/image";
-import ShopAddToCart from "@/components/product/ShopAddToCart";
+import BatchCartSection from "@/components/product/BatchCartSection";
 import { getCatalogProduct } from "@/lib/catalog";
 
-export default function DuoCard() {
+export default function DuoCard({
+  isHighlighted = false,
+}: {
+  isHighlighted?: boolean;
+}) {
   const duoProduct = getCatalogProduct("duo-system-001");
 
   return (
-    <div className="border border-white/20 bg-white/[0.02] p-8 md:p-10 relative flex flex-col lg:flex-row gap-10 group">
-      <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white lowercase">
+    <div className={`border border-white/20 p-8 md:p-10 relative flex flex-col lg:flex-row gap-10 group transition-colors duration-500 ${isHighlighted ? "bg-white/[0.04]" : "bg-white/[0.02]"}`}>
+      {isHighlighted && (
+        <span className="absolute -top-px right-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white/60 lowercase z-10 border border-white/10">
+          recommended
+        </span>
+      )}
+      <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white lowercase z-10">
         system 001 / bundle
       </span>
 
@@ -47,9 +58,12 @@ export default function DuoCard() {
       {/* Duo info */}
       <div className="flex flex-col flex-1 gap-6 justify-between">
         <div className="flex flex-col gap-3">
-          <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
-            system 001
-          </span>
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
+              system 001
+            </span>
+          </div>
+
           <h3 className="text-2xl md:text-3xl font-light text-white lowercase leading-snug">
             <span className="font-normal uppercase">CORE.</span> the duo
           </h3>
@@ -94,18 +108,13 @@ export default function DuoCard() {
           </div>
         </div>
 
-        {/* Price + CTA */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-light text-white">€44.95</span>
-            <span className="text-sm text-white/60 line-through">€56.00</span>
-            <span className="text-xs font-mono text-white/60 lowercase border border-white/10 px-2 py-0.5">
-              save €11.05
-            </span>
-          </div>
-          <ShopAddToCart product={duoProduct} label="add the duo" />
-        </div>
+        {/* Modular Dynamic Batch Strategy Add-to-Cart Section */}
+        <BatchCartSection
+          productId={duoProduct.id}
+          product={duoProduct}
+        />
       </div>
     </div>
   );
 }
+
