@@ -45,7 +45,7 @@ export default function MobileStickyCart() {
     >
       <div className="flex flex-col">
         <span className="text-xs tracking-[0.2em] font-mono text-white/60 lowercase">system 001</span>
-        <span className="text-sm font-light text-white">€44.95</span>
+        <span className="text-sm font-light text-white">€{duoProduct.price.toFixed(2)}</span>
       </div>
       <AddToCartButton product={duoProduct} label="add the duo" className="py-2.5 px-4 text-xs" />
     </motion.div>

@@ -1,5 +1,7 @@
 // ─── Full product data for individual product pages ─────────────────────────
 
+import { getActivePrice } from "@/lib/storeConfig";
+
 export interface ProductActive {
   name: string;
   benefit: string;
@@ -52,7 +54,7 @@ export const PRODUCTS: ProductPageData[] = [
     name: "daily balancing shampoo",
     fullName: "CORE. daily balancing shampoo",
     size: "290 ml / 9.81 fl oz",
-    price: 28.00,
+    price: getActivePrice("shampoo-290"),
     function: "cleanse & scalp equilibrium",
     tagline: "precision cleanse. scalp in equilibrium.",
     targetAudience: "all hair types. special focus on scalp hydration and volume restoration.",
@@ -136,7 +138,7 @@ export const PRODUCTS: ProductPageData[] = [
     name: "daily nourishing conditioner",
     fullName: "CORE. daily nourishing conditioner",
     size: "290 ml / 9.81 fl oz",
-    price: 28.00,
+    price: getActivePrice("conditioner-290"),
     function: "repair, lipids & weightless seal",
     tagline: "repair. seal. natural shine. no weight.",
     targetAudience: "all hair types. helps repair dry ends and gives a natural shine without weighing the hair down.",

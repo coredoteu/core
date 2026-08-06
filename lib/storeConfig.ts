@@ -31,3 +31,14 @@ export const PRICING: Record<string, PricingConfig> = {
     valuePrice: 56.00,
   },
 };
+
+export function getActivePrice(
+  productId: string,
+  phase: BatchPhase = STORE_CONFIG.currentPhase
+): number {
+  const p = PRICING[productId];
+  if (!p) return 0;
+  if (phase === "buffer") return p.regularPrice;
+  return p.preorderPrice;
+}
+

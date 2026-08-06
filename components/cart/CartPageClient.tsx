@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -181,6 +182,9 @@ function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
 export default function CartPageClient() {
   const { items, subtotal, clearCart } = useCart();
   const isEmpty = items.length === 0;
+  const [isLoading, setIsLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
 
   const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD_EUR - subtotal);
   const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD_EUR;
@@ -339,9 +343,17 @@ export default function CartPageClient() {
               </div>
 
               <div className="px-7 pb-7 flex flex-col gap-3">
+                {checkoutError && (
+                  <p className="text-xs text-red-400 font-mono text-center lowercase">
+                    {checkoutError}
+                  </p>
+                )}
                 <button
+                  disabled={isLoading}
                   onClick={async () => {
                     try {
+                      setIsLoading(true);
+                      setCheckoutError(null);
                       const res = await fetch('/api/checkout', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -351,15 +363,17 @@ export default function CartPageClient() {
                       if (data.url) {
                         window.location.href = data.url;
                       } else {
-                        console.error(data.error);
+                        setCheckoutError(data.error || 'Checkout failed');
+                        setIsLoading(false);
                       }
-                    } catch (err) {
-                      console.error(err);
+                    } catch (err: any) {
+                      setCheckoutError(err.message || 'Checkout failed');
+                      setIsLoading(false);
                     }
                   }}
-                  className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
+                  className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  [ proceed to checkout ]
+                  {isLoading ? '[ redirecting... ]' : '[ proceed to checkout ]'}
                 </button>
                 <Link
                   href="/shop"

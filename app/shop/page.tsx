@@ -5,6 +5,7 @@ import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 import SingleProductCard from "@/components/product/SingleProductCard";
 import DuoCard from "@/components/product/DuoCard";
 import { SHAMPOO_INGREDIENT_LIST, CONDITIONER_INGREDIENT_LIST } from "@/lib/content";
+import { getActivePrice } from "@/lib/storeConfig";
 
 export const metadata: Metadata = {
   title: "shop / 01 — CORE.",
@@ -92,7 +93,7 @@ export default function ShopPage() {
             name="daily balancing shampoo"
             size="290 ml / 9.81 fl oz"
             func="cleanse & scalp equilibrium"
-            price={28.00}
+            price={getActivePrice("shampoo-290")}
             image="/images/shampoo-front.png"
             actives={SHAMPOO_INGREDIENT_LIST}
             productId="shampoo-290"
@@ -102,7 +103,7 @@ export default function ShopPage() {
             name="daily nourishing conditioner"
             size="290 ml / 9.81 fl oz"
             func="repair, lipids & weightless seal"
-            price={28.00}
+            price={getActivePrice("conditioner-290")}
             image="/images/conditioner-front.png"
             actives={CONDITIONER_INGREDIENT_LIST}
             productId="conditioner-290"

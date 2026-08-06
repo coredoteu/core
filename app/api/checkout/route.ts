@@ -3,9 +3,7 @@ import Stripe from 'stripe';
 import { CATALOG } from '@/lib/catalog';
 import { FREE_SHIPPING_THRESHOLD_EUR } from '@/lib/constants';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_123', {
-  apiVersion: '2026-07-29.dahlia',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_123');
 
 export async function POST(req: Request) {
   try {
@@ -17,22 +15,24 @@ export async function POST(req: Request) {
 
     // Validate items against catalog to prevent price manipulation
     const lineItems = items.map((item: any) => {
-      const catalogItem = CATALOG.find((p) => p.id === item.product.id);
+      const catalogItem = CATALOG.find((p) => p.id === item.product?.id || p.id === item.product);
       if (!catalogItem) {
-        throw new Error(`Product ${item.product.id} not found in catalog`);
+        throw new Error(`Product ${item.product?.id || item.product} not found in catalog`);
       }
+
+      const activePrice = typeof item.product?.price === 'number' ? item.product.price : catalogItem.price;
 
       return {
         price_data: {
           currency: 'eur',
           product_data: {
             name: `CORE. ${catalogItem.name}`,
-            images: [`https://bycore.eu${catalogItem.image}`],
+            images: catalogItem.image ? [`https://bycore.eu${catalogItem.image}`] : [],
             metadata: {
               productId: catalogItem.id,
             },
           },
-          unit_amount: Math.round(catalogItem.price * 100), // Stripe expects cents
+          unit_amount: Math.round(activePrice * 100), // Stripe expects cents
         },
         quantity: item.quantity,
       };

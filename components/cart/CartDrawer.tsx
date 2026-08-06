@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -160,6 +160,9 @@ export default function CartDrawer() {
   const { items, subtotal, isDrawerOpen, closeDrawer } = useCart();
   const drawerRef = useRef<HTMLDivElement>(null);
   const isEmpty = items.length === 0;
+  const [isLoading, setIsLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
 
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
@@ -323,9 +326,18 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
+                {checkoutError && (
+                  <p className="text-xs text-red-400 font-mono text-center lowercase">
+                    {checkoutError}
+                  </p>
+                )}
+
                 <button
+                  disabled={isLoading}
                   onClick={async () => {
                     try {
+                      setIsLoading(true);
+                      setCheckoutError(null);
                       const res = await fetch('/api/checkout', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -335,15 +347,17 @@ export default function CartDrawer() {
                       if (data.url) {
                         window.location.href = data.url;
                       } else {
-                        console.error(data.error);
+                        setCheckoutError(data.error || 'Checkout failed');
+                        setIsLoading(false);
                       }
-                    } catch (err) {
-                      console.error(err);
+                    } catch (err: any) {
+                      setCheckoutError(err.message || 'Checkout failed');
+                      setIsLoading(false);
                     }
                   }}
-                  className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
+                  className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  [ proceed to checkout ]
+                  {isLoading ? '[ redirecting... ]' : '[ proceed to checkout ]'}
                 </button>
 
                 <div className="flex items-center justify-center gap-6">

@@ -2,6 +2,7 @@
 // Import this wherever you need product data (shop page, spec sheet, etc.)
 
 import { CartProduct } from "@/context/CartContext";
+import { getActivePrice } from "@/lib/storeConfig";
 
 export const CATALOG: CartProduct[] = [
   {
@@ -10,7 +11,7 @@ export const CATALOG: CartProduct[] = [
     brand: "CORE.",
     size: "290 ml / 9.81 fl oz",
     function: "cleanse & scalp equilibrium",
-    price: 28.00,
+    price: getActivePrice("shampoo-290"),
     image: "/images/shampoo-front.png",
     unit: "unit 01",
   },
@@ -20,7 +21,7 @@ export const CATALOG: CartProduct[] = [
     brand: "CORE.",
     size: "290 ml / 9.81 fl oz",
     function: "repair, lipids & weightless seal",
-    price: 28.00,
+    price: getActivePrice("conditioner-290"),
     image: "/images/conditioner-front.png",
     unit: "unit 02",
   },
@@ -30,8 +31,8 @@ export const CATALOG: CartProduct[] = [
     brand: "CORE.",
     size: "2 × 290 ml / 9.81 fl oz",
     function: "complete daily system",
-    price: 44.95,
-    image: "/images/shampoo-front.png", // duo uses combined display
+    price: getActivePrice("duo-system-001"),
+    image: "/images/v1-hero-duo.png",
     unit: "system 001",
   },
 ];
