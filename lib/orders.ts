@@ -5,8 +5,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
 const getSupabase = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!url) throw new Error('NEXT_PUBLIC_SUPABASE_URL is not defined in environment variables.');
+  if (!key) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not defined. If you just added it to .env.local, you MUST restart your Next.js development server (Ctrl+C and npm run dev) for it to take effect.');
+  
+  // Using the service role key bypasses RLS policies
   return createClient(url, key);
 };
 
