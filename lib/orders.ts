@@ -74,7 +74,7 @@ export async function syncStripeSessionToSupabase(sessionId: string) {
       order_id: orderData.id,
       product_id: catalogProductId,
       quantity: item.quantity || 1,
-      price_at_purchase: (item.amount_total || 0) / 100,
+      price_at_purchase: (item.price?.unit_amount || 0) / 100,
     };
   });
 

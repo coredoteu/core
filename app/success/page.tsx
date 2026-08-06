@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import { useCart } from "@/context/CartContext";
 import { CATALOG } from "@/lib/catalog";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface OrderDetail {
   id: string;
@@ -34,232 +36,479 @@ interface OrderDetail {
   }[];
 }
 
+// ─── Loader ───────────────────────────────────────────────────────────────────
+
+function LoaderState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-32 gap-6">
+      <div className="relative w-12 h-12">
+        <div
+          className="absolute inset-0 border border-white/20 animate-ping"
+          style={{ animationDuration: "1.6s" }}
+        />
+        <div className="absolute inset-2 border border-white/40" />
+        <div className="absolute inset-4 bg-white/10" />
+      </div>
+      <div className="flex flex-col items-center gap-1.5">
+        <p className="font-mono text-[10px] text-white/50 lowercase tracking-[0.3em]">
+          confirming order
+        </p>
+        <p className="font-mono text-[10px] text-white/30 lowercase tracking-[0.2em]">
+          syncing system...
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Row helper ───────────────────────────────────────────────────────────────
+
+function DataRow({
+  label,
+  value,
+  valueClass = "text-white",
+}: {
+  label: string;
+  value: React.ReactNode;
+  valueClass?: string;
+}) {
+  return (
+    <div className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
+      <span className="text-[10px] font-mono tracking-[0.2em] text-white/40 lowercase">
+        {label}
+      </span>
+      <span className={`text-xs font-mono ${valueClass} lowercase`}>{value}</span>
+    </div>
+  );
+}
+
+// ─── Main content ─────────────────────────────────────────────────────────────
+
 function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const { clearCart } = useCart();
+  const cartCleared = useRef(false);
 
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [syncError, setSyncError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Clear cart once user reaches success page
-    clearCart();
+    // Clear cart exactly once — not reactive to clearCart reference changes
+    if (!cartCleared.current) {
+      clearCart();
+      cartCleared.current = true;
+    }
 
     if (!sessionId) {
       setLoading(false);
-      setError("No session ID provided in request.");
+      setSyncError("no session id provided.");
       return;
     }
 
+    let cancelled = false;
+
     async function fetchOrder() {
       try {
-        const res = await fetch(`/api/orders/confirm?session_id=${encodeURIComponent(sessionId!)}`);
+        const res = await fetch(
+          `/api/orders/confirm?session_id=${encodeURIComponent(sessionId!)}`,
+          { cache: "no-store" }
+        );
         const data = await res.json();
+
+        if (cancelled) return;
 
         if (res.ok && data.order) {
           setOrder(data.order);
         } else {
-          setError(data.error || "Could not retrieve order details.");
+          // Payment was captured by Stripe even if DB sync fails
+          setSyncError(data.error || "order details unavailable.");
         }
-      } catch (err: any) {
-        setError(err.message || "Failed to load order confirmation.");
+      } catch (err: unknown) {
+        if (cancelled) return;
+        const msg = err instanceof Error ? err.message : "network error";
+        setSyncError(msg);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
 
     fetchOrder();
-  }, [sessionId, clearCart]);
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
 
-  return (
-    <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-          <p className="font-mono text-xs text-white/60 lowercase tracking-[0.2em]">
-            confirming order & syncing system...
+  if (loading) return <LoaderState />;
+
+  // ── No session at all ────────────────────────────────────────────────────
+  if (!sessionId) {
+    return (
+      <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
+        <div className="border border-white/10 p-8 md:p-12 max-w-lg mx-auto bg-white/[0.02] flex flex-col gap-6">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 lowercase">
+            status / unknown
+          </span>
+          <h1 className="text-2xl font-extralight text-white lowercase">
+            no session detected.
+          </h1>
+          <p className="text-xs font-mono text-white/50 leading-relaxed lowercase">
+            this page requires a valid stripe session id. if you believe this is
+            an error, please contact support.
           </p>
+          <Link
+            id="cta-return-shop-nosession"
+            href="/shop"
+            className="inline-flex items-center gap-3 px-6 py-3.5 bg-white text-black text-[10px] font-mono tracking-[0.25em] lowercase hover:bg-white/90 transition-colors w-fit"
+          >
+            return to shop
+          </Link>
         </div>
-      ) : error && !order ? (
-        <div className="border border-white/10 p-8 md:p-12 flex flex-col gap-6 max-w-xl mx-auto bg-white/[0.02]">
-          <div className="flex items-center gap-3 text-red-400 font-mono text-xs tracking-[0.2em] lowercase">
-            <span>00 // order status warning</span>
-          </div>
-          <h1 className="text-2xl font-light text-white lowercase">order payment confirmed</h1>
-          <p className="text-xs text-white/60 font-mono lowercase leading-relaxed">
-            your payment was processed successfully with stripe (session: {sessionId?.slice(0, 16)}...).
-            <br />
-            note: {error}
-          </p>
-          <div className="flex flex-wrap gap-4 pt-4 border-t border-white/10">
-            <Link
-              href="/shop"
-              className="px-6 py-3 border border-white text-black bg-white text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 transition-colors"
-            >
-              [ return to shop ]
-            </Link>
-          </div>
-        </div>
-      ) : (
+      </div>
+    );
+  }
+
+  // ── Payment confirmed / DB sync failed (non-blocking) ────────────────────
+  if (syncError && !order) {
+    return (
+      <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
         <div className="flex flex-col gap-12">
-          {/* Header */}
-          <div className="flex flex-col gap-4 border-b border-white/10 pb-8">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs tracking-[0.2em] bg-white/10 px-2.5 py-1 text-white/80 lowercase">
-                order confirmed
+          <div className="flex flex-col gap-4 border-b border-white/10 pb-10">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 lowercase">
+                payment / captured
               </span>
-              <span className="font-mono text-xs tracking-[0.15em] text-white/60 lowercase">
-                status: paid
+              <span className="w-px h-3 bg-white/10 hidden sm:block" />
+              <span className="font-mono text-[10px] tracking-[0.25em] text-amber-400/80 lowercase">
+                system / sync pending
               </span>
             </div>
             <h1 className="text-3xl md:text-5xl font-extralight text-white tracking-tight lowercase">
-              thank you for your order.
+              payment confirmed.
             </h1>
-            <p className="text-sm text-white/60 lowercase max-w-xl leading-relaxed">
-              your system pre-order has been registered into our database. a confirmation summary has been logged.
+            <p className="text-sm text-white/50 lowercase max-w-lg leading-relaxed">
+              your stripe payment was captured. our system is processing the
+              order record. a confirmation will arrive by email shortly.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            {/* Main Order Details */}
-            <div className="lg:col-span-8 flex flex-col gap-8">
-              {/* Order Reference Card */}
-              <div className="border border-white/10 p-6 md:p-8 bg-white/[0.02] flex flex-col gap-6">
-                <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                  <span className="font-mono text-xs tracking-[0.2em] text-white/60 lowercase">
-                    order reference
-                  </span>
-                  <span className="font-mono text-xs text-white/60 tracking-wider">
-                    #{order?.id ? order.id.slice(0, 8) : "N/A"}
+          <div className="border border-white/10 p-6 bg-white/[0.02] max-w-xl flex flex-col gap-4">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-white/40 lowercase border-b border-white/[0.06] pb-3">
+              session reference
+            </span>
+            <p className="font-mono text-xs text-white/60 break-all lowercase">
+              {sessionId}
+            </p>
+            <p className="font-mono text-[10px] text-white/30 leading-relaxed lowercase">
+              system note: {syncError}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              id="cta-shop-syncing"
+              href="/shop"
+              className="px-6 py-3.5 bg-white text-black text-[10px] font-mono tracking-[0.25em] lowercase hover:bg-white/90 transition-colors"
+            >
+              continue shopping
+            </Link>
+            <Link
+              id="cta-home-syncing"
+              href="/"
+              className="px-6 py-3.5 border border-white/15 text-white/50 text-[10px] font-mono tracking-[0.2em] lowercase hover:text-white hover:border-white/30 transition-colors"
+            >
+              return home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Full success with order data ─────────────────────────────────────────
+  const hasItems = order?.order_items && order.order_items.length > 0;
+  const orderRef = order?.id ? order.id.slice(0, 8).toUpperCase() : "—";
+  const createdAt = order?.created_at
+    ? new Date(order.created_at).toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : null;
+
+  return (
+    <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
+      <div className="flex flex-col gap-14">
+
+        {/* ── Page header ────────────────────────────────────────────────── */}
+        <div className="flex flex-col gap-5 border-b border-white/10 pb-10">
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className="font-mono text-[10px] tracking-[0.3em] text-emerald-400/80 lowercase">
+                order confirmed
+              </span>
+            </div>
+            <span className="w-px h-3 bg-white/10 hidden sm:block" />
+            <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 lowercase">
+              payment / paid
+            </span>
+            {createdAt && (
+              <>
+                <span className="w-px h-3 bg-white/10 hidden sm:block" />
+                <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 lowercase">
+                  {createdAt}
+                </span>
+              </>
+            )}
+          </div>
+
+          <h1 className="text-3xl md:text-5xl font-extralight text-white tracking-tight lowercase">
+            thank you.
+          </h1>
+          <p className="text-sm text-white/50 lowercase max-w-lg leading-relaxed">
+            your order has been registered. a confirmation email has been
+            dispatched to your address. we will notify you when your system
+            ships.
+          </p>
+        </div>
+
+        {/* ── Two-column grid ────────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+          {/* Left: order details */}
+          <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+
+            {/* Reference panel */}
+            <div className="border border-white/10 bg-white/[0.018]">
+              <div className="px-6 py-4 border-b border-white/[0.06] flex items-center justify-between">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+                  order reference
+                </span>
+                <span className="font-mono text-xs text-white/60 tracking-widest">
+                  #{orderRef}
+                </span>
+              </div>
+              <div className="px-6 py-2">
+                <DataRow
+                  label="customer"
+                  value={order?.customer_email ?? "—"}
+                  valueClass="text-white/80"
+                />
+                {order?.customer_name && (
+                  <DataRow
+                    label="name"
+                    value={order.customer_name}
+                    valueClass="text-white/80"
+                  />
+                )}
+                <DataRow
+                  label="payment"
+                  value="stripe / captured"
+                  valueClass="text-emerald-400/80"
+                />
+                <DataRow
+                  label="currency"
+                  value={order?.currency?.toUpperCase() ?? "EUR"}
+                  valueClass="text-white/60"
+                />
+              </div>
+            </div>
+
+            {/* Shipping address panel */}
+            {order?.shipping_details && (
+              <div className="border border-white/10 bg-white/[0.018]">
+                <div className="px-6 py-4 border-b border-white/[0.06]">
+                  <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+                    shipping address
                   </span>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
-                      customer email
-                    </span>
-                    <span className="text-sm text-white font-mono lowercase">
-                      {order?.customer_email}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
-                      payment method
-                    </span>
-                    <span className="text-sm text-white font-mono lowercase">
-                      stripe test card (succeeded)
-                    </span>
-                  </div>
+                <div className="px-6 py-5">
+                  <p className="font-mono text-xs text-white/60 leading-[1.9] lowercase">
+                    {order.shipping_details.name && (
+                      <span className="block text-white/80">
+                        {order.shipping_details.name}
+                      </span>
+                    )}
+                    {order.shipping_details.address?.line1 && (
+                      <span className="block">
+                        {order.shipping_details.address.line1}
+                        {order.shipping_details.address.line2
+                          ? `, ${order.shipping_details.address.line2}`
+                          : ""}
+                      </span>
+                    )}
+                    {(order.shipping_details.address?.postal_code ||
+                      order.shipping_details.address?.city) && (
+                      <span className="block">
+                        {order.shipping_details.address.postal_code}{" "}
+                        {order.shipping_details.address.city}
+                      </span>
+                    )}
+                    {order.shipping_details.address?.country && (
+                      <span className="block">
+                        {order.shipping_details.address.country}
+                      </span>
+                    )}
+                  </p>
                 </div>
+              </div>
+            )}
 
-                {order?.shipping_details && (
-                  <div className="border-t border-white/10 pt-4 flex flex-col gap-1">
-                    <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
-                      shipping address
+            {/* Items panel */}
+            <div className="border border-white/10 bg-white/[0.018]">
+              <div className="px-6 py-4 border-b border-white/[0.06]">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+                  purchased items
+                </span>
+              </div>
+              <div className="divide-y divide-white/[0.05]">
+                {hasItems ? (
+                  order!.order_items!.map((item) => {
+                    const catalogItem = CATALOG.find(
+                      (c) => c.id === item.product_id
+                    );
+                    // price_at_purchase is stored as unit price per item
+                    const unitPrice = item.price_at_purchase;
+                    const lineTotal = item.price_at_purchase * item.quantity;
+
+                    return (
+                      <div
+                        key={item.id}
+                        className="px-6 py-5 flex items-center justify-between gap-6"
+                      >
+                        <div className="flex flex-col gap-1 min-w-0">
+                          <span className="text-sm font-light text-white lowercase leading-snug">
+                            <span className="font-normal not-lowercase">CORE.</span>{" "}
+                            {catalogItem?.name ?? item.product_id}
+                          </span>
+                          <span className="font-mono text-[10px] text-white/35 lowercase">
+                            {catalogItem?.unit && `${catalogItem.unit} / `}
+                            qty: {item.quantity} &times; &euro;{unitPrice.toFixed(2)}
+                          </span>
+                        </div>
+                        <span className="font-mono text-sm text-white tabular-nums shrink-0">
+                          &euro;{lineTotal.toFixed(2)}
+                        </span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="px-6 py-5 flex items-center justify-between">
+                    <span className="text-sm font-light text-white lowercase">
+                      <span className="font-normal not-lowercase">CORE.</span>{" "}
+                      system order
                     </span>
-                    <p className="text-xs text-white/80 font-mono leading-relaxed lowercase">
-                      {order.shipping_details.name}
-                      <br />
-                      {order.shipping_details.address?.line1} {order.shipping_details.address?.line2}
-                      <br />
-                      {order.shipping_details.address?.postal_code} {order.shipping_details.address?.city},{" "}
-                      {order.shipping_details.address?.country}
-                    </p>
+                    <span className="font-mono text-sm text-white tabular-nums">
+                      &euro;{order?.amount_total.toFixed(2)}
+                    </span>
                   </div>
                 )}
               </div>
+            </div>
+          </div>
 
-              {/* Items Breakdown */}
-              <div className="border border-white/10 p-6 md:p-8 bg-white/[0.015]">
-                <span className="block text-xs font-mono tracking-[0.2em] text-white/60 lowercase mb-6">
-                  purchased items
+          {/* Right: summary + actions */}
+          <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-4">
+
+            {/* Summary card */}
+            <div className="border border-white/10 bg-white/[0.018]">
+              <div className="px-6 py-4 border-b border-white/[0.06]">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+                  summary
                 </span>
-
-                <div className="flex flex-col divide-y divide-white/10">
-                  {order?.order_items && order.order_items.length > 0 ? (
-                    order.order_items.map((item) => {
-                      const catalogItem = CATALOG.find((c) => c.id === item.product_id);
-                      return (
-                        <div key={item.id} className="py-4 flex items-center justify-between gap-4">
-                          <div className="flex flex-col gap-0.5">
-                            <span className="text-sm text-white font-light lowercase">
-                              <span className="uppercase font-normal">CORE.</span> {catalogItem?.name || item.product_id}
-                            </span>
-                            <span className="text-[10px] font-mono text-white/60">
-                              qty: {item.quantity} × €{item.price_at_purchase.toFixed(2)}
-                            </span>
-                          </div>
-                          <span className="text-sm font-mono text-white tabular-nums">
-                            €{(item.price_at_purchase * item.quantity).toFixed(2)}
-                          </span>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="py-4 flex items-center justify-between">
-                      <span className="text-sm text-white font-light lowercase">
-                        <span className="uppercase font-normal">CORE.</span> system order
-                      </span>
-                      <span className="text-sm font-mono text-white tabular-nums">
-                        €{order?.amount_total.toFixed(2)}
-                      </span>
-                    </div>
-                  )}
+              </div>
+              <div className="px-6 py-2">
+                <DataRow
+                  label="subtotal"
+                  value={`€${order?.amount_total.toFixed(2)}`}
+                />
+                <DataRow
+                  label="shipping"
+                  value="free"
+                  valueClass="text-white/60"
+                />
+                <DataRow
+                  label="database"
+                  value="synced"
+                  valueClass="text-emerald-400/80"
+                />
+              </div>
+              <div className="px-6 pt-4 pb-6 border-t border-white/[0.06] mt-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+                    total paid
+                  </span>
+                  <span className="font-mono text-xl font-light text-white tabular-nums">
+                    &euro;{order?.amount_total.toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Summary & Actions Sidebar */}
-            <div className="lg:col-span-4 flex flex-col gap-6">
-              <div className="border border-white/10 p-6 bg-white/[0.02] flex flex-col gap-4">
-                <span className="text-xs font-mono tracking-[0.2em] text-white/60 lowercase border-b border-white/10 pb-3">
-                  summary
-                </span>
+            {/* Session ID micro-panel */}
+            <div className="border border-white/[0.06] px-5 py-4 flex flex-col gap-1.5">
+              <span className="font-mono text-[9px] tracking-[0.25em] text-white/25 lowercase">
+                stripe session
+              </span>
+              <p className="font-mono text-[9px] text-white/30 break-all leading-relaxed">
+                {sessionId}
+              </p>
+            </div>
 
-                <div className="flex items-center justify-between text-xs font-mono text-white/60 lowercase">
-                  <span>subtotal</span>
-                  <span className="text-white">€{order?.amount_total.toFixed(2)}</span>
-                </div>
-                <div className="flex items-center justify-between text-xs font-mono text-white/60 lowercase">
-                  <span>shipping</span>
-                  <span className="text-white">free</span>
-                </div>
-                <div className="flex items-center justify-between text-xs font-mono text-white/60 lowercase">
-                  <span>supabase database</span>
-                  <span className="text-emerald-400">synced</span>
-                </div>
+            {/* CTAs */}
+            <div className="flex flex-col gap-2.5 pt-2">
+              <Link
+                id="cta-continue-shopping"
+                href="/shop"
+                className="w-full py-4 bg-white text-black text-center text-[10px] font-mono tracking-[0.3em] lowercase hover:bg-white/90 active:scale-[0.98] transition-all"
+              >
+                continue shopping
+              </Link>
+              <Link
+                id="cta-return-home"
+                href="/"
+                className="w-full py-3.5 border border-white/15 text-white/40 text-center text-[10px] font-mono tracking-[0.2em] lowercase hover:text-white/70 hover:border-white/30 transition-colors"
+              >
+                return home
+              </Link>
+            </div>
 
-                <div className="border-t border-white/10 pt-3 flex items-center justify-between font-mono text-sm text-white">
-                  <span>total paid</span>
-                  <span className="text-base font-light">€{order?.amount_total.toFixed(2)}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <Link
-                  href="/shop"
-                  className="w-full py-4 bg-white text-black text-center text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 transition-colors"
-                >
-                  [ continue shopping ]
-                </Link>
-                <Link
-                  href="/"
-                  className="w-full py-3.5 border border-white/20 text-white/60 text-center text-xs font-mono tracking-[0.15em] lowercase hover:text-white hover:border-white/40 transition-colors"
-                >
-                  [ return home ]
-                </Link>
-              </div>
+            {/* What happens next */}
+            <div className="border border-white/[0.06] px-5 py-5 flex flex-col gap-4 mt-2">
+              <span className="font-mono text-[10px] tracking-[0.25em] text-white/30 lowercase">
+                what happens next
+              </span>
+              <ol className="flex flex-col gap-3">
+                {[
+                  "confirmation email dispatched to your address",
+                  "order enters fulfillment queue within 1-2 days",
+                  "tracking number sent when system ships",
+                ].map((step, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="font-mono text-[9px] text-white/25 pt-0.5 tabular-nums shrink-0">
+                      0{i + 1}
+                    </span>
+                    <span className="font-mono text-[10px] text-white/40 leading-relaxed lowercase">
+                      {step}
+                    </span>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
+
+// ─── Page shell ───────────────────────────────────────────────────────────────
 
 export default function SuccessPage() {
   return (
@@ -268,9 +517,7 @@ export default function SuccessPage() {
       <Suspense
         fallback={
           <div className="flex items-center justify-center min-h-[60vh]">
-            <p className="font-mono text-xs text-white/60 lowercase tracking-[0.2em]">
-              loading order details...
-            </p>
+            <LoaderState />
           </div>
         }
       >
