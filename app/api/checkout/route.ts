@@ -46,8 +46,8 @@ export async function POST(req: Request) {
       payment_method_types: ['card', 'ideal'], // Ideal is popular in EU
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/cart`,
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://bycore.eu'}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://bycore.eu'}/cart`,
       shipping_address_collection: {
         allowed_countries: ['NL', 'BE', 'DE', 'FR', 'GB', 'US', 'IT', 'ES'],
       },
