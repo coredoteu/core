@@ -1,38 +1,67 @@
-import Navbar from "@/components/layout/Navbar";
+import Link from "next/link";
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-      <Navbar />
-      <section className="pt-32 md:pt-44 pb-16 md:pb-24 border-b border-hairline">
-        <div className="max-w-3xl mx-auto px-6 md:px-10">
-          <div className="flex flex-col gap-6">
-            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
-              legal //
-            </span>
-            <h1 className="text-4xl md:text-5xl font-light tracking-tight lowercase">
-              privacy policy
-            </h1>
-            <p className="text-sm text-text-muted lowercase leading-relaxed">
-              last updated: august 2026
-            </p>
-          </div>
+    <div className="min-h-screen bg-[#0D0D0D] font-sans text-neutral-400">
+      <div className="max-w-3xl mx-auto px-6 py-16">
+        <Link href="/" className="inline-flex items-center text-sm text-neutral-500 hover:text-white transition-colors mb-12">
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          back to home.
+        </Link>
+        
+        <h1 className="text-4xl font-normal text-white tracking-tight mb-16">
+          privacy policy.
+        </h1>
+
+        <div className="space-y-16">
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">data controller.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>CORE. / bycore.eu (<a href="mailto:contact@bycore.eu" className="text-white hover:underline transition-all">contact@bycore.eu</a>).</p>
+            </div>
+          </section>
+
+          <hr className="border-white/10" />
+
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">data collection.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>we collect essential shipping and billing details (name, address, email, phone number) to fulfill your order.</p>
+              <p>payments are processed securely via stripe. CORE. does not store credit card or banking details.</p>
+              <p>technical data, such as ip addresses and functional cookies, is collected to ensure optimal store performance.</p>
+            </div>
+          </section>
+
+          <hr className="border-white/10" />
+
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">processing purpose.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>your data is used strictly to process orders, handle customer service, manage guarantee claims, and meet legal obligations.</p>
+            </div>
+          </section>
+
+          <hr className="border-white/10" />
+
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">third-party sharing.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>data is shared only with essential service providers: logistics partners (postnl/dhl) and payment processors (stripe). we never sell your data.</p>
+            </div>
+          </section>
+
+          <hr className="border-white/10" />
+
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">your rights.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>under gdpr, you have the right to inspect, correct, or delete your personal data. submit requests to <a href="mailto:contact@bycore.eu" className="text-white hover:underline transition-all">contact@bycore.eu</a>.</p>
+            </div>
+          </section>
         </div>
-      </section>
-      <section className="py-16 md:py-24">
-        <div className="max-w-3xl mx-auto px-6 md:px-10 prose prose-invert prose-p:text-text-muted prose-p:lowercase prose-h2:lowercase prose-h2:font-light prose-h2:tracking-tight prose-a:text-white prose-a:lowercase">
-          <h2>1. Data Collection</h2>
-          <p>[boilerplate privacy policy regarding data collection. to be filled in by legal team.]</p>
-          <h2>2. Data Usage</h2>
-          <p>[boilerplate privacy policy regarding data usage. to be filled in by legal team.]</p>
-          <h2>3. Cookies and Tracking</h2>
-          <p>[boilerplate privacy policy regarding cookies and analytics. to be filled in by legal team.]</p>
-          <h2>4. Data Sharing</h2>
-          <p>[boilerplate privacy policy regarding data sharing with third parties. to be filled in by legal team.]</p>
-          <h2>5. Your Rights</h2>
-          <p>[boilerplate privacy policy regarding user rights (gdpr/ccpa). to be filled in by legal team.]</p>
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }
