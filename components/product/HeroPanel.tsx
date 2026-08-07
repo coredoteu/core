@@ -9,7 +9,7 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
 
   return (
     <div className="flex flex-col gap-8">
-      <nav className="flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-white/60">
+      <nav className="flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-text-muted">
         <Link href="/" className="hover:text-white/60 transition-colors duration-200">
           home
         </Link>
@@ -18,14 +18,14 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
           shop
         </Link>
         <span>/</span>
-        <span className="text-white/60">{product.name}</span>
+        <span className="text-text-muted">{product.name}</span>
       </nav>
 
       <div className="flex items-center gap-3">
-        <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 border border-white/10 px-3 py-1.5">
+        <span className="font-mono text-[10px] tracking-[0.3em] text-text-muted border border-hairline px-3 py-1.5">
           {product.unit}
         </span>
-        <span className="font-mono text-[10px] tracking-[0.2em] text-white/60">
+        <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted">
           v1 catalog
         </span>
       </div>
@@ -36,12 +36,12 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
           <br />
           <span className="text-white/80">{product.name}</span>
         </h1>
-        <p className="text-sm text-white/60 lowercase leading-relaxed max-w-sm mt-2">
+        <p className="text-sm text-text-muted lowercase leading-relaxed max-w-sm mt-2">
           {product.tagline}
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-px border border-white/[0.06]">
+      <div className="grid grid-cols-2 gap-px border border-hairline">
         {[
           { icon: "/icons/layers-minimalistic.svg", label: "volume",       value: product.size },
           { icon: "/icons/wind.svg",                label: "scent profile", value: product.scent },
@@ -51,16 +51,16 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
           <div
             key={spec.label}
             className={`p-4 flex flex-col gap-1.5 ${
-              i % 2 === 1 ? "border-l border-white/[0.06]" : ""
-            } ${i >= 2 ? "border-t border-white/[0.06]" : ""}`}
+              i % 2 === 1 ? "border-l border-hairline" : ""
+            } ${i >= 2 ? "border-t border-hairline" : ""}`}
           >
             <div className="flex items-center gap-1.5">
               <Icon src={spec.icon} size={11} opacity={0.2} />
-              <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
+              <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
                 {spec.label}
               </span>
             </div>
-            <span className="text-sm text-white/60 lowercase">{spec.value}</span>
+            <span className="text-sm text-text-muted lowercase">{spec.value}</span>
           </div>
         ))}
       </div>
@@ -69,7 +69,7 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
         {product.certifications.map((cert) => (
           <span
             key={cert.label}
-            className="flex items-center gap-2 border border-white/[0.08] px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase"
+            className="flex items-center gap-2 border border-hairline px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-text-muted lowercase"
           >
             <Icon src="/icons/shield-check.svg" size={11} opacity={0.35} />
             {cert.label}
@@ -77,17 +77,17 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
         ))}
       </div>
 
-      <div className="flex flex-col gap-4 pt-4 border-t border-white/[0.06]">
+      <div className="flex flex-col gap-4 pt-4 border-t border-hairline">
         <BatchCartSection productId={product.id} product={catalogProduct} />
-        <p className="text-[10px] font-mono text-white/60 lowercase text-center">
+        <p className="text-[10px] font-mono text-text-muted lowercase text-center">
           secure checkout. free returns.
         </p>
       </div>
 
-      <div className="border border-white/[0.06] p-4 flex items-start gap-3">
+      <div className="border border-hairline p-4 flex items-start gap-3">
         <Icon src="/icons/target.svg" size={14} opacity={0.2} className="mt-0.5" />
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
             designed for
           </span>
           <p className="text-xs text-white/45 lowercase leading-relaxed">

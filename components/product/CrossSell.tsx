@@ -23,11 +23,11 @@ export default function CrossSell({ currentSlug }: { currentSlug: string }) {
         };
 
   return (
-    <section className="border-t border-white/10 py-16 md:py-20">
+    <section className="border-t border-hairline py-16 md:py-20">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="flex items-center gap-3 mb-8">
           <Icon src="/icons/layers-minimalistic.svg" size={12} opacity={0.2} />
-          <span className="font-mono text-[11px] tracking-[0.25em] text-white/60 lowercase">
+          <span className="font-mono text-[11px] tracking-[0.25em] text-text-muted lowercase">
             complete the system
           </span>
           <div className="flex-1 h-px bg-white/[0.06]" />
@@ -35,7 +35,7 @@ export default function CrossSell({ currentSlug }: { currentSlug: string }) {
 
         <Link
           href={link.href}
-          className="group flex flex-col sm:flex-row items-start sm:items-center gap-6 border border-white/[0.06] p-6 md:p-8 hover:bg-white/[0.02] hover:border-white/20 transition-all duration-300"
+          className="group flex flex-col sm:flex-row items-start sm:items-center gap-6 border border-hairline p-6 md:p-8 hover:bg-white/[0.02] hover:border-white/20 transition-all duration-300"
         >
           <div className="relative w-20 h-20 shrink-0">
             <Image
@@ -48,18 +48,18 @@ export default function CrossSell({ currentSlug }: { currentSlug: string }) {
           </div>
 
           <div className="flex flex-col gap-1 flex-1">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-white/60 lowercase">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
               {link.unit}
             </span>
-            <span className="text-sm text-white/70 lowercase group-hover:text-white transition-colors duration-200">
+            <span className="text-sm text-text-muted lowercase group-hover:text-white transition-colors duration-200">
               <span className="uppercase">CORE.</span> {link.name}
             </span>
-            <span className="text-xs font-mono text-white/60 lowercase">
+            <span className="text-xs font-mono text-text-muted lowercase">
               {link.size}
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] font-mono tracking-[0.2em] text-white/60 group-hover:text-white/70 transition-colors duration-300 lowercase shrink-0">
+          <div className="flex items-center gap-3 text-[11px] font-mono tracking-[0.2em] text-text-muted group-hover:text-white/70 transition-colors duration-300 lowercase shrink-0">
             {link.label}
             <Icon
               src="/icons/arrow-right.svg"

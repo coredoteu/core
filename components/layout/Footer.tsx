@@ -32,8 +32,19 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="flex-1 flex justify-center sm:justify-end">
-          <span className="text-[10px] text-text-muted font-mono tracking-[0.1em] text-center sm:text-right">
+        <div className="flex-1 flex flex-col sm:flex-row justify-center sm:justify-end items-center sm:items-end gap-2 sm:gap-4">
+          <div className="flex gap-4">
+            {["terms", "privacy", "refunds"].map((l) => (
+              <Link
+                key={l}
+                href={`/${l}`}
+                className="text-[10px] text-text-muted hover:text-white transition-colors duration-300 lowercase"
+              >
+                {l}
+              </Link>
+            ))}
+          </div>
+          <span className="text-[10px] text-text-muted font-mono tracking-[0.1em] text-center sm:text-right mt-2 sm:mt-0">
             © {new Date().getFullYear()} CORE.
           </span>
         </div>

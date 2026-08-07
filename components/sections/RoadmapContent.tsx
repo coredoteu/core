@@ -1,8 +1,12 @@
+import { Button } from "@/components/ui/Button";
 "use client";
 
 import { useState, ReactNode } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { Icon } from "@/components/ui/Icon";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -12,60 +16,16 @@ type SpecItem = { code: string; name: string; desc: string };
 
 // ─── Small presentational primitives ───────────────────────────────────────
 
-function Icon({
-  src,
-  size = 16,
-  opacity = 0.4,
-  className = "",
-  invert = true,
-}: {
-  src: string;
-  size?: number;
-  opacity?: number;
-  className?: string;
-  invert?: boolean;
-}) {
-  return (
-    <img
-      src={src}
-      alt=""
-      aria-hidden="true"
-      width={size}
-      height={size}
-      className={className}
-      style={{
-        width: size,
-        height: size,
-        opacity,
-        filter: invert ? "brightness(0) invert(1)" : "brightness(0)",
-        flexShrink: 0,
-      }}
-    />
-  );
-}
 
-function SectionLabel({ index, title }: { index: string; title: string }) {
-  return (
-    <div className="flex items-center gap-3 md:gap-4 mb-10 md:mb-14">
-      <span className="font-mono text-[11px] md:text-xs tracking-[0.25em] text-white/30 shrink-0">
-        {index} {"//"}
-      </span>
-      <div className="flex-1 h-px bg-white/10" />
-      <span className="text-[11px] font-mono tracking-[0.25em] text-white/30 lowercase shrink-0">
-        {title}
-      </span>
-    </div>
-  );
-}
 
 
 
 function StatusBadge({ label, tone }: { label: string; tone: StatusTone }) {
   const styles: Record<StatusTone, { border: string; text: string; dot: string }> = {
     live: { border: "border-white/30", text: "text-white", dot: "bg-white" },
-    dev: { border: "border-white/20", text: "text-white/70", dot: "bg-white/60" },
-    prototype: { border: "border-white/15", text: "text-white/55", dot: "bg-white/40" },
-    research: { border: "border-white/10", text: "text-white/40", dot: "bg-white/20" },
+    dev: { border: "border-white/20", text: "text-text-muted", dot: "bg-white/60" },
+    prototype: { border: "border-hairline", text: "text-white/55", dot: "bg-white/40" },
+    research: { border: "border-hairline", text: "text-text-faint", dot: "bg-white/20" },
   };
   const s = styles[tone];
   return (
@@ -82,9 +42,9 @@ function StatusBadge({ label, tone }: { label: string; tone: StatusTone }) {
 
 function SpecGroup({ label, items }: { label: string; items: SpecItem[] }) {
   return (
-    <div className="border border-white/[0.06]">
-      <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06] bg-white/[0.02]">
-        <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 lowercase">
+    <div className="border border-hairline">
+      <div className="flex items-center justify-between px-5 py-3.5 border-b border-hairline bg-white/[0.02]">
+        <span className="font-mono text-[10px] tracking-[0.2em] text-text-faint lowercase">
           {label}
         </span>
       </div>
@@ -93,7 +53,7 @@ function SpecGroup({ label, items }: { label: string; items: SpecItem[] }) {
           <div key={item.code} className="flex flex-col gap-1.5 px-5 py-4">
             <div className="flex items-center justify-between gap-3">
               <span className="text-sm text-white/80 lowercase">{item.name}</span>
-              <span className="font-mono text-[10px] text-white/20 shrink-0">{item.code}</span>
+              <span className="font-mono text-[10px] text-text-dim shrink-0">{item.code}</span>
             </div>
             <p className="text-xs text-white/35 leading-relaxed lowercase">{item.desc}</p>
           </div>
@@ -105,15 +65,15 @@ function SpecGroup({ label, items }: { label: string; items: SpecItem[] }) {
 
 function PackagingGrid({ items }: { items: SpecItem[] }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-l border-white/[0.06]">
+    <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-l border-hairline">
       {items.map((item) => (
         <div
           key={item.code}
-          className="border-r border-b border-white/[0.06] p-5 md:p-6 flex flex-col gap-2 hover:bg-white/[0.015] transition-colors duration-300"
+          className="border-r border-b border-hairline p-5 md:p-6 flex flex-col gap-2 hover:bg-white/[0.015] transition-colors duration-300"
         >
           <div className="flex items-center justify-between gap-3">
             <span className="text-sm text-white/80 lowercase">{item.name}</span>
-            <span className="font-mono text-[10px] text-white/20 shrink-0">{item.code}</span>
+            <span className="font-mono text-[10px] text-text-dim shrink-0">{item.code}</span>
           </div>
           <p className="text-xs text-white/35 leading-relaxed lowercase">{item.desc}</p>
         </div>
@@ -126,10 +86,10 @@ function ResearchGrid({ items }: { items: SpecItem[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {items.map((item) => (
-        <div key={item.code} className="border border-white/[0.06] p-5 flex flex-col gap-3">
+        <div key={item.code} className="border border-hairline p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] text-white/20">{item.code}</span>
-            <span className="font-mono text-[9px] tracking-[0.15em] text-white/25 border border-white/10 px-2 py-0.5 lowercase">
+            <span className="font-mono text-[10px] text-text-dim">{item.code}</span>
+            <span className="font-mono text-[9px] tracking-[0.15em] text-text-dim border border-hairline px-2 py-0.5 lowercase">
               concept
             </span>
           </div>
@@ -143,11 +103,11 @@ function ResearchGrid({ items }: { items: SpecItem[] }) {
 
 function MetricsRow({ metrics }: { metrics: { value: string; label: string }[] }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-l border-white/[0.06]">
+    <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-l border-hairline">
       {metrics.map((m) => (
-        <div key={m.label} className="border-r border-b border-white/[0.06] p-5 flex flex-col gap-1.5">
+        <div key={m.label} className="border-r border-b border-hairline p-5 flex flex-col gap-1.5">
           <span className="text-2xl font-light tracking-tight text-white">{m.value}</span>
-          <span className="text-[10px] font-mono tracking-[0.15em] text-white/30 lowercase">
+          <span className="text-[10px] font-mono tracking-[0.15em] text-text-faint lowercase">
             {m.label}
           </span>
         </div>
@@ -184,13 +144,13 @@ function OrientationCard({
   inverted?: boolean;
 }) {
   return (
-    <div className="border border-white/[0.06] p-6 flex flex-col items-center text-center gap-4 hover:bg-white/[0.02] transition-colors duration-300">
-      <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-white/50">
+    <div className="border border-hairline p-6 flex flex-col items-center text-center gap-4 hover:bg-white/[0.02] transition-colors duration-300">
+      <div className="w-12 h-12 border border-hairline flex items-center justify-center text-text-muted">
         <BottleIcon inverted={inverted} />
       </div>
       <div className="flex flex-col gap-1">
         <span className="text-sm text-white/80 lowercase">{label}</span>
-        <span className="font-mono text-[10px] text-white/30 lowercase">{sub}</span>
+        <span className="font-mono text-[10px] text-text-faint lowercase">{sub}</span>
       </div>
       <p className="text-xs text-white/35 lowercase leading-relaxed max-w-[220px]">{note}</p>
     </div>
@@ -199,15 +159,15 @@ function OrientationCard({
 
 function UsageRoutine({ title, steps }: { title: string; steps: string[] }) {
   return (
-    <div className="border border-white/[0.06] p-6 flex flex-col gap-4">
-      <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase">
+    <div className="border border-hairline p-6 flex flex-col gap-4">
+      <span className="font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase">
         {title}
       </span>
       <div className="flex flex-wrap items-center gap-3">
         {steps.map((step, i) => (
           <span key={step} className="flex items-center gap-3">
-            <span className="flex items-center gap-2 border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 lowercase">
-              <span className="text-white/25">{String(i + 1).padStart(2, "0")}</span>
+            <span className="flex items-center gap-2 border border-hairline px-3 py-1.5 font-mono text-[11px] text-text-muted lowercase">
+              <span className="text-text-dim">{String(i + 1).padStart(2, "0")}</span>
               {step}
             </span>
             {i < steps.length - 1 && <Icon src="/icons/arrow-right.svg" size={12} opacity={0.25} />}
@@ -264,7 +224,7 @@ function TimelineCard({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="border border-white/10 hover:border-white/20 transition-colors duration-500"
+        className="border border-hairline hover:border-white/20 transition-colors duration-500"
       >
         <button
           onClick={() => setOpen((v) => !v)}
@@ -272,10 +232,10 @@ function TimelineCard({
           className="w-full flex flex-col md:flex-row md:items-center gap-4 md:gap-6 px-5 md:px-8 py-6 text-left group"
         >
           <div className="flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/25 transition-colors duration-300">
+            <div className="w-10 h-10 border border-hairline flex items-center justify-center shrink-0 group-hover:border-white/25 transition-colors duration-300">
               <Icon src={icon} size={16} opacity={0.5} />
             </div>
-            <span className="font-mono text-[11px] tracking-[0.25em] text-white/25 lowercase">
+            <span className="font-mono text-[11px] tracking-[0.25em] text-text-dim lowercase">
               {index}
             </span>
           </div>
@@ -285,7 +245,7 @@ function TimelineCard({
               <h3 className="text-xl md:text-2xl font-light lowercase text-white">{title}</h3>
               <StatusBadge label={status} tone={statusTone} />
             </div>
-            <p className="text-sm text-white/40 lowercase leading-relaxed max-w-2xl">
+            <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl">
               {description}
             </p>
           </div>
@@ -306,7 +266,7 @@ function TimelineCard({
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="overflow-hidden border-t border-white/[0.06]"
+              className="overflow-hidden border-t border-hairline"
             >
               <div className="px-5 md:px-8 py-8">{children}</div>
             </motion.div>
@@ -392,7 +352,7 @@ const phases: {
             <SpecGroup label="unit 02 / conditioner" items={v1ConditionerActives} />
           </div>
           <div>
-            <span className="block font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase mb-4">
+            <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
               launch metrics
             </span>
             <MetricsRow metrics={v1Metrics} />
@@ -412,7 +372,7 @@ const phases: {
       content: (
         <div className="flex flex-col gap-10">
           <div>
-            <span className="block font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase mb-4">
+            <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
               gravity-driven packaging ux
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -430,7 +390,7 @@ const phases: {
             </div>
           </div>
           <div>
-            <span className="block font-mono text-[10px] tracking-[0.2em] text-white/25 lowercase mb-4">
+            <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
               upgraded active compounds
             </span>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -452,7 +412,7 @@ const phases: {
         "the full secondary packaging experience, spec'd to match the stealth black system end to end.",
       content: (
         <div className="flex flex-col gap-6">
-          <p className="text-sm text-white/40 lowercase leading-relaxed max-w-2xl">
+          <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl">
             every layer of the unboxing sequence is being prototyped alongside the v2 bottle tooling.
           </p>
           <PackagingGrid items={packagingItems} />
@@ -469,7 +429,7 @@ const phases: {
       description: "early-stage exploration into system extensions beyond the core duo.",
       content: (
         <div className="flex flex-col gap-6">
-          <p className="text-sm text-white/40 lowercase leading-relaxed max-w-2xl">
+          <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl">
             still bound by the same functional-concentration standard: nothing ships until it earns its place on the label.
           </p>
           <ResearchGrid items={researchItems} />
@@ -486,22 +446,22 @@ function FormulaComparator() {
   const conditioner = version === "v1" ? v1ConditionerActives : v2ConditionerActives;
 
   return (
-    <section id="comparator" className="border-t border-white/10 py-20 md:py-32 scroll-mt-24">
+    <section id="comparator" className="border-t border-hairline py-20 md:py-32 scroll-mt-24">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-        <SectionLabel index="03" title="formula comparator" />
+        <SectionHeader variant="compact" index="03" title="formula comparator" />
 
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
-          <p className="text-sm text-white/40 lowercase leading-relaxed max-w-md">
+          <p className="text-sm text-text-faint lowercase leading-relaxed max-w-md">
             toggle between the live v1 launch actives and the v2 custom batch stack currently in development.
           </p>
 
-          <div className="flex items-center border border-white/10 p-1 w-full sm:w-auto">
+          <div className="flex items-center border border-hairline p-1 w-full sm:w-auto">
             {(["v1", "v2"] as const).map((v) => (
               <button
                 key={v}
                 onClick={() => setVersion(v)}
                 aria-pressed={version === v}
-                className={`flex-1 sm:flex-none px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${version === v ? "bg-white text-[#0D0D0D]" : "text-white/40 hover:text-white"
+                className={`flex-1 sm:flex-none px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${version === v ? "bg-white text-[#0D0D0D]" : "text-text-faint hover:text-white"
                   }`}
               >
                 {v === "v1" ? "v1 launch actives" : "v2 custom batch actives"}
@@ -534,29 +494,20 @@ function FormulaComparator() {
 
 function RoadmapCta() {
   return (
-    <section className="border-t border-white/10">
+    <section className="border-t border-hairline">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">
           <h3 className="text-2xl sm:text-3xl md:text-5xl font-light tracking-tight lowercase max-w-lg">
             engineered today. refined for what comes next.
           </h3>
           <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
-            <Link
-              href="/shop"
-              className="group flex items-center justify-center gap-3 px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white focus-visible:outline-offset-2"
-            >
+            <Button href="/shop" variant="solid" className="group">
               shop the current system
-              <Icon
-                src="/icons/arrow-right.svg"
-                size={14}
-                opacity={1}
-                invert={false}
-                className="group-hover:translate-x-1 transition-transform duration-300"
-              />
-            </Link>
+              <Icon src="/icons/arrow-right.svg" size={14} opacity={1} invert={false} className="group-hover:translate-x-1 transition-transform duration-300" />
+            </Button>
             <Link
               href="/#waitlist"
-              className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
+              className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-text-muted hover:text-white hover:border-white/40 transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
             >
               join the v2 waitlist
             </Link>
@@ -575,14 +526,14 @@ export default function RoadmapContent() {
       {/* hero */}
       <section className="pt-28 md:pt-36 pb-16 md:pb-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-white/60 pb-8 md:pb-14 border-b border-white/10">
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-text-muted pb-8 md:pb-14 border-b border-hairline">
             <span>CORE. {"//"} roadmap</span>
             <span className="hidden sm:inline">technical hair care.</span>
             <span>engineered in the netherlands</span>
           </div>
 
           <div className="pt-12 md:pt-16 flex flex-col gap-6 max-w-3xl">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/60">
+            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
               01 {"//"}
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] tracking-tight lowercase text-white">
@@ -590,33 +541,28 @@ export default function RoadmapContent() {
               <br />
               &amp; system roadmap.
             </h1>
-            <p className="text-white/60 text-sm sm:text-base md:text-lg leading-relaxed lowercase max-w-xl">
+            <p className="text-text-muted text-sm sm:text-base md:text-lg leading-relaxed lowercase max-w-xl">
               CORE. launched with a precise, minimalist v1 system featuring lab white bottles and ecocert cosmos natural actives, compromising nothing on formulation. the upcoming v2 and v3 iterations upgrade our production to a custom stealth black edition, meticulously engineered for gravity-driven dosing alongside an advanced active compound stack. beyond our duo, the roadmap targets specialized scalp and styling systems, held to the same exacting standards.
             </p>
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <a
-              href="#timeline"
-              className="flex items-center justify-center px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white focus-visible:outline-offset-2"
-            >
-              [ explore the timeline ]
-            </a>
+            <Button href="#timeline" variant="solid">explore the timeline</Button>
             <a
               href="#comparator"
-              className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
+              className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-text-muted hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
             >
-              [ view formula comparator ]
+              view formula comparator
             </a>
           </div>
         </div>
       </section>
 
       {/* phased pipeline / timeline */}
-      <section id="timeline" className="border-t border-white/10 py-16 md:py-24 bg-white/[0.015] scroll-mt-24">
+      <section id="timeline" className="border-t border-hairline py-16 md:py-24 bg-white/[0.015] scroll-mt-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-          <SectionLabel index="02" title="phased pipeline" />
-          <p className="text-sm text-white/40 lowercase leading-relaxed max-w-2xl mb-14 md:mb-20">
+          <SectionHeader variant="compact" index="02" title="phased pipeline" />
+          <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl mb-14 md:mb-20">
             four active phases, from the current lab white launch through to long-range system
             expansion. tap any phase for the full spec.
           </p>

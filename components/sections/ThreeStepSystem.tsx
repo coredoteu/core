@@ -102,23 +102,23 @@ export default function ThreeStepSystem() {
   const currentSteps = activeUnit === "shampoo" ? shampooSteps : conditionerSteps;
 
   return (
-    <section className="border-b border-white/10 bg-[#0D0D0D]">
+    <section className="border-b border-hairline bg-[#0D0D0D]">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 md:mb-24">
           <div className="flex items-center gap-4">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/60">02 //</span>
+            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">02 //</span>
             <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
               usage protocol
             </h2>
           </div>
 
-          <div className="flex items-center border border-white/10 p-1">
+          <div className="flex items-center border border-hairline p-1">
             <button
               onClick={() => setActiveUnit("shampoo")}
               className={`px-6 py-2 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 ${
                 activeUnit === "shampoo"
                   ? "bg-white text-[#0D0D0D]"
-                  : "text-white/60 hover:text-white"
+                  : "text-text-muted hover:text-white"
               }`}
             >
               unit 01 / shampoo
@@ -128,7 +128,7 @@ export default function ThreeStepSystem() {
               className={`px-6 py-2 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 ${
                 activeUnit === "conditioner"
                   ? "bg-white text-[#0D0D0D]"
-                  : "text-white/60 hover:text-white"
+                  : "text-text-muted hover:text-white"
               }`}
             >
               unit 02 / conditioner
@@ -136,25 +136,25 @@ export default function ThreeStepSystem() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 border-t border-l border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 border-t border-l border-hairline">
           {currentSteps.map((step) => (
             <motion.div
               key={step.id}
-              className="border-r border-b border-white/10 p-10 md:p-14 flex flex-col items-start relative group cursor-crosshair bg-white/[0.01]"
+              className="border-r border-b border-hairline p-10 md:p-14 flex flex-col items-start relative group cursor-crosshair bg-white/[0.01]"
               onHoverStart={() => setActiveStep(step.id)}
               onHoverEnd={() => setActiveStep(null)}
               whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.03)" }}
               transition={{ duration: 0.3 }}
             >
-              <div className="text-white/60 group-hover:text-white transition-colors duration-300">
+              <div className="text-text-muted group-hover:text-white transition-colors duration-300">
                 {step.icon}
               </div>
               <div className="mt-12 w-full">
                 <div className="flex items-baseline gap-3 mb-4">
-                  <span className="font-mono text-xs tracking-[0.2em] text-white/60">{step.id}.</span>
+                  <span className="font-mono text-xs tracking-[0.2em] text-text-muted">{step.id}.</span>
                   <h3 className="text-2xl font-light text-white tracking-tight lowercase">{step.title}</h3>
                 </div>
-                <p className="text-sm text-white/60 lowercase leading-relaxed max-w-[250px]">
+                <p className="text-sm text-text-muted lowercase leading-relaxed max-w-[250px]">
                   {step.description}
                 </p>
               </div>

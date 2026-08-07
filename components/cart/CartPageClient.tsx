@@ -31,9 +31,9 @@ function CartItemRow({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -16 }}
       transition={{ duration: 0.28, ease: "easeOut" }}
-      className="grid grid-cols-[80px_1fr] md:grid-cols-[100px_1fr_auto_auto] items-start gap-6 py-8 border-b border-white/[0.07] last:border-b-0"
+      className="grid grid-cols-[80px_1fr] md:grid-cols-[100px_1fr_auto_auto] items-start gap-6 py-8 border-b border-hairline last:border-b-0"
     >
-      <div className="relative aspect-[3/4] w-full bg-white/[0.025] border border-white/[0.05] overflow-hidden flex items-center justify-center">
+      <div className="relative aspect-[3/4] w-full bg-white/[0.025] border border-hairline overflow-hidden flex items-center justify-center">
         {isDuo ? (
           <div className="flex items-center justify-center w-full h-full gap-0.5 px-1 py-2">
             <div className="relative flex-1 h-full">
@@ -52,17 +52,17 @@ function CartItemRow({
 
       <div className="flex flex-col gap-2 min-w-0">
         <div className="flex flex-col gap-0.5">
-          <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
+          <span className="text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase">
             {product.unit}
           </span>
           <h3 className="text-base md:text-lg font-light text-white lowercase leading-snug">
             <span className="font-normal uppercase">CORE.</span> {product.name}
           </h3>
-          <span className="text-xs text-white/60 lowercase">{product.size}</span>
+          <span className="text-xs text-text-muted lowercase">{product.size}</span>
         </div>
         <div className="flex items-center gap-1.5 mt-1">
           <div className="w-1 h-1 rounded-[50%] bg-white/15 shrink-0" />
-          <span className="text-[11px] text-white/60 lowercase">{product.function}</span>
+          <span className="text-[11px] text-text-muted lowercase">{product.function}</span>
         </div>
 
         <div className="flex items-center gap-4 mt-3 md:hidden">
@@ -73,9 +73,9 @@ function CartItemRow({
           />
           <button
             onClick={() => removeItem(product.id)}
-            className="text-[10px] font-mono tracking-[0.1em] text-white/60 hover:text-white/60 transition-colors duration-200 lowercase"
+            className="text-[10px] font-mono tracking-[0.1em] text-text-muted hover:text-white/60 transition-colors duration-200 lowercase"
           >
-            [ remove ]
+            remove
           </button>
         </div>
       </div>
@@ -94,9 +94,9 @@ function CartItemRow({
         </span>
         <button
           onClick={() => removeItem(product.id)}
-          className="text-[10px] font-mono tracking-[0.12em] text-white/60 hover:text-white/60 transition-colors duration-200 lowercase"
+          className="text-[10px] font-mono tracking-[0.12em] text-text-muted hover:text-white/60 transition-colors duration-200 lowercase"
         >
-          [ remove ]
+          remove
         </button>
       </div>
     </motion.div>
@@ -117,18 +117,18 @@ function EmptyCart() {
         />
       </div>
       <div className="flex flex-col gap-3">
-        <p className="text-lg font-light text-white/60 lowercase">
+        <p className="text-lg font-light text-text-muted lowercase">
           your system is empty.
         </p>
-        <p className="text-sm text-white/60 lowercase font-mono tracking-[0.1em]">
+        <p className="text-sm text-text-muted lowercase font-mono tracking-[0.1em]">
           no products added yet.
         </p>
       </div>
       <Link
         href="/shop"
-        className="mt-2 border border-white/20 px-8 py-4 text-xs font-mono tracking-[0.2em] text-white/60 hover:text-white hover:border-white/40 transition-colors duration-300 lowercase"
+        className="mt-2 border border-white/20 px-8 py-4 text-xs font-mono tracking-[0.2em] text-text-muted hover:text-white hover:border-white/40 transition-colors duration-300 lowercase"
       >
-        [ explore the shop ]
+        explore the shop
       </Link>
     </div>
   );
@@ -143,32 +143,32 @@ function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
   return (
     <div className="mt-16">
       <div className="flex items-center gap-3 mb-8">
-        <span className="font-mono text-xs tracking-[0.2em] text-white/60">
+        <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
           also //
         </span>
-        <span className="text-sm text-white/60 lowercase">you may want</span>
+        <span className="text-sm text-text-muted lowercase">you may want</span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {suggestions.map((p) => (
           <div
             key={p.id}
-            className="flex items-center gap-5 border border-white/[0.07] p-5 hover:border-white/15 transition-colors duration-300"
+            className="flex items-center gap-5 border border-hairline p-5 hover:border-hairline transition-colors duration-300"
           >
             <div className="relative w-14 h-16 shrink-0">
               <Image src={p.image} alt={p.name} fill className="object-contain" sizes="56px" />
             </div>
             <div className="flex flex-col gap-1 flex-1 min-w-0">
-              <span className="text-[10px] font-mono text-white/60 lowercase">{p.unit}</span>
-              <span className="text-sm text-white/70 lowercase leading-snug truncate">
+              <span className="text-[10px] font-mono text-text-muted lowercase">{p.unit}</span>
+              <span className="text-sm text-text-muted lowercase leading-snug truncate">
                 <span className="uppercase">CORE.</span> {p.name}
               </span>
-              <span className="text-xs text-white/60">€{p.price.toFixed(2)}</span>
+              <span className="text-xs text-text-muted">€{p.price.toFixed(2)}</span>
             </div>
             <Link
               href="/shop"
-              className="text-[10px] font-mono tracking-[0.1em] text-white/60 hover:text-white/70 transition-colors duration-200 lowercase shrink-0"
+              className="text-[10px] font-mono tracking-[0.1em] text-text-muted hover:text-white/70 transition-colors duration-200 lowercase shrink-0"
             >
-              [ add ]
+              add
             </Link>
           </div>
         ))}
@@ -193,16 +193,16 @@ export default function CartPageClient() {
   return (
     <div className="max-w-[1600px] mx-auto px-6 md:px-10 pt-28 md:pt-36 pb-24">
 
-      <div className="flex items-start justify-between gap-4 mb-12 md:mb-16 pb-8 border-b border-white/10">
+      <div className="flex items-start justify-between gap-4 mb-12 md:mb-16 pb-8 border-b border-hairline">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/60">02 //</span>
+            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">02 //</span>
             <h1 className="text-3xl md:text-4xl font-light text-white lowercase tracking-tight">
               your system
             </h1>
           </div>
           {!isEmpty && (
-            <p className="text-xs text-white/60 lowercase font-mono tracking-[0.1em] pl-[3.5rem]">
+            <p className="text-xs text-text-muted lowercase font-mono tracking-[0.1em] pl-[3.5rem]">
               {itemCount} item{itemCount !== 1 ? "s" : ""} in your cart
             </p>
           )}
@@ -210,9 +210,9 @@ export default function CartPageClient() {
         {!isEmpty && (
           <button
             onClick={clearCart}
-            className="text-[10px] font-mono tracking-[0.12em] text-white/60 hover:text-white/60 transition-colors duration-200 lowercase mt-1"
+            className="text-[10px] font-mono tracking-[0.12em] text-text-muted hover:text-white/60 transition-colors duration-200 lowercase mt-1"
           >
-            [ clear all ]
+            clear all
           </button>
         )}
       </div>
@@ -223,14 +223,14 @@ export default function CartPageClient() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-24 items-start">
 
           <div className="flex-1 min-w-0">
-            <div className="mb-8 border border-white/[0.06] p-5">
+            <div className="mb-8 border border-hairline p-5">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase">
+                <span className="text-[10px] font-mono tracking-[0.15em] text-text-muted lowercase">
                   {qualifiesForFreeShipping
                     ? "free shipping unlocked"
                     : `add €${freeShippingRemaining.toFixed(2)} for free shipping`}
                 </span>
-                <span className={`text-[10px] font-mono lowercase ${qualifiesForFreeShipping ? "text-white/60" : "text-white/60"}`}>
+                <span className={`text-[10px] font-mono lowercase ${qualifiesForFreeShipping ? "text-text-muted" : "text-text-muted"}`}>
                   {qualifiesForFreeShipping ? "pass" : "pending"}
                 </span>
               </div>
@@ -244,9 +244,9 @@ export default function CartPageClient() {
               </div>
             </div>
 
-            <div className="hidden md:grid grid-cols-[100px_1fr_auto_auto] gap-6 mb-2 pb-3 border-b border-white/[0.06]">
+            <div className="hidden md:grid grid-cols-[100px_1fr_auto_auto] gap-6 mb-2 pb-3 border-b border-hairline">
               {["product", "", "qty", "total"].map((h, i) => (
-                <span key={i} className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
+                <span key={i} className="text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase">
                   {h}
                 </span>
               ))}
@@ -258,10 +258,10 @@ export default function CartPageClient() {
               ))}
             </AnimatePresence>
 
-            <div className="mt-8 pt-6 border-t border-white/[0.06]">
+            <div className="mt-8 pt-6 border-t border-hairline">
               <Link
                 href="/shop"
-                className="flex items-center gap-2 text-xs font-mono tracking-[0.15em] text-white/60 hover:text-white/60 transition-colors duration-200 lowercase group"
+                className="flex items-center gap-2 text-xs font-mono tracking-[0.15em] text-text-muted hover:text-white/60 transition-colors duration-200 lowercase group"
               >
                 <img
                   src="/icons/arrow-left.svg"
@@ -269,7 +269,7 @@ export default function CartPageClient() {
                   className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200"
                   style={{ filter: "brightness(0) invert(1)", opacity: 0.35 }}
                 />
-                [ continue shopping ]
+                continue shopping
               </Link>
             </div>
 
@@ -277,9 +277,9 @@ export default function CartPageClient() {
           </div>
 
           <div className="w-full lg:w-[340px] xl:w-[380px] shrink-0 sticky top-28">
-            <div className="border border-white/10">
-              <div className="px-7 py-5 border-b border-white/[0.07] bg-white/[0.015]">
-                <span className="text-xs font-mono tracking-[0.2em] text-white/60 lowercase">
+            <div className="border border-hairline">
+              <div className="px-7 py-5 border-b border-hairline bg-white/[0.015]">
+                <span className="text-xs font-mono tracking-[0.2em] text-text-muted lowercase">
                   order summary
                 </span>
               </div>
@@ -288,14 +288,14 @@ export default function CartPageClient() {
                 {items.map((item) => (
                   <div key={item.product.id} className="flex items-start justify-between gap-3">
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-xs text-white/60 lowercase">
+                      <span className="text-xs text-text-muted lowercase">
                         <span className="uppercase">CORE.</span> {item.product.name}
                       </span>
-                      <span className="text-[10px] font-mono text-white/60">
+                      <span className="text-[10px] font-mono text-text-muted">
                         × {item.quantity}
                       </span>
                     </div>
-                    <span className="text-xs text-white/60 tabular-nums shrink-0">
+                    <span className="text-xs text-text-muted tabular-nums shrink-0">
                       €{(item.product.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
@@ -306,7 +306,7 @@ export default function CartPageClient() {
 
               <div className="px-7 py-6 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
+                  <span className="text-xs text-text-muted lowercase font-mono tracking-[0.1em]">
                     subtotal
                   </span>
                   <span className="text-sm text-white tabular-nums">
@@ -314,18 +314,18 @@ export default function CartPageClient() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
+                  <span className="text-xs text-text-muted lowercase font-mono tracking-[0.1em]">
                     shipping
                   </span>
-                  <span className="text-xs text-white/60 lowercase font-mono">
+                  <span className="text-xs text-text-muted lowercase font-mono">
                     {qualifiesForFreeShipping ? "free" : "calculated at checkout"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/60 lowercase font-mono tracking-[0.1em]">
+                  <span className="text-xs text-text-muted lowercase font-mono tracking-[0.1em]">
                     tax
                   </span>
-                  <span className="text-xs text-white/60 lowercase font-mono">
+                  <span className="text-xs text-text-muted lowercase font-mono">
                     included
                   </span>
                 </div>
@@ -334,7 +334,7 @@ export default function CartPageClient() {
               <div className="h-px bg-white/10 mx-7" />
 
               <div className="px-7 py-5 flex items-center justify-between">
-                <span className="text-xs font-mono tracking-[0.15em] text-white/60 lowercase">
+                <span className="text-xs font-mono tracking-[0.15em] text-text-muted lowercase">
                   total
                 </span>
                 <span className="text-xl font-light text-white tabular-nums">
@@ -344,7 +344,7 @@ export default function CartPageClient() {
 
               <div className="px-7 pb-7 flex flex-col gap-3">
                 {checkoutError && (
-                  <p className="text-xs text-red-400 font-mono text-center lowercase">
+                  <p className="text-xs text-white font-mono text-center lowercase">
                     {checkoutError}
                   </p>
                 )}
@@ -373,13 +373,13 @@ export default function CartPageClient() {
                   }}
                   className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  {isLoading ? '[ redirecting... ]' : '[ proceed to checkout ]'}
+                  {isLoading ? 'redirecting...' : 'proceed to checkout'}
                 </button>
                 <Link
                   href="/shop"
-                  className="w-full py-3 border border-white/15 text-white/60 text-xs font-mono tracking-[0.15em] lowercase hover:border-white/30 hover:text-white/60 transition-colors duration-300 text-center"
+                  className="w-full py-3 border border-hairline text-text-muted text-xs font-mono tracking-[0.15em] lowercase hover:border-white/30 hover:text-white/60 transition-colors duration-300 text-center"
                 >
-                  [ continue shopping ]
+                  continue shopping
                 </Link>
               </div>
 
@@ -397,7 +397,7 @@ export default function CartPageClient() {
                       className="w-3.5 h-3.5 opacity-20"
                       style={{ filter: "brightness(0) invert(1)" }}
                     />
-                    <span className="text-[10px] font-mono tracking-[0.12em] text-white/60 lowercase">
+                    <span className="text-[10px] font-mono tracking-[0.12em] text-text-muted lowercase">
                       {trust.text}
                     </span>
                   </div>

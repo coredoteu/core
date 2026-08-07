@@ -66,7 +66,7 @@ export default function LoginPage() {
 
         {/* Heading */}
         <div className="mb-8">
-          <p className="text-[10px] font-mono tracking-[0.3em] text-white/30 lowercase mb-2">
+          <p className="text-[10px] font-mono tracking-[0.3em] text-text-faint lowercase mb-2">
             account access
           </p>
           <h1 className="text-xl font-light text-white/90 tracking-tight">
@@ -80,7 +80,7 @@ export default function LoginPage() {
           <div className="space-y-1.5">
             <label
               htmlFor="email"
-              className="block text-[10px] font-mono tracking-[0.25em] text-white/40 lowercase"
+              className="block text-[10px] font-mono tracking-[0.25em] text-text-faint lowercase"
             >
               email
             </label>
@@ -92,7 +92,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full bg-white/[0.03] border border-white/10 rounded-sm px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.05] transition-all duration-200"
+              className="w-full bg-white/[0.03] border border-hairline  px-4 py-3 text-sm text-white placeholder:text-text-dim focus:outline-none focus:border-white/30 focus:bg-white/[0.05] transition-all duration-200"
             />
           </div>
 
@@ -100,7 +100,7 @@ export default function LoginPage() {
           <div className="space-y-1.5">
             <label
               htmlFor="password"
-              className="block text-[10px] font-mono tracking-[0.25em] text-white/40 lowercase"
+              className="block text-[10px] font-mono tracking-[0.25em] text-text-faint lowercase"
             >
               password
             </label>
@@ -112,7 +112,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full bg-white/[0.03] border border-white/10 rounded-sm px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.05] transition-all duration-200"
+              className="w-full bg-white/[0.03] border border-hairline  px-4 py-3 text-sm text-white placeholder:text-text-dim focus:outline-none focus:border-white/30 focus:bg-white/[0.05] transition-all duration-200"
             />
           </div>
 
@@ -126,7 +126,7 @@ export default function LoginPage() {
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <p className="text-[11px] font-mono text-red-400/80 bg-red-400/5 border border-red-400/15 rounded-sm px-3 py-2">
+                <p className="text-[11px] font-mono text-white bg-white/[0.03] border border-white/20  px-3 py-2">
                   {error}
                 </p>
               </motion.div>
@@ -138,7 +138,7 @@ export default function LoginPage() {
             id="login-submit"
             type="submit"
             disabled={loading}
-            className="w-full mt-2 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.25em] lowercase py-3.5 rounded-sm hover:bg-white/90 active:bg-white/80 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full mt-2 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.25em] lowercase py-3.5  hover:bg-white/90 active:bg-white/80 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
@@ -172,16 +172,16 @@ export default function LoginPage() {
         {/* Divider */}
         <div className="flex items-center gap-3 my-6">
           <div className="flex-1 h-px bg-white/[0.06]" />
-          <span className="text-[10px] font-mono text-white/20">or</span>
+          <span className="text-[10px] font-mono text-text-dim">or</span>
           <div className="flex-1 h-px bg-white/[0.06]" />
         </div>
 
         {/* Link to signup */}
-        <p className="text-center text-[11px] text-white/30">
+        <p className="text-center text-[11px] text-text-faint">
           no account?{" "}
           <Link
             href="/signup"
-            className="text-white/60 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/50 transition-all duration-200"
+            className="text-text-muted hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/50 transition-all duration-200"
           >
             create one
           </Link>

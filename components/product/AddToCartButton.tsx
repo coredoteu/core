@@ -62,10 +62,10 @@ export default function AddToCartButton({
       className={`group flex items-center justify-between gap-3 px-6 py-3.5 border text-sm tracking-[0.15em] lowercase transition-all duration-300 disabled:cursor-wait focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2 ${
         status === "success"
           ? "border-white bg-white text-[#0D0D0D]"
-          : "border-white/20 text-white/70 hover:text-white hover:border-white/40"
+          : "border-white/20 text-text-muted hover:text-white hover:border-white/40"
       } ${className}`}
     >
-      <span>[ {text} ]</span>
+      <span>{text}</span>
       <div
         className="h-4 w-4 transition-all duration-300 flex items-center justify-center"
         style={{

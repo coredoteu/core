@@ -15,7 +15,7 @@ export default function UsageSection({ product }: { product: ProductPageData }) 
   const isConditioner = product.id === "conditioner-290";
 
   return (
-    <section className="border-t border-white/10 py-20 md:py-32 bg-white/[0.015]">
+    <section className="border-t border-hairline py-20 md:py-32 bg-white/[0.015]">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="mb-10 md:mb-14">
           <SectionHeader index="02" title="system usage" icon="/icons/layers-minimalistic.svg" variant="compact" />
@@ -37,7 +37,7 @@ export default function UsageSection({ product }: { product: ProductPageData }) 
                 transition={{ duration: 0.5, delay: i * 0.12 }}
                 className={`flex flex-col gap-6 p-8 md:p-10 relative ${
                   i < product.usageSteps.length - 1
-                    ? "border-b md:border-b-0 md:border-r border-white/[0.06]"
+                    ? "border-b md:border-b-0 md:border-r border-hairline"
                     : ""
                 }`}
               >
@@ -46,7 +46,7 @@ export default function UsageSection({ product }: { product: ProductPageData }) 
                     {step.index}
                   </span>
                   <div className="h-px flex-1 bg-white/[0.06]" />
-                  <div className="w-9 h-9 border border-white/[0.08] flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 border border-hairline flex items-center justify-center shrink-0">
                     <Icon src={icon} size={16} opacity={0.3} />
                   </div>
                 </div>
@@ -55,7 +55,7 @@ export default function UsageSection({ product }: { product: ProductPageData }) 
                   <h3 className="text-2xl md:text-3xl font-light lowercase text-white tracking-tight">
                     {step.label}
                   </h3>
-                  <p className="text-sm text-white/60 leading-relaxed">
+                  <p className="text-sm text-text-muted leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -64,9 +64,9 @@ export default function UsageSection({ product }: { product: ProductPageData }) 
           })}
         </div>
 
-        <div className="mt-10 border border-white/[0.06] p-5 flex items-start gap-4">
+        <div className="mt-10 border border-hairline p-5 flex items-start gap-4">
           <Icon src="/icons/flask-conical.svg" size={16} opacity={0.2} className="mt-0.5" />
-          <p className="text-xs text-white/60 lowercase leading-relaxed">
+          <p className="text-xs text-text-muted lowercase leading-relaxed">
             for best results: use as a complete duo system. the shampoo opens
             and cleanses. the conditioner seals and nourishes. engineered to
             work in sequence.

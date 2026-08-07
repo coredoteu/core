@@ -3,7 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import CartPageClient from "@/components/cart/CartPageClient";
 
 export const metadata: Metadata = {
-  title: "02 // your system — CORE.",
+  title: "02 // your system - CORE.",
   description:
     "review and manage your CORE. system. add, adjust, remove. proceed to checkout when ready.",
 };

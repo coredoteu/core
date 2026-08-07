@@ -110,7 +110,7 @@ export const PRODUCTS: ProductPageData[] = [
         description: "rinse thoroughly with lukewarm water. follow immediately with CORE. conditioner for the complete system.",
       },
     ],
-    inci: "Aloe Barbadensis (Aloe) Leaf Juice➀, Lauryl Glucoside, Sodium Coco-Sulfate, Aqua/Water, Citric Acid, Disodium Cocoyl Glutamate, Sodium PCA, Coco-Glucoside, Glyceryl Oleate, Butylene Glycol, Parfum/Fragrance, Benzyl Alcohol, Sodium Cocoyl Glutamate, Sodium Benzoate, Glycerin, Potassium Sorbate, Crambe Maritima (Sea Kale) Leaf Extract, Ginkgo Biloba (Ginkgo) Leaf Extract➀, Arctium Lappa (Burdock) Root Extract➀, Linalool➁, Limonene➁",
+    inci: "aloe barbadensis (aloe) leaf juice➀, lauryl glucoside, sodium coco-sulfate, aqua/water, citric acid, disodium cocoyl glutamate, sodium pca, coco-glucoside, glyceryl oleate, butylene glycol, parfum/fragrance, benzyl alcohol, sodium cocoyl glutamate, sodium benzoate, glycerin, potassium sorbate, crambe maritima (sea kale) leaf extract, ginkgo biloba (ginkgo) leaf extract➀, arctium lappa (burdock) root extract➀, linalool➁, limonene➁",
     inciNote: "➀ organic farming  |  ➁ naturally occurring in fragrance",
     faqs: [
       {
@@ -200,7 +200,7 @@ export const PRODUCTS: ProductPageData[] = [
         description: "rinse thoroughly with cool water to lock in the cuticle-sealing effect.",
       },
     ],
-    inci: "Aloe Barbadensis (Aloe) Leaf Juice➀, Cetearyl Alcohol, Aqua, Glycerin, Distearoylethyl Dimonium Chloride, Betaine, Cocos Nucifera (Coconut) Oil➀, Sodium PCA, Parfum, Tocopherol, Butylene Glycol, Benzyl Alcohol, Guar Hydroxypropyltrimonium Chloride, Hydrolyzed Wheat Protein, Sodium Benzoate, Lactic Acid, Argania Spinosa (Argan) Kernel Oil➀, Potassium Sorbate, Crambe Maritima (Sea Kale) Leaf Extract, Citric Acid, Arctium Lappa (Burdock) Root Extract➀, Ginkgo Biloba (Gingko) Leaf Extract➀, Linalool, Limonene",
+    inci: "aloe barbadensis (aloe) leaf juice➀, cetearyl alcohol, aqua, glycerin, distearoylethyl dimonium chloride, betaine, cocos nucifera (coconut) oil➀, sodium pca, parfum, tocopherol, butylene glycol, benzyl alcohol, guar hydroxypropyltrimonium chloride, hydrolyzed wheat protein, sodium benzoate, lactic acid, argania spinosa (argan) kernel oil➀, potassium sorbate, crambe maritima (sea kale) leaf extract, citric acid, arctium lappa (burdock) root extract➀, ginkgo biloba (gingko) leaf extract➀, linalool, limonene",
     inciNote: "➀ organic farming",
     faqs: [
       {

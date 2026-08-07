@@ -29,7 +29,7 @@ export default function ProductHoverViewer({
       className="group relative aspect-[3/4] w-full max-w-xs mx-auto focus-within:outline-none"
       style={{ perspective: "1000px" }}
     >
-      <div className="absolute inset-6 border border-white/10" />
+      <div className="absolute inset-6 border border-hairline" />
 
       <div 
         className={`absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] md:group-hover:[transform:rotateY(180deg)] md:group-focus-within:[transform:rotateY(180deg)] ${flipped ? "[transform:rotateY(180deg)]" : ""}`}
@@ -83,7 +83,7 @@ export default function ProductHoverViewer({
         className="absolute inset-0 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-white/40"
       />
 
-      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase whitespace-nowrap">
+      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase whitespace-nowrap">
         [ tap or hover to inspect ]
       </span>
     </div>

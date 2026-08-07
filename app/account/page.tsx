@@ -5,8 +5,8 @@ import SignOutButton from "@/components/account/SignOutButton";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "My Account — CORE.",
-  description: "Manage your CORE. account and view your order history.",
+  title: "account - CORE.",
+  description: "manage your CORE. account and order history.",
 };
 
 // ── Types ───────────────────────────────────────────────────────────────────
@@ -53,7 +53,7 @@ function formatDate(iso: string) {
     year: "numeric",
     month: "long",
     day: "numeric",
-  });
+  }).toLowerCase();
 }
 
 function formatCurrency(amount: number, currency: string) {
@@ -139,8 +139,8 @@ export default async function AccountPage() {
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-5">
               {/* Avatar */}
-              <div className="w-12 h-12 rounded-full border border-white/10 bg-white/[0.03] flex items-center justify-center shrink-0">
-                <span className="text-xs font-mono text-white/50 tracking-wider">
+              <div className="w-12 h-12  border border-hairline bg-white/[0.03] flex items-center justify-center shrink-0">
+                <span className="text-xs font-mono text-text-muted tracking-wider">
                   {initials}
                 </span>
               </div>
@@ -150,11 +150,11 @@ export default async function AccountPage() {
                   <h1 className="text-base font-light text-white/90 tracking-tight lowercase">
                     {fullName}
                   </h1>
-                  <span className="text-[9px] font-mono tracking-[0.25em] text-white/30 border border-white/10 rounded-full px-2 py-0.5 lowercase">
+                  <span className="text-[9px] font-mono tracking-[0.25em] text-text-faint border border-hairline  px-2 py-0.5 lowercase">
                     customer
                   </span>
                 </div>
-                <p className="text-[11px] font-mono text-white/30">{email}</p>
+                <p className="text-[11px] font-mono text-text-faint">{email}</p>
               </div>
             </div>
             <SignOutButton />
@@ -167,16 +167,16 @@ export default async function AccountPage() {
         {/* ── Order History ───────────────────────────────────────────────── */}
         <section>
           <div className="mb-6">
-            <p className="text-[10px] font-mono tracking-[0.3em] text-white/30 lowercase mb-1">
+            <p className="text-[10px] font-mono tracking-[0.3em] text-text-faint lowercase mb-1">
               order history
             </p>
-            <p className="text-[11px] text-white/20">
+            <p className="text-[11px] text-text-dim">
               {safeOrders.length === 0
                 ? "no orders yet"
                 : `${safeOrders.length} order${safeOrders.length > 1 ? "s" : ""}`}
             </p>
             {error && (
-              <p className="mt-2 text-[11px] font-mono text-red-400/60">
+              <p className="mt-2 text-[11px] font-mono text-text-muted">
                 could not load orders
               </p>
             )}
@@ -184,13 +184,13 @@ export default async function AccountPage() {
 
           {safeOrders.length === 0 ? (
             /* Empty state */
-            <div className="border border-white/[0.06] rounded-sm px-6 py-10 text-center">
-              <p className="text-[11px] font-mono text-white/20 lowercase tracking-wider">
+            <div className="border border-hairline  px-6 py-10 text-center">
+              <p className="text-[11px] font-mono text-text-dim lowercase tracking-wider">
                 your orders will appear here
               </p>
               <a
                 href="/shop"
-                className="mt-4 inline-block text-[10px] font-mono tracking-[0.25em] lowercase text-white/40 hover:text-white/70 underline underline-offset-4 decoration-white/15 transition-colors duration-200"
+                className="mt-4 inline-block text-[10px] font-mono tracking-[0.25em] lowercase text-text-faint hover:text-white/70 underline underline-offset-4 decoration-white/15 transition-colors duration-200"
               >
                 explore the shop →
               </a>
@@ -202,28 +202,22 @@ export default async function AccountPage() {
                 return (
                   <article
                     key={order.id}
-                    className="border border-white/[0.08] rounded-sm bg-white/[0.01] hover:bg-white/[0.02] transition-colors duration-300"
+                    className="border border-hairline  bg-white/[0.01] hover:bg-white/[0.02] transition-colors duration-300"
                   >
                     {/* Order header */}
-                    <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-white/[0.06]">
+                    <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-hairline">
                       <div>
-                        <p className="text-[9px] font-mono tracking-[0.25em] text-white/25 lowercase mb-1">
+                        <p className="text-[9px] font-mono tracking-[0.25em] text-text-dim lowercase mb-1">
                           {formatDate(order.created_at)}
                         </p>
-                        <p className="text-[10px] font-mono text-white/20 truncate max-w-[200px]">
+                        <p className="text-[10px] font-mono text-text-dim truncate max-w-[200px]">
                           #{order.stripe_session_id.slice(-12)}
                         </p>
                       </div>
                       <div className="flex items-center gap-3 shrink-0">
                         {/* Payment status pill */}
-                        <span
-                          className={`text-[9px] font-mono tracking-[0.2em] lowercase px-2 py-0.5 rounded-full border ${
-                            order.payment_status === "paid"
-                              ? "text-emerald-400/70 border-emerald-400/20 bg-emerald-400/5"
-                              : "text-yellow-400/70 border-yellow-400/20 bg-yellow-400/5"
-                          }`}
-                        >
-                          {order.payment_status}
+                        <span className="text-[9px] font-mono tracking-[0.2em] text-white border-white/30 bg-white/[0.04] px-2 py-0.5 border lowercase">
+                          status / {order.payment_status}
                         </span>
                         {/* Total */}
                         <span className="text-sm font-light text-white/80">
@@ -241,21 +235,21 @@ export default async function AccountPage() {
                         >
                           <div className="flex items-center gap-3">
                             {/* Quantity badge */}
-                            <span className="text-[9px] font-mono text-white/30 bg-white/[0.04] border border-white/[0.06] rounded-sm w-6 h-6 flex items-center justify-center shrink-0">
+                            <span className="text-[9px] font-mono text-text-faint bg-white/[0.04] border border-hairline  w-6 h-6 flex items-center justify-center shrink-0">
                               {item.quantity}
                             </span>
                             <div>
-                              <p className="text-[12px] text-white/70 lowercase leading-tight">
+                              <p className="text-[12px] text-text-muted lowercase leading-tight">
                                 {item.products?.name ?? item.product_id}
                               </p>
                               {item.products?.size && (
-                                <p className="text-[10px] font-mono text-white/25 mt-0.5">
+                                <p className="text-[10px] font-mono text-text-dim mt-0.5">
                                   {item.products.size}
                                 </p>
                               )}
                             </div>
                           </div>
-                          <span className="text-[12px] font-mono text-white/40 shrink-0">
+                          <span className="text-[12px] font-mono text-text-faint shrink-0">
                             {formatCurrency(item.price_at_purchase, order.currency)}
                           </span>
                         </div>
@@ -265,10 +259,10 @@ export default async function AccountPage() {
                     {/* Shipping address */}
                     {address && (
                       <div className="px-5 pb-4 pt-1">
-                        <p className="text-[9px] font-mono tracking-[0.2em] text-white/20 lowercase mb-1">
+                        <p className="text-[9px] font-mono tracking-[0.2em] text-text-dim lowercase mb-1">
                           ships to
                         </p>
-                        <p className="text-[11px] text-white/30">{address}</p>
+                        <p className="text-[11px] text-text-faint">{address}</p>
                       </div>
                     )}
                   </article>

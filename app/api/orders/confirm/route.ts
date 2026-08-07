@@ -12,8 +12,8 @@ export async function GET(req: Request) {
 
     const order = await syncStripeSessionToSupabase(sessionId);
     return NextResponse.json({ order });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Order confirmation error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to confirm order' }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed to confirm order' }, { status: 500 });
   }
 }

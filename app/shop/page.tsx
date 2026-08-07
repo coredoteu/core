@@ -8,7 +8,7 @@ import { SHAMPOO_INGREDIENT_LIST, CONDITIONER_INGREDIENT_LIST } from "@/lib/cont
 import { getActivePrice } from "@/lib/storeConfig";
 
 export const metadata: Metadata = {
-  title: "shop / 01 — CORE.",
+  title: "shop / 01 - CORE.",
   description:
     "the v1 system. clinical, ph-balanced formulations engineered for scalp and strand precision. shop the CORE. daily lineup.",
 };
@@ -34,11 +34,11 @@ export default function ShopPage() {
       <Navbar />
 
       {/* ── Hero band ── */}
-      <section className="pt-32 md:pt-44 pb-16 md:pb-24 border-b border-white/10">
+      <section className="pt-32 md:pt-44 pb-16 md:pb-24 border-b border-hairline">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex flex-col gap-6 max-w-3xl">
             <SectionHeader index="01" title="shop" />
-            <p className="text-sm text-white/60 lowercase max-w-lg leading-relaxed">
+            <p className="text-sm text-text-muted lowercase max-w-lg leading-relaxed">
               the v1 system. clinical, ph-balanced formulations built from a short
               list of natural actives. nothing hidden behind a blend name. engineered
               in the netherlands.
@@ -54,7 +54,7 @@ export default function ShopPage() {
               ].map((b) => (
                 <span
                   key={b.label}
-                  className="flex items-center gap-2 border border-white/10 px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-white/60 lowercase"
+                  className="flex items-center gap-2 border border-hairline px-3 py-1.5 text-[10px] font-mono tracking-[0.15em] text-text-muted lowercase"
                 >
                   <img
                     src={b.icon}
@@ -71,12 +71,12 @@ export default function ShopPage() {
       </section>
 
       {/* ── Product grid ── */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-32 border-b border-white/10">
+      <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-32 border-b border-hairline">
         <div className="flex items-center justify-between mb-12">
-          <span className="text-xs font-mono tracking-[0.2em] text-white/60 lowercase">
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted lowercase">
             v1 lineup / 3 products
           </span>
-          <span className="text-xs font-mono tracking-[0.15em] text-white/60 lowercase">
+          <span className="text-xs font-mono tracking-[0.15em] text-text-muted lowercase">
             290ml formulation
           </span>
         </div>
@@ -87,7 +87,7 @@ export default function ShopPage() {
         </div>
 
         {/* Singles grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-white/10 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-hairline mb-8">
           <SingleProductCard
             unit="unit 01"
             name="daily balancing shampoo"
@@ -112,10 +112,10 @@ export default function ShopPage() {
       </section>
 
       {/* ── Technical spec grid ── */}
-      <section className="border-b border-white/10">
+      <section className="border-b border-hairline">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-16 md:py-24">
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/60">
+            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
               02 //
             </span>
             <h2 className="text-xl font-light lowercase text-white">
@@ -123,16 +123,16 @@ export default function ShopPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 border-t border-l border-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 border-t border-l border-hairline">
             {specs.map((s) => (
               <div
                 key={s.key}
-                className="border-r border-b border-white/10 p-6 flex flex-col gap-2 hover:bg-white/[0.015] transition-colors duration-300"
+                className="border-r border-b border-hairline p-6 flex flex-col gap-2 hover:bg-white/[0.015] transition-colors duration-300"
               >
-                <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
+                <span className="text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase">
                   {s.key}
                 </span>
-                <span className="text-sm text-white/70 lowercase">{s.value}</span>
+                <span className="text-sm text-text-muted lowercase">{s.value}</span>
               </div>
             ))}
           </div>
@@ -140,8 +140,8 @@ export default function ShopPage() {
       </section>
 
       {/* ── Shipping & trust block ── */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-14 md:py-20 border-b border-white/10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/[0.06]">
+      <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-14 md:py-20 border-b border-hairline">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-hairline">
           {[
             {
               icon: "/icons/truck.svg",
@@ -161,7 +161,7 @@ export default function ShopPage() {
           ].map((item, i) => (
             <div
               key={item.title}
-              className={`flex flex-col gap-4 p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-white/[0.06]" : ""
+              className={`flex flex-col gap-4 p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-hairline" : ""
                 }`}
             >
               <img
@@ -171,8 +171,8 @@ export default function ShopPage() {
                 style={{ filter: "brightness(0) invert(1)" }}
               />
               <div className="flex flex-col gap-1.5">
-                <span className="text-sm text-white/70 lowercase">{item.title}</span>
-                <p className="text-xs text-white/60 lowercase leading-relaxed">{item.desc}</p>
+                <span className="text-sm text-text-muted lowercase">{item.title}</span>
+                <p className="text-xs text-text-muted lowercase leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}

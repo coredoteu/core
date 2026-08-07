@@ -13,15 +13,15 @@ export default function ScienceFAQ() {
   };
 
   return (
-    <section className="py-20 md:py-32 border-t border-white/10 bg-[#0D0D0D]">
+    <section className="py-20 md:py-32 border-t border-hairline bg-[#0D0D0D]">
       <div className="max-w-[900px] mx-auto px-6 md:px-10">
         <div className="mb-12 md:mb-16">
           <SectionHeader index="04" title="frequently asked questions" variant="compact" />
         </div>
 
-        <div className="flex flex-col border-t border-white/10">
+        <div className="flex flex-col border-t border-hairline">
           {SCIENCE_FAQS.map((faq, i) => (
-            <div key={i} className="border-b border-white/10">
+            <div key={i} className="border-b border-hairline">
               <button
                 onClick={() => toggleFaq(i)}
                 aria-expanded={openFaq === i}
@@ -31,7 +31,7 @@ export default function ScienceFAQ() {
                 <span className="text-sm md:text-base text-white/90 lowercase group-hover:text-white transition-colors duration-200">
                   {faq.q}
                 </span>
-                <span className="text-white/40 font-mono text-xl leading-none ml-6 group-hover:text-white transition-colors duration-200">
+                <span className="text-text-faint font-mono text-xl leading-none ml-6 group-hover:text-white transition-colors duration-200">
                   {openFaq === i ? "−" : "+"}
                 </span>
               </button>
@@ -46,7 +46,7 @@ export default function ScienceFAQ() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <p className="text-sm text-white/60 lowercase leading-relaxed pb-8 max-w-2xl">
+                    <p className="text-sm text-text-muted lowercase leading-relaxed pb-8 max-w-2xl">
                       {faq.a}
                     </p>
                   </motion.div>

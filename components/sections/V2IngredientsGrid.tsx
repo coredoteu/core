@@ -14,14 +14,14 @@ export default function V2IngredientsGrid() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
-    <div className="border-t border-white/10 mt-12 md:mt-0 pt-12 md:pt-0">
-      <div className="flex items-center justify-between px-6 md:px-8 py-4 border-b border-white/10 bg-white/[0.02]">
-        <span className="font-mono text-[10px] tracking-[0.25em] text-white/60 lowercase">
+    <div className="border-t border-hairline mt-12 md:mt-0 pt-12 md:pt-0">
+      <div className="flex items-center justify-between px-6 md:px-8 py-4 border-b border-hairline bg-white/[0.02]">
+        <span className="font-mono text-[10px] tracking-[0.25em] text-text-muted lowercase">
           v2 active ingredients grid
         </span>
       </div>
 
-      <div className="grid grid-cols-2 divide-x divide-y divide-white/10 border-b border-white/10">
+      <div className="grid grid-cols-2 divide-x divide-y divide-white/10 border-b border-hairline">
         {ingredients.map((ing, idx) => (
           <motion.div
             key={ing.id}
@@ -36,7 +36,7 @@ export default function V2IngredientsGrid() {
               transition={{ duration: 0.2 }}
             />
 
-            <span className="font-mono text-[9px] tracking-[0.2em] text-white/60 lowercase z-10 group-hover:text-white/60 transition-colors">
+            <span className="font-mono text-[9px] tracking-[0.2em] text-text-muted lowercase z-10 group-hover:text-white/60 transition-colors">
               id: {ing.id}
             </span>
 
@@ -44,7 +44,7 @@ export default function V2IngredientsGrid() {
               <h4 className="text-sm md:text-base font-medium text-white/90 lowercase mb-1 group-hover:text-white transition-colors">
                 {ing.name}
               </h4>
-              <p className="font-mono text-[10px] text-white/60 lowercase group-hover:text-white/70 transition-colors">
+              <p className="font-mono text-[10px] text-text-muted lowercase group-hover:text-white/70 transition-colors">
                 {ing.function}
               </p>
             </div>

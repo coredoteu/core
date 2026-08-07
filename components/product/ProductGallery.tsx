@@ -15,7 +15,7 @@ export default function ProductGallery({
 
   return (
     <div className="flex flex-col gap-4 sticky top-28">
-      <div className="relative w-full aspect-square bg-white/[0.02] border border-white/[0.06] overflow-hidden group">
+      <div className="relative w-full aspect-square bg-white/[0.02] border border-hairline overflow-hidden group">
         <span className="absolute top-3 left-3 w-4 h-4 border-t border-l border-white/20 z-10" />
         <span className="absolute top-3 right-3 w-4 h-4 border-t border-r border-white/20 z-10" />
         <span className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-white/20 z-10" />
@@ -41,7 +41,7 @@ export default function ProductGallery({
           </motion.div>
         </AnimatePresence>
 
-        <span className="absolute bottom-4 right-5 font-mono text-[10px] tracking-[0.2em] text-white/60">
+        <span className="absolute bottom-4 right-5 font-mono text-[10px] tracking-[0.2em] text-text-muted">
           {String(selected + 1).padStart(2, "0")} /{" "}
           {String(images.length).padStart(2, "0")}
         </span>
@@ -57,7 +57,7 @@ export default function ProductGallery({
               className={`relative flex-1 aspect-square border transition-all duration-300 overflow-hidden ${
                 selected === i
                   ? "border-white/40"
-                  : "border-white/[0.06] hover:border-white/20"
+                  : "border-hairline hover:border-white/20"
               }`}
             >
               <Image
@@ -75,7 +75,7 @@ export default function ProductGallery({
         </div>
       )}
 
-      <p className="font-mono text-[10px] tracking-[0.2em] text-white/15 lowercase text-center">
+      <p className="font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase text-center">
         <span className="uppercase">CORE.</span> — {name}
       </p>
     </div>

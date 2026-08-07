@@ -58,12 +58,12 @@ export default function Navbar() {
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0D0D0D]/70 backdrop-blur-xl supports-[backdrop-filter]:bg-[#0D0D0D]/50"
+      className="fixed inset-x-0 top-0 z-50 border-b border-hairline bg-[#0D0D0D]/70 backdrop-blur-xl supports-[backdrop-filter]:bg-[#0D0D0D]/50"
     >
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
         <Link
           href="/"
-          className="shrink-0 flex items-center"
+          className="shrink-0 flex items-baseline gap-2.5"
           aria-label="CORE. home"
           onClick={closeMenu}
         >
@@ -75,6 +75,9 @@ export default function Navbar() {
             priority
             className="h-[18px] w-auto md:h-[22px]"
           />
+          <span className="hidden md:inline text-[9px] font-mono tracking-[0.15em] text-text-faint lowercase">
+            refined to the core.
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
@@ -82,7 +85,7 @@ export default function Navbar() {
             <Link
               key={label}
               href={`/${label}`}
-              className="text-xs tracking-[0.25em] lowercase text-white/60 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-4"
+              className="text-xs tracking-[0.25em] lowercase text-text-muted hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-4"
             >
               {label}
             </Link>
@@ -94,7 +97,7 @@ export default function Navbar() {
           <Link
             href={accountHref}
             aria-label={session ? "my account" : "sign in"}
-            className="hidden md:flex items-center justify-center text-white/50 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+            className="hidden md:flex items-center justify-center text-text-muted hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
           >
             <svg
               className="h-[18px] w-[18px]"
@@ -116,7 +119,7 @@ export default function Navbar() {
           <button
             onClick={toggleDrawer}
             aria-label="open cart"
-            className="hidden md:flex items-center gap-2.5 text-white/70 hover:text-white transition-colors duration-200 cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+            className="hidden md:flex items-center gap-2.5 text-text-muted hover:text-white transition-colors duration-200 cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
           >
             <img
               src="/icons/cart-large-minimalistic.svg"
@@ -125,7 +128,7 @@ export default function Navbar() {
               className="h-5 w-5 opacity-80"
               style={{ filter: "brightness(0) invert(1)" }}
             />
-            <span className="text-xs font-mono tracking-[0.1em] text-white/60">
+            <span className="text-xs font-mono tracking-[0.1em] text-text-muted">
               ({itemCount})
             </span>
           </button>
@@ -133,7 +136,7 @@ export default function Navbar() {
           <Link
             href="/cart"
             onClick={closeMenu}
-            className="md:hidden flex items-center justify-center gap-2 min-h-[44px] px-2 text-white/70 hover:text-white transition-colors duration-200"
+            className="md:hidden flex items-center justify-center gap-2 min-h-[44px] px-2 text-text-muted hover:text-white transition-colors duration-200"
             aria-label={`shopping cart, ${itemCount} items`}
           >
             <img
@@ -143,7 +146,7 @@ export default function Navbar() {
               className="h-5 w-5 opacity-80"
               style={{ filter: "brightness(0) invert(1)" }}
             />
-            <span className="text-xs font-mono tracking-[0.1em] text-white/60">
+            <span className="text-xs font-mono tracking-[0.1em] text-text-muted">
               ({itemCount})
             </span>
           </Link>
@@ -153,7 +156,7 @@ export default function Navbar() {
             aria-label={menuOpen ? "close menu" : "open menu"}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav-panel"
-            className="md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+            className="md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 text-text-muted hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
           >
             <motion.span
               animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 6 : 0 }}
@@ -182,7 +185,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden border-t border-white/10 bg-[#0D0D0D]"
+            className="md:hidden overflow-hidden border-t border-hairline bg-[#0D0D0D]"
           >
             <nav className="flex flex-col px-6 py-4">
               {navLinks.map((label, i) => (
@@ -190,10 +193,10 @@ export default function Navbar() {
                   key={label}
                   href={`/${label}`}
                   onClick={closeMenu}
-                  className="flex items-center justify-between py-4 border-b border-white/[0.06] last:border-b-0 text-lg font-light lowercase text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+                  className="flex items-center justify-between py-4 border-b border-hairline last:border-b-0 text-lg font-light lowercase text-text-muted hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
                 >
                   <span>{label}</span>
-                  <span className="font-mono text-[10px] text-white/60">
+                  <span className="font-mono text-[10px] text-text-muted">
                     0{i + 1}
                   </span>
                 </Link>
@@ -202,7 +205,7 @@ export default function Navbar() {
               <Link
                 href={accountHref}
                 onClick={closeMenu}
-                className="flex items-center justify-between py-4 border-t border-white/[0.06] text-lg font-light lowercase text-white/70 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
+                className="flex items-center justify-between py-4 border-t border-hairline text-lg font-light lowercase text-text-muted hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
               >
                 <span>{session ? "account" : "sign in"}</span>
                 <svg
@@ -221,7 +224,7 @@ export default function Navbar() {
               </Link>
             </nav>
             <div className="px-6 pb-6">
-              <span className="text-[10px] font-mono tracking-[0.2em] text-white/60 lowercase">
+              <span className="text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase">
                 refined to the core.
               </span>
             </div>

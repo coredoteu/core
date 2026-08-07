@@ -61,19 +61,19 @@ export const CORE_ACTIVES: Active[] = [
 ];
 
 export const SHAMPOO_INGREDIENT_LIST = [
-  { code: "sh.01", name: "ALOE BARBADENSIS LEAF JUICE", desc: "hydrates the scalp directly and calms irritation on contact." },
-  { code: "sh.02", name: "LAURYL & COCO-GLUCOSIDE CLEANSING BASE", desc: "mild coconut-derived cleansers that foam without stripping." },
-  { code: "sh.03", name: "CRAMBE MARITIMA (SEA KALE) LEAF EXTRACT", desc: "marine-derived antioxidant that supports scalp equilibrium." },
-  { code: "sh.04", name: "GINKGO BILOBA LEAF EXTRACT", desc: "organically farmed, supports micro-circulation at the follicle." },
-  { code: "sh.05", name: "ARCTIUM LAPPA (BURDOCK) ROOT EXTRACT", desc: "organically farmed, strengthens strand structure from the root." },
+  { code: "sh.01", name: "aloe barbadensis leaf juice", desc: "hydrates the scalp directly and calms irritation on contact." },
+  { code: "sh.02", name: "lauryl & coco-glucoside cleansing base", desc: "mild coconut-derived cleansers that foam without stripping." },
+  { code: "sh.03", name: "crambe maritima (sea kale) leaf extract", desc: "marine-derived antioxidant that supports scalp equilibrium." },
+  { code: "sh.04", name: "ginkgo biloba leaf extract", desc: "organically farmed, supports micro-circulation at the follicle." },
+  { code: "sh.05", name: "arctium lappa (burdock) root extract", desc: "organically farmed, strengthens strand structure from the root." },
 ];
 
 export const CONDITIONER_INGREDIENT_LIST = [
-  { code: "co.01", name: "HYDROLYZED WHEAT PROTEIN", desc: "rebuilds strand structure from the outside in." },
-  { code: "co.02", name: "ARGANIA SPINOSA (ARGAN) KERNEL OIL", desc: "organically farmed, deep lipid nourishment without weight." },
-  { code: "co.03", name: "ALOE BARBADENSIS LEAF JUICE", desc: "core hydration carried through from the shampoo step." },
-  { code: "co.04", name: "CRAMBE MARITIMA & BURDOCK ROOT EXTRACT", desc: "antioxidant support paired with root-level strength." },
-  { code: "co.05", name: "GINKGO BILOBA LEAF EXTRACT", desc: "organically farmed, closes the system with circulation support." },
+  { code: "co.01", name: "hydrolyzed wheat protein", desc: "rebuilds strand structure from the outside in." },
+  { code: "co.02", name: "argania spinosa (argan) kernel oil", desc: "organically farmed, deep lipid nourishment without weight." },
+  { code: "co.03", name: "aloe barbadensis leaf juice", desc: "core hydration carried through from the shampoo step." },
+  { code: "co.04", name: "crambe maritima & burdock root extract", desc: "antioxidant support paired with root-level strength." },
+  { code: "co.05", name: "ginkgo biloba leaf extract", desc: "organically farmed, closes the system with circulation support." },
 ];
 
 export const CLINICAL_SPECS = [

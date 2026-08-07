@@ -49,12 +49,12 @@ function PriceDisplay({ phase, productId }: { phase: BatchPhase, productId: stri
         {pricing.valuePrice && (
           <>
             <span
-              className="text-sm font-mono text-white/40 line-through"
+              className="text-sm font-mono text-text-faint line-through"
               aria-label={`Individual value: €${pricing.valuePrice.toFixed(2)}`}
             >
               €{pricing.valuePrice.toFixed(2)}
             </span>
-            <span className="border border-white/10 px-2 py-0.5 text-[10px] font-mono tracking-[0.15em] text-white/50 lowercase">
+            <span className="border border-hairline px-2 py-0.5 text-[10px] font-mono tracking-[0.15em] text-text-muted lowercase">
               save €{savings}
             </span>
           </>
@@ -78,22 +78,22 @@ function PriceDisplay({ phase, productId }: { phase: BatchPhase, productId: stri
         €{pricing.preorderPrice.toFixed(2)}
       </span>
       <span
-        className="text-sm font-mono text-white/40 line-through"
+        className="text-sm font-mono text-text-faint line-through"
         aria-label={`Regular price: €${pricing.regularPrice.toFixed(2)}`}
       >
         €{pricing.regularPrice.toFixed(2)}
       </span>
       {pricing.valuePrice && (
         <span
-          className="text-sm font-mono text-white/40 line-through"
+          className="text-sm font-mono text-text-faint line-through"
           aria-label={`Individual value: €${pricing.valuePrice.toFixed(2)}`}
         >
           €{pricing.valuePrice.toFixed(2)}
         </span>
       )}
       {phase === "preorder" && (
-        <span className="border border-white/20 px-2 py-0.5 text-[10px] font-mono tracking-[0.2em] text-white/70 lowercase">
-          [ pre-order deal ]
+        <span className="border border-white/20 px-2 py-0.5 text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase">
+          pre-order deal
         </span>
       )}
     </div>
@@ -115,7 +115,7 @@ function Subtext({
 }) {
   if (phase === "preorder") {
     return (
-      <p className="font-mono text-xs text-white/50 leading-relaxed">
+      <p className="font-mono text-xs text-text-muted leading-relaxed">
         pre-orders close on {closeDate}.{" "}
         estimated shipping: {shipDate}.
       </p>
@@ -124,7 +124,7 @@ function Subtext({
 
   if (phase === "buffer") {
     return (
-      <p className="font-mono text-xs text-white/50 leading-relaxed">
+      <p className="font-mono text-xs text-text-muted leading-relaxed">
         fresh batch in transit.{" "}
         {typeof stockCount === "number" ? (
           <>
@@ -141,7 +141,7 @@ function Subtext({
 
   // soldout
   return (
-    <p className="font-mono text-xs text-white/50 leading-relaxed">
+    <p className="font-mono text-xs text-text-muted leading-relaxed">
       batch 01 completely sold out. reserve now for batch 02{" "}
       (shipping mid-september).
     </p>
@@ -201,10 +201,10 @@ export default function BatchCartSection({
 
   const buttonLabel =
     phase === "preorder"
-      ? "[ pre:order batch 01 ]"
+      ? "pre:order batch 01"
       : phase === "buffer"
-      ? `[ order batch 01 (${typeof stockCount === "number" ? `${stockCount} left` : "low stock"}) ]`
-      : "[ pre:order batch 02 ]";
+      ? `order batch 01 (${typeof stockCount === "number" ? `${stockCount} left` : "low stock"})`
+      : "pre:order batch 02";
 
   const buttonAriaLabel =
     phase === "preorder"
@@ -223,9 +223,9 @@ export default function BatchCartSection({
   // Animated display text for cart-action phases
   const displayLabel =
     isCartAction && btnStatus === "success"
-      ? "[ added ]"
+      ? "added"
       : isCartAction && btnStatus === "adding"
-      ? "[ adding… ]"
+      ? "adding…"
       : buttonLabel;
 
   const isDisabled = isCartAction && btnStatus === "adding";

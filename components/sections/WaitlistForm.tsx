@@ -20,7 +20,7 @@ export default function WaitlistForm() {
 
   if (status === "success" || status === "duplicate") {
     return (
-      <div className="flex-1 bg-white/5 border border-white/20 px-6 py-4 flex items-center max-w-md w-full lg:ml-auto text-sm text-white/60 lowercase">
+      <div className="flex-1 bg-white/5 border border-white/20 px-6 py-4 flex items-center max-w-md w-full lg:ml-auto text-sm text-text-muted lowercase">
         {status === "duplicate" ? "you are already on the list." : "you are on the list."}
       </div>
     );
@@ -29,7 +29,7 @@ export default function WaitlistForm() {
   return (
     <div className="flex flex-col gap-2 max-w-md w-full lg:ml-auto">
       {status === "error" && (
-        <p className="text-xs text-white/70 lowercase">
+        <p className="text-xs text-text-muted lowercase">
           something went wrong. please try again.
         </p>
       )}
@@ -42,7 +42,7 @@ export default function WaitlistForm() {
           placeholder="you@domain.com"
           disabled={status === "loading"}
           onFocus={() => { if (status === "error") setStatus("idle"); }}
-          className="flex-1 bg-transparent px-4 py-4 text-sm text-white placeholder:text-white/60 lowercase outline-none focus:bg-white/5 transition-colors duration-300 disabled:opacity-50"
+          className="flex-1 bg-transparent px-4 py-4 text-sm text-white placeholder:text-text-muted lowercase outline-none focus:bg-white/5 transition-colors duration-300 disabled:opacity-50"
         />
         <button
           type="submit"

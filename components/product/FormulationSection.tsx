@@ -16,7 +16,7 @@ const ACTIVE_ICONS: Record<string, string> = {
 
 export default function FormulationSection({ product }: { product: ProductPageData }) {
   return (
-    <section className="border-t border-white/10 py-20 md:py-32">
+    <section className="border-t border-hairline py-20 md:py-32">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="mb-10 md:mb-14">
           <SectionHeader index="01" title="formulation" icon="/icons/flask-conical.svg" variant="compact" />
@@ -31,22 +31,22 @@ export default function FormulationSection({ product }: { product: ProductPageDa
                   key actives
                 </h2>
               </div>
-              <p className="text-sm text-white/60 lowercase leading-relaxed">
+              <p className="text-sm text-text-muted lowercase leading-relaxed">
                 every active is declared at a functional concentration. no filler
                 claims. no proprietary blends hiding a half-percent trace.
               </p>
             </div>
 
-            <div className="flex flex-col gap-0 border border-white/[0.06]">
+            <div className="flex flex-col gap-0 border border-hairline">
               {product.claims.map((claim, i) => (
                 <div
                   key={claim}
                   className={`flex items-center gap-3 px-4 py-3 ${
-                    i < product.claims.length - 1 ? "border-b border-white/[0.05]" : ""
+                    i < product.claims.length - 1 ? "border-b border-hairline" : ""
                   }`}
                 >
                   <Icon src="/icons/check-circle.svg" size={12} opacity={0.2} />
-                  <span className="text-xs text-white/60 lowercase">{claim}</span>
+                  <span className="text-xs text-text-muted lowercase">{claim}</span>
                 </div>
               ))}
             </div>
@@ -63,11 +63,11 @@ export default function FormulationSection({ product }: { product: ProductPageDa
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className={`grid grid-cols-[auto_1fr] gap-6 md:gap-10 py-8 ${
-                    i < product.actives.length - 1 ? "border-b border-white/[0.06]" : ""
+                    i < product.actives.length - 1 ? "border-b border-hairline" : ""
                   }`}
                 >
                   <div className="flex flex-col items-center pt-1 gap-2">
-                    <div className="w-8 h-8 border border-white/[0.08] flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 border border-hairline flex items-center justify-center shrink-0">
                       <Icon src={icon} size={14} opacity={0.35} />
                     </div>
                     {i < product.actives.length - 1 && (
@@ -80,11 +80,11 @@ export default function FormulationSection({ product }: { product: ProductPageDa
                       <span className="text-base md:text-lg font-light text-white/90 lowercase tracking-tight">
                         {active.name}
                       </span>
-                      <span className="font-mono text-[10px] text-white/15 tabular-nums shrink-0">
+                      <span className="font-mono text-[10px] text-text-dim tabular-nums shrink-0">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
-                    <p className="text-xs text-white/60 lowercase leading-relaxed max-w-sm">
+                    <p className="text-xs text-text-muted lowercase leading-relaxed max-w-sm">
                       {active.benefit}
                     </p>
                   </div>

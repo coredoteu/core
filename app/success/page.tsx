@@ -50,10 +50,10 @@ function LoaderState() {
         <div className="absolute inset-4 bg-white/10" />
       </div>
       <div className="flex flex-col items-center gap-1.5">
-        <p className="font-mono text-[10px] text-white/50 lowercase tracking-[0.3em]">
+        <p className="font-mono text-[10px] text-text-muted lowercase tracking-[0.3em]">
           confirming order
         </p>
-        <p className="font-mono text-[10px] text-white/30 lowercase tracking-[0.2em]">
+        <p className="font-mono text-[10px] text-text-faint lowercase tracking-[0.2em]">
           syncing system...
         </p>
       </div>
@@ -73,8 +73,8 @@ function DataRow({
   valueClass?: string;
 }) {
   return (
-    <div className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
-      <span className="text-[10px] font-mono tracking-[0.2em] text-white/40 lowercase">
+    <div className="flex items-center justify-between py-3 border-b border-hairline last:border-0">
+      <span className="text-[10px] font-mono tracking-[0.2em] text-text-faint lowercase">
         {label}
       </span>
       <span className={`text-xs font-mono ${valueClass} lowercase`}>{value}</span>
@@ -147,14 +147,14 @@ function SuccessContent() {
   if (!sessionId) {
     return (
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
-        <div className="border border-white/10 p-8 md:p-12 max-w-lg mx-auto bg-white/[0.02] flex flex-col gap-6">
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 lowercase">
+        <div className="border border-hairline p-8 md:p-12 max-w-lg mx-auto bg-white/[0.02] flex flex-col gap-6">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-text-faint lowercase">
             status / unknown
           </span>
           <h1 className="text-2xl font-extralight text-white lowercase">
             no session detected.
           </h1>
-          <p className="text-xs font-mono text-white/50 leading-relaxed lowercase">
+          <p className="text-xs font-mono text-text-muted leading-relaxed lowercase">
             this page requires a valid stripe session id. if you believe this is
             an error, please contact support.
           </p>
@@ -175,33 +175,33 @@ function SuccessContent() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
         <div className="flex flex-col gap-12">
-          <div className="flex flex-col gap-4 border-b border-white/10 pb-10">
+          <div className="flex flex-col gap-4 border-b border-hairline pb-10">
             <div className="flex items-center gap-3 flex-wrap">
-              <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 lowercase">
+              <span className="font-mono text-[10px] tracking-[0.3em] text-text-faint lowercase">
                 payment / captured
               </span>
               <span className="w-px h-3 bg-white/10 hidden sm:block" />
-              <span className="font-mono text-[10px] tracking-[0.25em] text-amber-400/80 lowercase">
+              <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                 system / sync pending
               </span>
             </div>
             <h1 className="text-3xl md:text-5xl font-extralight text-white tracking-tight lowercase">
               payment confirmed.
             </h1>
-            <p className="text-sm text-white/50 lowercase max-w-lg leading-relaxed">
+            <p className="text-sm text-text-muted lowercase max-w-lg leading-relaxed">
               your stripe payment was captured. our system is processing the
               order record. a confirmation will arrive by email shortly.
             </p>
           </div>
 
-          <div className="border border-white/10 p-6 bg-white/[0.02] max-w-xl flex flex-col gap-4">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-white/40 lowercase border-b border-white/[0.06] pb-3">
+          <div className="border border-hairline p-6 bg-white/[0.02] max-w-xl flex flex-col gap-4">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-text-faint lowercase border-b border-hairline pb-3">
               session reference
             </span>
-            <p className="font-mono text-xs text-white/60 break-all lowercase">
+            <p className="font-mono text-xs text-text-muted break-all lowercase">
               {sessionId}
             </p>
-            <p className="font-mono text-[10px] text-white/30 leading-relaxed lowercase">
+            <p className="font-mono text-[10px] text-text-faint leading-relaxed lowercase">
               system note: {syncError}
             </p>
           </div>
@@ -217,7 +217,7 @@ function SuccessContent() {
             <Link
               id="cta-home-syncing"
               href="/"
-              className="px-6 py-3.5 border border-white/15 text-white/50 text-[10px] font-mono tracking-[0.2em] lowercase hover:text-white hover:border-white/30 transition-colors"
+              className="px-6 py-3.5 border border-hairline text-text-muted text-[10px] font-mono tracking-[0.2em] lowercase hover:text-white hover:border-white/30 transition-colors"
             >
               return home
             </Link>
@@ -235,7 +235,7 @@ function SuccessContent() {
         year: "numeric",
         month: "short",
         day: "numeric",
-      })
+      }).toLowerCase()
     : null;
 
   return (
@@ -243,25 +243,25 @@ function SuccessContent() {
       <div className="flex flex-col gap-14">
 
         {/* ── Page header ────────────────────────────────────────────────── */}
-        <div className="flex flex-col gap-5 border-b border-white/10 pb-10">
+        <div className="flex flex-col gap-5 border-b border-hairline pb-10">
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full  bg-white opacity-60" />
+                <span className="relative inline-flex  h-2 w-2 bg-white" />
               </span>
-              <span className="font-mono text-[10px] tracking-[0.3em] text-emerald-400/80 lowercase">
+              <span className="font-mono text-[10px] tracking-[0.3em] text-white/80 lowercase">
                 order confirmed
               </span>
             </div>
             <span className="w-px h-3 bg-white/10 hidden sm:block" />
-            <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 lowercase">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-text-faint lowercase">
               payment / paid
             </span>
             {createdAt && (
               <>
                 <span className="w-px h-3 bg-white/10 hidden sm:block" />
-                <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 lowercase">
+                <span className="font-mono text-[10px] tracking-[0.2em] text-text-faint lowercase">
                   {createdAt}
                 </span>
               </>
@@ -271,7 +271,7 @@ function SuccessContent() {
           <h1 className="text-3xl md:text-5xl font-extralight text-white tracking-tight lowercase">
             thank you.
           </h1>
-          <p className="text-sm text-white/50 lowercase max-w-lg leading-relaxed">
+          <p className="text-sm text-text-muted lowercase max-w-lg leading-relaxed">
             your order has been registered. a confirmation email has been
             dispatched to your address. we will notify you when your system
             ships.
@@ -285,12 +285,12 @@ function SuccessContent() {
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
 
             {/* Reference panel */}
-            <div className="border border-white/10 bg-white/[0.018]">
-              <div className="px-6 py-4 border-b border-white/[0.06] flex items-center justify-between">
-                <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+            <div className="border border-hairline bg-white/[0.018]">
+              <div className="px-6 py-4 border-b border-hairline flex items-center justify-between">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                   order reference
                 </span>
-                <span className="font-mono text-xs text-white/60 tracking-widest">
+                <span className="font-mono text-xs text-text-muted tracking-widest">
                   #{orderRef}
                 </span>
               </div>
@@ -310,26 +310,26 @@ function SuccessContent() {
                 <DataRow
                   label="payment"
                   value="stripe / captured"
-                  valueClass="text-emerald-400/80"
+                  valueClass="text-white/80"
                 />
                 <DataRow
                   label="currency"
                   value={order?.currency?.toUpperCase() ?? "EUR"}
-                  valueClass="text-white/60"
+                  valueClass="text-text-muted"
                 />
               </div>
             </div>
 
             {/* Shipping address panel */}
             {order?.shipping_details && (
-              <div className="border border-white/10 bg-white/[0.018]">
-                <div className="px-6 py-4 border-b border-white/[0.06]">
-                  <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+              <div className="border border-hairline bg-white/[0.018]">
+                <div className="px-6 py-4 border-b border-hairline">
+                  <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                     shipping address
                   </span>
                 </div>
                 <div className="px-6 py-5">
-                  <p className="font-mono text-xs text-white/60 leading-[1.9] lowercase">
+                  <p className="font-mono text-xs text-text-muted leading-[1.9] lowercase">
                     {order.shipping_details.name && (
                       <span className="block text-white/80">
                         {order.shipping_details.name}
@@ -361,9 +361,9 @@ function SuccessContent() {
             )}
 
             {/* Items panel */}
-            <div className="border border-white/10 bg-white/[0.018]">
-              <div className="px-6 py-4 border-b border-white/[0.06]">
-                <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+            <div className="border border-hairline bg-white/[0.018]">
+              <div className="px-6 py-4 border-b border-hairline">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                   purchased items
                 </span>
               </div>
@@ -417,9 +417,9 @@ function SuccessContent() {
           <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-4">
 
             {/* Summary card */}
-            <div className="border border-white/10 bg-white/[0.018]">
-              <div className="px-6 py-4 border-b border-white/[0.06]">
-                <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+            <div className="border border-hairline bg-white/[0.018]">
+              <div className="px-6 py-4 border-b border-hairline">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                   summary
                 </span>
               </div>
@@ -431,17 +431,17 @@ function SuccessContent() {
                 <DataRow
                   label="shipping"
                   value="free"
-                  valueClass="text-white/60"
+                  valueClass="text-text-muted"
                 />
                 <DataRow
                   label="database"
                   value="synced"
-                  valueClass="text-emerald-400/80"
+                  valueClass="text-white/80"
                 />
               </div>
-              <div className="px-6 pt-4 pb-6 border-t border-white/[0.06] mt-2">
+              <div className="px-6 pt-4 pb-6 border-t border-hairline mt-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] tracking-[0.25em] text-white/40 lowercase">
+                  <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                     total paid
                   </span>
                   <span className="font-mono text-xl font-light text-white tabular-nums">
@@ -452,11 +452,11 @@ function SuccessContent() {
             </div>
 
             {/* Session ID micro-panel */}
-            <div className="border border-white/[0.06] px-5 py-4 flex flex-col gap-1.5">
-              <span className="font-mono text-[9px] tracking-[0.25em] text-white/25 lowercase">
+            <div className="border border-hairline px-5 py-4 flex flex-col gap-1.5">
+              <span className="font-mono text-[9px] tracking-[0.25em] text-text-dim lowercase">
                 stripe session
               </span>
-              <p className="font-mono text-[9px] text-white/30 break-all leading-relaxed">
+              <p className="font-mono text-[9px] text-text-faint break-all leading-relaxed">
                 {sessionId}
               </p>
             </div>
@@ -473,15 +473,15 @@ function SuccessContent() {
               <Link
                 id="cta-return-home"
                 href="/"
-                className="w-full py-3.5 border border-white/15 text-white/40 text-center text-[10px] font-mono tracking-[0.2em] lowercase hover:text-white/70 hover:border-white/30 transition-colors"
+                className="w-full py-3.5 border border-hairline text-text-faint text-center text-[10px] font-mono tracking-[0.2em] lowercase hover:text-white/70 hover:border-white/30 transition-colors"
               >
                 return home
               </Link>
             </div>
 
             {/* What happens next */}
-            <div className="border border-white/[0.06] px-5 py-5 flex flex-col gap-4 mt-2">
-              <span className="font-mono text-[10px] tracking-[0.25em] text-white/30 lowercase">
+            <div className="border border-hairline px-5 py-5 flex flex-col gap-4 mt-2">
+              <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                 what happens next
               </span>
               <ol className="flex flex-col gap-3">
@@ -491,10 +491,10 @@ function SuccessContent() {
                   "tracking number sent when system ships",
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="font-mono text-[9px] text-white/25 pt-0.5 tabular-nums shrink-0">
+                    <span className="font-mono text-[9px] text-text-dim pt-0.5 tabular-nums shrink-0">
                       0{i + 1}
                     </span>
-                    <span className="font-mono text-[10px] text-white/40 leading-relaxed lowercase">
+                    <span className="font-mono text-[10px] text-text-faint leading-relaxed lowercase">
                       {step}
                     </span>
                   </li>

@@ -21,7 +21,7 @@ export async function generateMetadata({
   if (!product) return {};
 
   return {
-    title: `${product.name} / ${product.size} — CORE.`,
+    title: `${product.name} / ${product.size} - CORE.`,
     description: `CORE. ${product.name}. ${product.tagline} ${product.naturalOrigin} natural origin. ecocert cosmos natural certified.`,
     openGraph: {
       title: `CORE. ${product.name}`,

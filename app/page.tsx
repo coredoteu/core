@@ -53,25 +53,25 @@ export default function Home() {
       {/* ──────────────────────────────────────────────────────────────────
           04 / THE COMPARISON
       ────────────────────────────────────────────────────────────────── */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
+      <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline">
         <SectionHeader index="04" title="the comparison" />
 
         <div className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2">
-          <div className="border border-white/10 md:border-r-0 p-8 md:p-14">
-            <span className="text-xs font-mono tracking-[0.2em] text-white/60">
+          <div className="border border-hairline md:border-r-0 p-8 md:p-14">
+            <span className="text-xs font-mono tracking-[0.2em] text-text-muted">
               baseline
             </span>
-            <h3 className="mt-4 text-2xl md:text-3xl font-light lowercase text-white/60">
+            <h3 className="mt-4 text-2xl md:text-3xl font-light lowercase text-text-muted">
               traditional hair care
             </h3>
             <ul className="mt-10 flex flex-col divide-y divide-white/5">
               {traditionalRows.map((row) => (
                 <li
                   key={row}
-                  className="flex items-center justify-between py-4 text-sm text-white/60 lowercase"
+                  className="flex items-center justify-between py-4 text-sm text-text-muted lowercase"
                 >
                   <span>{row}</span>
-                  <span className="font-mono text-white/60 text-xs">fail</span>
+                  <span className="font-mono text-text-muted text-xs">fail</span>
                 </li>
               ))}
             </ul>
@@ -91,7 +91,7 @@ export default function Home() {
                   className="flex items-center justify-between py-4 text-sm text-white lowercase"
                 >
                   <span>{row}</span>
-                  <span className="font-mono text-white/60 text-xs">pass</span>
+                  <span className="font-mono text-text-muted text-xs">pass</span>
                 </li>
               ))}
             </ul>
@@ -102,20 +102,20 @@ export default function Home() {
       {/* ──────────────────────────────────────────────────────────────────
           05 / STANDARDS
       ────────────────────────────────────────────────────────────────── */}
-      <section className="border-b border-white/10 bg-[#0D0D0D]">
+      <section className="border-b border-hairline bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28">
           <SectionHeader index="05" title="standards" />
 
-          <div className="mt-12 md:mt-16 grid grid-cols-2 lg:grid-cols-4 border-t border-l border-white/10">
+          <div className="mt-12 md:mt-16 grid grid-cols-2 lg:grid-cols-4 border-t border-l border-hairline">
             {standards.map((s) => (
               <div
                 key={s.label}
-                className="border-r border-b border-white/10 p-8 flex flex-col gap-2"
+                className="border-r border-b border-hairline p-8 flex flex-col gap-2"
               >
                 <span className="text-3xl md:text-4xl font-light tracking-tight text-white">
                   {s.value}
                 </span>
-                <span className="text-xs tracking-[0.15em] text-white/60 lowercase">
+                <span className="text-xs tracking-[0.15em] text-text-muted lowercase">
                   {s.label}
                 </span>
               </div>
@@ -131,7 +131,7 @@ export default function Home() {
           WAITLIST
       ────────────────────────────────────────────────────────────────── */}
       <section id="waitlist" className="bg-[#0D0D0D]">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-white/10">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-hairline">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
             <h3 className="text-3xl md:text-5xl font-light tracking-tight lowercase max-w-lg">
               get early access to the next system drop.

@@ -50,9 +50,9 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
+    <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline">
       <div className="flex items-center gap-4">
-        <span className="font-mono text-xs tracking-[0.2em] text-white/60">06 //</span>
+        <span className="font-mono text-xs tracking-[0.2em] text-text-muted">06 //</span>
         <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
           technical faq
         </h2>
@@ -60,16 +60,16 @@ export default function FaqSection() {
 
       <div className="mt-12 md:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20">
         <div className="lg:col-span-5">
-          <p className="text-white/60 text-sm lowercase leading-relaxed max-w-sm">
+          <p className="text-text-muted text-sm lowercase leading-relaxed max-w-sm">
             {renderWithLogo(
               "frequently asked questions regarding our brand philosophy, sustainability standards, and the CORE. roadmap."
             )}
           </p>
         </div>
 
-        <div className="lg:col-span-7 flex flex-col border-t border-white/10">
+        <div className="lg:col-span-7 flex flex-col border-t border-hairline">
           {faqs.map((faq, i) => (
-            <div key={i} className="border-b border-white/10">
+            <div key={i} className="border-b border-hairline">
               <button
                 onClick={() => toggle(i)}
                 className="w-full py-6 flex items-center justify-between text-left group focus:outline-none"
@@ -77,7 +77,7 @@ export default function FaqSection() {
                 <span className="text-sm md:text-base text-white/80 lowercase group-hover:text-white transition-colors duration-300">
                   {renderWithLogo(faq.q)}
                 </span>
-                <span className="ml-4 shrink-0 text-white/60 font-mono text-lg font-light">
+                <span className="ml-4 shrink-0 text-text-muted font-mono text-lg font-light">
                   {openIndex === i ? "−" : "+"}
                 </span>
               </button>
@@ -90,7 +90,7 @@ export default function FaqSection() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <p className="pb-6 text-sm text-white/60 lowercase leading-relaxed max-w-prose">
+                    <p className="pb-6 text-sm text-text-muted lowercase leading-relaxed max-w-prose">
                       {renderWithLogo(faq.a)}
                     </p>
                   </motion.div>

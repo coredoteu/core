@@ -26,8 +26,8 @@ export default function CustomCursor() {
     document.body.style.cursor = "none";
 
     const updateMousePosition = (e: MouseEvent) => {
-      x.set(e.clientX - 6);
-      y.set(e.clientY - 6);
+      x.set(e.clientX - 4);
+      y.set(e.clientY - 4);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -59,8 +59,8 @@ export default function CustomCursor() {
   return (
     <motion.div
       style={{ x: springX, y: springY }}
-      animate={{ scale: isHovering ? 2.5 : 1 }}
-      className="fixed top-0 left-0 w-3 h-3 bg-white rounded-[50%] pointer-events-none z-[100] mix-blend-difference"
+      animate={{ scale: isHovering ? 3 : 1, opacity: isHovering ? 0.3 : 1 }}
+      className="fixed top-0 left-0 w-2 h-2 bg-white rounded-[50%] pointer-events-none z-[100] mix-blend-difference"
     />
   );
 }

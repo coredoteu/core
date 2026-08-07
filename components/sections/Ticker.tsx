@@ -9,7 +9,7 @@ const tickerItems = [
 
 export default function Ticker() {
   return (
-    <div className="relative border-b border-white/10 bg-[#0D0D0D] overflow-hidden py-4">
+    <div className="relative border-b border-hairline bg-[#0D0D0D] overflow-hidden py-4">
       <style>{`
         @keyframes core-marquee {
           from { transform: translateX(0); }
@@ -23,10 +23,10 @@ export default function Ticker() {
       <div className="flex w-max animate-marquee">
         {[...tickerItems, ...tickerItems].map((item, i) => (
           <div key={i} className="flex items-center gap-3 px-8">
-            <span className="text-xs tracking-[0.2em] text-white/60 lowercase whitespace-nowrap">
+            <span className="text-xs tracking-[0.2em] text-text-muted lowercase whitespace-nowrap">
               {item}
             </span>
-            <span className="text-white/15">/</span>
+            <span className="text-text-dim">/</span>
           </div>
         ))}
       </div>

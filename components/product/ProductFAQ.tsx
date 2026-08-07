@@ -10,7 +10,7 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="border-t border-white/10 py-20 md:py-32 bg-white/[0.015]">
+    <section className="border-t border-hairline py-20 md:py-32 bg-white/[0.015]">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="mb-10 md:mb-14">
           <SectionHeader index="04" title="faq" icon="/icons/info-circle.svg" variant="compact" />
@@ -21,16 +21,16 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
             <h2 className="text-2xl md:text-3xl font-light lowercase text-white/80 leading-snug">
               common questions
             </h2>
-            <p className="text-sm text-white/60 lowercase leading-relaxed">
+            <p className="text-sm text-text-muted lowercase leading-relaxed">
               direct answers. no filler copy.
             </p>
           </div>
 
-          <div className="flex flex-col gap-0 border border-white/[0.06]">
+          <div className="flex flex-col gap-0 border border-hairline">
             {product.faqs.map((faq, i) => (
               <div
                 key={i}
-                className={i < product.faqs.length - 1 ? "border-b border-white/[0.06]" : ""}
+                className={i < product.faqs.length - 1 ? "border-b border-hairline" : ""}
               >
                 <button
                   id={`faq-${product.slug}-${i}`}
@@ -46,7 +46,7 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
                       opacity={openIndex === i ? 0.4 : 0.15}
                       className="transition-opacity duration-200"
                     />
-                    <span className="text-sm text-white/70 lowercase leading-snug group-hover:text-white transition-colors duration-200">
+                    <span className="text-sm text-text-muted lowercase leading-snug group-hover:text-white transition-colors duration-200">
                       {faq.question}
                     </span>
                   </div>
@@ -78,7 +78,7 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
                           opacity={0.25}
                           className="mt-0.5 shrink-0"
                         />
-                        <p className="text-sm text-white/60 lowercase leading-relaxed">
+                        <p className="text-sm text-text-muted lowercase leading-relaxed">
                           {faq.answer}
                         </p>
                       </div>

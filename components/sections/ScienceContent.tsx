@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/Button";
 "use client";
 
 import { useState } from "react";
@@ -14,14 +15,14 @@ export default function ScienceContent() {
     <>
       <section className="pt-28 md:pt-36 pb-16 md:pb-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-white/60 pb-8 md:pb-14 border-b border-white/10">
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-text-muted pb-8 md:pb-14 border-b border-hairline">
             <span>CORE. {"//"}  formulation index</span>
             <span className="hidden sm:inline">technical hair care.</span>
             <span>ph 4.5 {"//"}  5.5</span>
           </div>
 
           <div className="pt-12 md:pt-16 flex flex-col gap-6 max-w-3xl">
-            <span className="font-mono text-xs tracking-[0.2em] text-white/60">
+            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
               01 {"//"}
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] tracking-tight lowercase text-white">
@@ -29,7 +30,7 @@ export default function ScienceContent() {
               <br />
               the system.
             </h1>
-            <p className="text-white/60 text-sm sm:text-base md:text-lg leading-relaxed lowercase max-w-xl">
+            <p className="text-text-muted text-sm sm:text-base md:text-lg leading-relaxed lowercase max-w-xl">
               every active declared at a functional concentration. no
               proprietary blends. no filler claims. this is the formulation
               index for the CORE. system.
@@ -37,29 +38,24 @@ export default function ScienceContent() {
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <Link
-              href="/shop"
-              className="flex items-center justify-center px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white focus-visible:outline-offset-2"
-            >
-              [ shop the duo ]
-            </Link>
+            <Button href="/shop" variant="solid">shop the duo</Button>
             <a
               href="#actives"
-              className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-white/60 hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
+              className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-text-muted hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
             >
-              [ view the compound index ]
+              view the compound index
             </a>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-white/10 py-16 md:py-24">
+      <section className="border-t border-hairline py-16 md:py-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="mb-10 md:mb-14">
-            <SectionHeader index="01" title="formulation philosophy" variant="compact" />
+            <SectionHeader index="02" title="formulation philosophy" variant="compact" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-white/10 border border-white/10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-white/10 border border-hairline">
             {[
               {
                 icon: "/icons/test-tube-minimalistic.svg",
@@ -83,7 +79,7 @@ export default function ScienceContent() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <h3 className="text-lg font-light lowercase text-white/90">{card.title}</h3>
-                  <p className="text-sm text-white/60 lowercase leading-relaxed">{card.desc}</p>
+                  <p className="text-sm text-text-muted lowercase leading-relaxed">{card.desc}</p>
                 </div>
               </div>
             ))}
@@ -99,19 +95,14 @@ export default function ScienceContent() {
       {/* ── FAQs ── */}
       <ScienceFAQ />
 
-      <section className="border-t border-white/10">
+      <section className="border-t border-hairline">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">
             <h3 className="text-2xl sm:text-3xl md:text-5xl font-light tracking-tight lowercase max-w-lg">
               formulation you can read start to finish.
             </h3>
             <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
-              <Link
-                href="/shop"
-                className="flex items-center justify-center px-8 py-4 border border-white bg-white text-[#0D0D0D] text-sm tracking-[0.2em] lowercase hover:bg-transparent hover:text-white transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white focus-visible:outline-offset-2"
-              >
-                [ shop the system ]
-              </Link>
+              <Button href="/shop" variant="solid">shop the system</Button>
             </div>
           </div>
         </div>

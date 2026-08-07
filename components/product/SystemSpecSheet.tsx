@@ -66,8 +66,8 @@ function IngredientList({
   items: { code: string; name: string; desc: string }[];
 }) {
   return (
-    <div className="border border-white/10">
-      <div className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-white/10 bg-white/[0.02]">
+    <div className="border border-hairline">
+      <div className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-hairline bg-white/[0.02]">
         <h3 className="text-lg font-light lowercase text-white">{title}</h3>
         <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
           {prefix}
@@ -99,7 +99,7 @@ export default function SystemSpecSheet() {
   const duo = getCatalogProduct("duo-system-001");
 
   return (
-    <section id="formula" data-mobile-sticky-trigger="true" className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-white/10">
+    <section id="formula" data-mobile-sticky-trigger="true" className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline">
       <div className="mb-6">
         <SectionHeader index="01" title="system 001" />
       </div>
@@ -112,7 +112,7 @@ export default function SystemSpecSheet() {
         {badges.map((b) => (
           <span
             key={b.label}
-            className="flex items-center gap-2 border border-white/15 px-3 py-1.5 text-[11px] font-mono tracking-[0.15em] text-text-muted lowercase"
+            className="flex items-center gap-2 border border-hairline px-3 py-1.5 text-[11px] font-mono tracking-[0.15em] text-text-muted lowercase"
           >
             <Icon src={b.icon} size={14} opacity={0.7} />
             {b.label}
@@ -120,9 +120,9 @@ export default function SystemSpecSheet() {
         ))}
       </div>
 
-      <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 border-t border-l border-white/10">
-        <div className="border-r border-b border-white/10 p-8 md:p-12 flex flex-col gap-6 bg-white/[0.02] relative lg:col-span-2">
-          <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-white/60 lowercase border border-white/10">
+      <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 border-t border-l border-hairline">
+        <div className="border-r border-b border-hairline p-8 md:p-12 flex flex-col gap-6 bg-white/[0.02] relative lg:col-span-2">
+          <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-text-muted lowercase border border-hairline">
             recommended
           </span>
           <span className="text-xs font-mono tracking-[0.2em] text-text-muted">system 001</span>
@@ -178,7 +178,7 @@ export default function SystemSpecSheet() {
           </div>
         </div>
 
-        <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6 lg:col-span-1">
+        <div className="border-r border-b border-hairline p-8 flex flex-col gap-6 lg:col-span-1">
           <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 01</span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
@@ -201,7 +201,7 @@ export default function SystemSpecSheet() {
           </div>
         </div>
 
-        <div className="border-r border-b border-white/10 p-8 flex flex-col gap-6 lg:col-span-1">
+        <div className="border-r border-b border-hairline p-8 flex flex-col gap-6 lg:col-span-1">
           <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 02</span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
@@ -225,9 +225,9 @@ export default function SystemSpecSheet() {
         </div>
       </div>
 
-      <div className="mt-12 grid grid-cols-2 md:grid-cols-5 border-t border-l border-white/10">
+      <div className="mt-12 grid grid-cols-2 md:grid-cols-5 border-t border-l border-hairline">
         {specs.map((s) => (
-          <div key={s.key} className="border-r border-b border-white/10 p-6 flex flex-col gap-3">
+          <div key={s.key} className="border-r border-b border-hairline p-6 flex flex-col gap-3">
             <Icon src={s.icon} size={16} opacity={0.6} />
             <span className="text-[10px] font-mono tracking-[0.15em] text-text-muted lowercase">
               {s.key}

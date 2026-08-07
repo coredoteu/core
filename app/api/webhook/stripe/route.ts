@@ -14,9 +14,10 @@ export async function POST(req: Request) {
 
     try {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    } catch (err: any) {
-      console.error(`Webhook Error: ${err.message}`);
-      return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      console.error(`Webhook Error: ${errorMessage}`);
+      return NextResponse.json({ error: `Webhook Error: ${errorMessage}` }, { status: 400 });
     }
 
     if (event.type === 'checkout.session.completed') {
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ received: true }, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Stripe webhook error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }

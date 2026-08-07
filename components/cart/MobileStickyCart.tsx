@@ -41,10 +41,10 @@ export default function MobileStickyCart() {
       initial="hidden"
       animate={visible ? "visible" : "hidden"}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0D0D0D]/90 backdrop-blur-xl border-t border-white/10 px-6 py-4 flex items-center justify-between"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0D0D0D]/90 backdrop-blur-xl border-t border-hairline px-6 py-4 flex items-center justify-between"
     >
       <div className="flex flex-col">
-        <span className="text-xs tracking-[0.2em] font-mono text-white/60 lowercase">system 001</span>
+        <span className="text-xs tracking-[0.2em] font-mono text-text-muted lowercase">system 001</span>
         <span className="text-sm font-light text-white">€{duoProduct.price.toFixed(2)}</span>
       </div>
       <AddToCartButton product={duoProduct} label="add the duo" className="py-2.5 px-4 text-xs" />

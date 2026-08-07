@@ -5,6 +5,7 @@ import CustomCursor from "@/components/layout/CustomCursor";
 import MobileStickyCart from "@/components/cart/MobileStickyCart";
 import CartDrawer from "@/components/cart/CartDrawer";
 import Footer from "@/components/layout/Footer";
+import CookieDisclaimer from "@/components/layout/CookieDisclaimer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -99,6 +100,7 @@ export default function RootLayout({
           <CustomCursor />
           <CartDrawer />
           <MobileStickyCart />
+          <CookieDisclaimer />
           <div className="flex-1 flex flex-col">{children}</div>
           <Footer />
         </Providers>
