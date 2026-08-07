@@ -11,9 +11,10 @@ export default function PrivacyPage() {
           back to home.
         </Link>
         
-        <h1 className="text-4xl font-normal text-white tracking-tight mb-16">
+        <h1 className="text-4xl font-normal text-white tracking-tight mb-4">
           privacy policy.
         </h1>
+        <p className="text-sm text-neutral-500 mb-16">last updated: august 2026.</p>
 
         <div className="space-y-16">
           <section className="space-y-6">
@@ -31,6 +32,16 @@ export default function PrivacyPage() {
               <p>we collect essential shipping and billing details (name, address, email, phone number) to fulfill your order.</p>
               <p>payments are processed securely via stripe. CORE. does not store credit card or banking details.</p>
               <p>technical data, such as ip addresses and functional cookies, is collected to ensure optimal store performance.</p>
+            </div>
+          </section>
+
+          <hr className="border-white/10" />
+          
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">cookies & analytics.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>we use functional cookies to operate our store. in the future, we may use analytical tools (like google analytics) and marketing cookies to understand our traffic and improve our services.</p>
+              <p>you can manage or disable non-essential cookies through your browser settings at any time.</p>
             </div>
           </section>
 

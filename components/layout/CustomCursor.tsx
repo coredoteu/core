@@ -60,7 +60,7 @@ export default function CustomCursor() {
     <motion.div
       style={{ x: springX, y: springY }}
       animate={{ scale: isHovering ? 3 : 1, opacity: isHovering ? 0.3 : 1 }}
-      className="fixed top-0 left-0 w-2 h-2 bg-white rounded-[50%] pointer-events-none z-[100] mix-blend-difference"
+      className="fixed top-0 left-0 w-2 h-2 bg-white rounded-[50%] pointer-events-none z-[9999] mix-blend-difference"
     />
   );
 }

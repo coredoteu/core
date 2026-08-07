@@ -11,9 +11,10 @@ export default function RefundsPage() {
           back to home.
         </Link>
         
-        <h1 className="text-4xl font-normal text-white tracking-tight mb-16">
+        <h1 className="text-4xl font-normal text-white tracking-tight mb-4">
           returns & guarantee.
         </h1>
+        <p className="text-sm text-neutral-500 mb-16">last updated: august 2026.</p>
 
         <div className="space-y-16">
           <section className="space-y-6">

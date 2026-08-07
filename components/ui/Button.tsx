@@ -15,7 +15,7 @@ export function Button({
   className?: string;
 }) {
   const base =
-    "flex items-center justify-center gap-3 px-8 py-4 border text-sm tracking-[0.2em] lowercase transition-all duration-300 active:scale-[0.98] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2";
+    "flex items-center justify-center gap-3 px-8 py-4 border text-sm tracking-[0.2em] lowercase transition-all duration-300 active:scale-[0.98] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 cursor-pointer";
   const variants = {
     solid:
       "border-white bg-white text-[#0D0D0D] hover:bg-transparent hover:text-white focus-visible:outline-white",

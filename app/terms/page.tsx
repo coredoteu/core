@@ -11,11 +11,27 @@ export default function TermsPage() {
           back to home.
         </Link>
         
-        <h1 className="text-4xl font-normal text-white tracking-tight mb-16">
+        <h1 className="text-4xl font-normal text-white tracking-tight mb-4">
           terms of service.
         </h1>
+        <p className="text-sm text-neutral-500 mb-16">last updated: august 2026.</p>
 
         <div className="space-y-16">
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">company details.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>CORE. operates under the following details:</p>
+              <div className="space-y-1">
+                <p>business address: [business address placeholder]</p>
+                <p>kvk number: [kvk number placeholder]</p>
+                <p>vat number: [vat number placeholder]</p>
+                <p>email: <a href="mailto:contact@bycore.eu" className="text-white hover:underline transition-all">contact@bycore.eu</a></p>
+              </div>
+            </div>
+          </section>
+
+          <hr className="border-white/10" />
+
           <section className="space-y-6">
             <h2 className="text-xl text-white">applicability.</h2>
             <div className="space-y-4 leading-relaxed">
@@ -30,6 +46,15 @@ export default function TermsPage() {
             <div className="space-y-4 leading-relaxed">
               <p>prices are in eur (€) and include vat. shipping costs are excluded.</p>
               <p>all payments are processed securely via stripe.</p>
+            </div>
+          </section>
+
+          <hr className="border-white/10" />
+
+          <section className="space-y-6">
+            <h2 className="text-xl text-white">statutory right of withdrawal.</h2>
+            <div className="space-y-4 leading-relaxed">
+              <p>eu consumers have a statutory 14-day right of withdrawal. our 30-day risk-free guarantee extends and replaces this minimum legal requirement, giving you more time to decide.</p>
             </div>
           </section>
 
@@ -55,9 +80,10 @@ export default function TermsPage() {
           <hr className="border-white/10" />
 
           <section className="space-y-6">
-            <h2 className="text-xl text-white">governing law.</h2>
+            <h2 className="text-xl text-white">governing law & disputes.</h2>
             <div className="space-y-4 leading-relaxed">
               <p>these terms are governed by european union and dutch consumer laws.</p>
+              <p>the european commission provides a platform for consumer redress and dispute resolution bodies, available at <a href="https://consumer-redress.ec.europa.eu/dispute-resolution-bodies" target="_blank" rel="noopener noreferrer" className="text-white hover:underline transition-all">consumer-redress.ec.europa.eu</a>.</p>
             </div>
           </section>
         </div>
