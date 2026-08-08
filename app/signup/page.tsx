@@ -33,6 +33,9 @@ export default function SignupPage() {
     if (error) {
       setError(error.message);
       setState("idle");
+    } else if (data.user?.identities?.length === 0) {
+      setError("this email is already registered. sign in instead.");
+      setState("idle");
     } else if (data.session) {
       router.push("/account");
       router.refresh();
@@ -43,7 +46,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-[#0D0D0D] flex flex-col items-center justify-center px-6">
-      {}
+      { }
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -58,7 +61,7 @@ export default function SignupPage() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="relative z-10 w-full max-w-sm"
       >
-        {}
+        { }
         <div className="flex justify-center mb-10">
           <Link href="/" aria-label="CORE. home">
             <Image
@@ -81,7 +84,7 @@ export default function SignupPage() {
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="text-center"
             >
-              {}
+              { }
               <div className="flex justify-center mb-6">
                 <div className="w-12 h-12  border border-hairline bg-white/[0.03] flex items-center justify-center">
                   <svg
@@ -123,7 +126,7 @@ export default function SignupPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {}
+              { }
               <div className="mb-8">
                 <p className="text-[10px] font-mono tracking-[0.3em] text-text-faint lowercase mb-2">
                   new account
@@ -134,7 +137,7 @@ export default function SignupPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {}
+                { }
                 <div className="space-y-1.5">
                   <label
                     htmlFor="fullName"
@@ -154,7 +157,7 @@ export default function SignupPage() {
                   />
                 </div>
 
-                {}
+                { }
                 <div className="space-y-1.5">
                   <label
                     htmlFor="email"
@@ -174,7 +177,7 @@ export default function SignupPage() {
                   />
                 </div>
 
-                {}
+                { }
                 <div className="space-y-1.5">
                   <label
                     htmlFor="password"
@@ -195,7 +198,7 @@ export default function SignupPage() {
                   />
                 </div>
 
-                {}
+                { }
                 <AnimatePresence>
                   {error && (
                     <motion.div
@@ -212,7 +215,7 @@ export default function SignupPage() {
                   )}
                 </AnimatePresence>
 
-                {}
+                { }
                 <button
                   id="signup-submit"
                   type="submit"
@@ -248,7 +251,7 @@ export default function SignupPage() {
                 </button>
               </form>
 
-              {}
+              { }
               <div className="flex items-center gap-3 my-6">
                 <div className="flex-1 h-px bg-white/[0.06]" />
                 <span className="text-[10px] font-mono text-text-dim">or</span>
