@@ -79,7 +79,7 @@ export default function Home() {
 
           <div className="border border-white/20 bg-white/[0.02] p-8 md:p-14 relative">
             <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 flex items-center gap-2 text-[10px] font-mono tracking-[0.25em] text-white">
-              <Image src="/CORE_logo_trans.svg" alt="CORE." width={48} height={11} className="h-2.5 w-auto" /> spec
+              CORE. spec
             </span>
             <h3 className="mt-4 text-2xl md:text-3xl font-light text-white flex items-center gap-3">
               <Image src="/CORE_logo_trans.svg" alt="CORE." width={110} height={26} className="h-5 md:h-7 w-auto" /> engineered

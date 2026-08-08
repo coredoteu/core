@@ -27,24 +27,6 @@ const faqs = [
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const renderWithLogo = (text: string) => {
-    const parts = text.split(/(CORE\.)/i);
-    return parts.map((part, i) =>
-      part.toUpperCase() === "CORE." ? (
-        <Image
-          key={i}
-          src="/CORE_logo_trans.svg"
-          alt="CORE."
-          width={60}
-          height={14}
-          className="h-3 w-auto inline-block -translate-y-0.5"
-        />
-      ) : (
-        part
-      )
-    );
-  };
-
   const toggle = (i: number) => {
     setOpenIndex(openIndex === i ? null : i);
   };
@@ -60,10 +42,8 @@ export default function FaqSection() {
 
       <div className="mt-12 md:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20">
         <div className="lg:col-span-5">
-          <p className="text-text-muted text-sm lowercase leading-relaxed max-w-sm">
-            {renderWithLogo(
-              "frequently asked questions regarding our brand philosophy, sustainability standards, and the CORE. roadmap."
-            )}
+          <p className="text-text-muted text-sm leading-relaxed max-w-sm">
+            frequently asked questions regarding our brand philosophy, sustainability standards, and the CORE. roadmap.
           </p>
         </div>
 
@@ -74,8 +54,8 @@ export default function FaqSection() {
                 onClick={() => toggle(i)}
                 className="w-full py-6 flex items-center justify-between text-left group focus:outline-none"
               >
-                <span className="text-sm md:text-base text-white/80 lowercase group-hover:text-white transition-colors duration-300">
-                  {renderWithLogo(faq.q)}
+                <span className="text-sm md:text-base text-white/80 group-hover:text-white transition-colors duration-300">
+                  {faq.q}
                 </span>
                 <span className="ml-4 shrink-0 text-text-muted font-mono text-lg font-light">
                   {openIndex === i ? "−" : "+"}
@@ -90,8 +70,8 @@ export default function FaqSection() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <p className="pb-6 text-sm text-text-muted lowercase leading-relaxed max-w-prose">
-                      {renderWithLogo(faq.a)}
+                    <p className="pb-6 text-sm text-text-muted leading-relaxed max-w-prose">
+                      {faq.a}
                     </p>
                   </motion.div>
                 )}

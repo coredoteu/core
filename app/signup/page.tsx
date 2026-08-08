@@ -110,7 +110,7 @@ export default function SignupPage() {
               </h2>
               <p className="text-[12px] text-text-faint leading-relaxed mb-8">
                 we sent a confirmation link to{" "}
-                <span className="text-text-muted">{email}</span>. Open it to
+                <span className="text-text-muted">{email}</span>. open it to
                 activate your account.
               </p>
               <Link

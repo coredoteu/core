@@ -5,38 +5,38 @@ import { Icon } from "@/components/ui/Icon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const badges = [
-  { icon: "/icons/vegan.svg",        label: "vegan" },
-  { icon: "/icons/badge-check.svg",  label: "cruelty-free" },
-  { icon: "/icons/ban.svg",          label: "nut-free" },
-  { icon: "/icons/ban.svg",          label: "silicone free" },
-  { icon: "/icons/leaf.svg",         label: "ecocert cosmos natural" },
+  { icon: "/icons/vegan.svg", label: "vegan" },
+  { icon: "/icons/badge-check.svg", label: "cruelty-free" },
+  { icon: "/icons/ban.svg", label: "nut-free" },
+  { icon: "/icons/ban.svg", label: "silicone free" },
+  { icon: "/icons/leaf.svg", label: "ecocert cosmos natural" },
 ];
 
 const specs = [
-  { icon: "/icons/layers-minimalistic.svg", key: "volume",        value: "290ml x 2" },
-  { icon: "/icons/flask-conical.svg",       key: "ph range",      value: "4.5 - 5.5" },
-  { icon: "/icons/flower.svg",              key: "scent",         value: "juicy fruits & warm woods" },
-  { icon: "/icons/map-pin-check.svg",       key: "origin",        value: "netherlands / eu" },
-  { icon: "/icons/leaf.svg",                key: "certification", value: "ecocert cosmos, 98-99%" },
+  { icon: "/icons/layers-minimalistic.svg", key: "volume", value: "290ml x 2" },
+  { icon: "/icons/flask-conical.svg", key: "ph range", value: "4.5 - 5.5" },
+  { icon: "/icons/flower.svg", key: "scent", value: "juicy fruits & warm woods" },
+  { icon: "/icons/map-pin-check.svg", key: "origin", value: "netherlands / eu" },
+  { icon: "/icons/leaf.svg", key: "certification", value: "ecocert cosmos, 98-99%" },
 ];
 
 const shampooRitual = ["massage", "cleanse", "rinse"];
 const conditionerRitual = ["apply", "nourish", "rinse"];
 
 const shampooActives = [
-  { code: "sh.01", name: "ALOE BARBADENSIS LEAF JUICE", desc: "hydrates the scalp directly and calms irritation on contact." },
-  { code: "sh.02", name: "LAURYL & COCO-GLUCOSIDE CLEANSING BASE", desc: "mild coconut-derived cleansers that foam without stripping." },
-  { code: "sh.03", name: "CRAMBE MARITIMA (SEA KALE) LEAF EXTRACT", desc: "marine-derived antioxidant that supports scalp equilibrium." },
-  { code: "sh.04", name: "GINKGO BILOBA LEAF EXTRACT", desc: "organically farmed, supports micro-circulation at the follicle." },
-  { code: "sh.05", name: "ARCTIUM LAPPA (BURDOCK) ROOT EXTRACT", desc: "organically farmed, strengthens strand structure from the root." },
+  { code: "sh.01", name: "aloe barbadensis leaf juice", desc: "hydrates the scalp directly and calms irritation on contact." },
+  { code: "sh.02", name: "lauryl & coco-glucoside cleansing base", desc: "mild coconut-derived cleansers that foam without stripping." },
+  { code: "sh.03", name: "crambe maritima (sea kale) leaf extract", desc: "marine-derived antioxidant that supports scalp equilibrium." },
+  { code: "sh.04", name: "ginkgo biloba leaf extract", desc: "organically farmed, supports micro-circulation at the follicle." },
+  { code: "sh.05", name: "arctium lappa (burdock) root extract", desc: "organically farmed, strengthens strand structure from the root." },
 ];
 
 const conditionerActives = [
-  { code: "co.01", name: "HYDROLYZED WHEAT PROTEIN", desc: "rebuilds strand structure from the outside in." },
-  { code: "co.02", name: "ARGANIA SPINOSA (ARGAN) KERNEL OIL", desc: "organically farmed, deep lipid nourishment without weight." },
-  { code: "co.03", name: "ALOE BARBADENSIS LEAF JUICE", desc: "core hydration carried through from the shampoo step." },
-  { code: "co.04", name: "CRAMBE MARITIMA & BURDOCK ROOT EXTRACT", desc: "antioxidant support paired with root-level strength." },
-  { code: "co.05", name: "GINKGO BILOBA LEAF EXTRACT", desc: "organically farmed, closes the system with circulation support." },
+  { code: "co.01", name: "hydrolyzed wheat protein", desc: "rebuilds strand structure from the outside in." },
+  { code: "co.02", name: "argania spinosa (argan) kernel oil", desc: "organically farmed, deep lipid nourishment without weight." },
+  { code: "co.03", name: "aloe barbadensis leaf juice", desc: "core hydration carried through from the shampoo step." },
+  { code: "co.04", name: "crambe maritima & burdock root extract", desc: "antioxidant support paired with root-level strength." },
+  { code: "co.05", name: "ginkgo biloba leaf extract", desc: "organically farmed, closes the system with circulation support." },
 ];
 
 function RitualSteps({ steps }: { steps: string[] }) {
@@ -78,7 +78,7 @@ function IngredientList({
           <div key={item.code} className="flex flex-col gap-1.5 px-6 md:px-8 py-5">
             <div className="flex items-center gap-2">
               <Icon src="/icons/atom.svg" size={14} opacity={0.5} />
-              <span className="text-sm text-white uppercase tracking-wider">{item.name}</span>
+              <span className="text-sm text-white lowercase tracking-wider">{item.name}</span>
               <span className="ml-auto font-mono text-[10px] text-text-muted lowercase shrink-0">
                 {item.code}
               </span>
@@ -126,7 +126,7 @@ export default function SystemSpecSheet() {
             recommended
           </span>
           <span className="text-xs font-mono tracking-[0.2em] text-text-muted">system 001</span>
-          
+
           <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20">
             {/* Visual */}
             <div className="relative aspect-square w-full max-w-[280px] flex items-center justify-center">

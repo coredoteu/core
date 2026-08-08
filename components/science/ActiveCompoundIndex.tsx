@@ -32,11 +32,10 @@ export default function ActiveCompoundIndex() {
                 key={tab}
                 onClick={() => setFilter(tab)}
                 aria-pressed={filter === tab}
-                className={`flex-1 sm:flex-none px-4 sm:px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${
-                  filter === tab
+                className={`flex-1 sm:flex-none px-4 sm:px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${filter === tab
                     ? "bg-white text-background"
                     : "text-text-muted hover:text-white"
-                }`}
+                  }`}
               >
                 {tab === "all" ? "all actives" : `unit / ${tab}`}
               </button>
@@ -66,7 +65,7 @@ export default function ActiveCompoundIndex() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-sm text-white/90 uppercase tracking-wide leading-snug">
+                  <h3 className="text-sm text-white/90 lowercase tracking-wide leading-snug">
                     {active.name}
                   </h3>
                   <p className="text-xs text-text-muted lowercase leading-relaxed">

@@ -6,12 +6,12 @@ export default function TechnicalSpecsSection({ product }: { product: ProductPag
   const inciIngredients = product.inci.split(", ");
 
   const specRows = [
-    { icon: "/icons/scan.svg",                key: "INCI STANDARD",  value: "eu cosmetics regulation 1223/2009" },
-    { icon: "/icons/layers-minimalistic.svg", key: "VOLUME",         value: product.size },
-    { icon: "/icons/activity.svg",            key: "PH RANGE",       value: "4.5 - 5.5" },
-    { icon: "/icons/leaf.svg",                key: "NATURAL ORIGIN",  value: product.naturalOrigin },
-    { icon: "/icons/map-pin-check.svg",       key: "ORIGIN",         value: "netherlands / eu" },
-    { icon: "/icons/medal-star.svg",          key: "CERTIFICATION",  value: "ecocert cosmos natural" },
+    { icon: "/icons/scan.svg", key: "inci standard", value: "eu cosmetics regulation 1223/2009" },
+    { icon: "/icons/layers-minimalistic.svg", key: "volume", value: product.size },
+    { icon: "/icons/activity.svg", key: "ph range", value: "4.5 - 5.5" },
+    { icon: "/icons/leaf.svg", key: "natural origin", value: product.naturalOrigin },
+    { icon: "/icons/map-pin-check.svg", key: "origin", value: "netherlands / eu" },
+    { icon: "/icons/medal-star.svg", key: "certification", value: "ecocert cosmos natural" },
   ];
 
   return (
@@ -27,13 +27,12 @@ export default function TechnicalSpecsSection({ product }: { product: ProductPag
               {specRows.map((spec, i) => (
                 <div
                   key={spec.key}
-                  className={`flex items-start gap-4 px-5 py-4 ${
-                    i < specRows.length - 1 ? "border-b border-hairline" : ""
-                  }`}
+                  className={`flex items-start gap-4 px-5 py-4 ${i < specRows.length - 1 ? "border-b border-hairline" : ""
+                    }`}
                 >
                   <Icon src={spec.icon} size={12} opacity={0.2} className="mt-[3px]" />
                   <div className="flex flex-col gap-1">
-                    <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase">
+                    <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
                       {spec.key}
                     </span>
                     <span className="text-sm text-text-muted lowercase">{spec.value}</span>
@@ -45,7 +44,7 @@ export default function TechnicalSpecsSection({ product }: { product: ProductPag
             <div className="border border-hairline p-5 flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Icon src="/icons/wind.svg" size={12} opacity={0.2} />
-                <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase">
+                <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
                   SCENT PROFILE
                 </span>
               </div>
@@ -73,15 +72,14 @@ export default function TechnicalSpecsSection({ product }: { product: ProductPag
             <div className="border border-hairline">
               <div className="grid grid-cols-[auto_1fr] border-b border-hairline px-5 py-3 bg-white/[0.02]">
                 <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted w-10">#</span>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted">INGREDIENT</span>
+                <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">ingredient</span>
               </div>
 
               {inciIngredients.map((ing, i) => (
                 <div
                   key={i}
-                  className={`grid grid-cols-[auto_1fr] items-start gap-4 px-5 py-3 hover:bg-white/[0.015] transition-colors duration-200 ${
-                    i < inciIngredients.length - 1 ? "border-b border-white/[0.04]" : ""
-                  }`}
+                  className={`grid grid-cols-[auto_1fr] items-start gap-4 px-5 py-3 hover:bg-white/[0.015] transition-colors duration-200 ${i < inciIngredients.length - 1 ? "border-b border-white/[0.04]" : ""
+                    }`}
                 >
                   <span className="font-mono text-[10px] text-text-dim tabular-nums w-10 pt-px">
                     {String(i + 1).padStart(2, "0")}
