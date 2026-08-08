@@ -9,15 +9,19 @@ export default function ClinicalParameters() {
     <section className="py-20 md:py-32">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="mb-12 md:mb-16">
-          <SectionHeader index="04" title="clinical parameters" variant="compact" />
+          <SectionHeader
+            index="04"
+            title="clinical parameters"
+            variant="compact"
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-20">
           <div>
             <p className="text-sm text-text-muted lowercase leading-relaxed max-w-sm mb-10">
-              our products are built within strict clinical parameters. this
-              is the technical foundation of the v1 system. no compromises,
-              no exceptions.
+              our products are built within strict clinical parameters. this is
+              the technical foundation of the v1 system. no compromises, no
+              exceptions.
             </p>
 
             <div className="flex flex-col gap-4">
@@ -32,7 +36,9 @@ export default function ClinicalParameters() {
                       {spec.key}
                     </span>
                   </div>
-                  <span className="text-sm text-white/90 lowercase">{spec.value}</span>
+                  <span className="text-sm text-white/90 lowercase">
+                    {spec.value}
+                  </span>
                 </div>
               ))}
             </div>
@@ -44,7 +50,7 @@ export default function ClinicalParameters() {
                 <span className="font-mono text-xs tracking-[0.2em] text-text-muted lowercase">
                   certifications & standards
                 </span>
-                
+
                 <div className="grid grid-cols-2 gap-6">
                   {CORE_BADGES.map((badge) => (
                     <div key={badge.label} className="flex flex-col gap-3">

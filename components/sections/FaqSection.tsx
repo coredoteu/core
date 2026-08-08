@@ -34,7 +34,9 @@ export default function FaqSection() {
   return (
     <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline">
       <div className="flex items-center gap-4">
-        <span className="font-mono text-xs tracking-[0.2em] text-text-muted">06 //</span>
+        <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
+          06 //
+        </span>
         <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
           technical faq
         </h2>
@@ -43,7 +45,8 @@ export default function FaqSection() {
       <div className="mt-12 md:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20">
         <div className="lg:col-span-5">
           <p className="text-text-muted text-sm leading-relaxed max-w-sm">
-            frequently asked questions regarding our brand philosophy, sustainability standards, and the CORE. roadmap.
+            frequently asked questions regarding our brand philosophy,
+            sustainability standards, and the CORE. roadmap.
           </p>
         </div>
 

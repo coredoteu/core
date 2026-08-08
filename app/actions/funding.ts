@@ -12,8 +12,13 @@ export async function getFundingStats() {
       .single();
 
     if (error) {
-      console.error("Supabase Error (Funding Stats):", error.message, error.details, error.hint);
-      return { unlocked: 105, total: 250 }; // fallback
+      console.error(
+        "Supabase Error (Funding Stats):",
+        error.message,
+        error.details,
+        error.hint,
+      );
+      return { unlocked: 105, total: 250 };
     }
 
     if (data) {
@@ -22,6 +27,6 @@ export async function getFundingStats() {
   } catch (err) {
     console.error("Unexpected error fetching funding stats:", err);
   }
-  
-  return { unlocked: 105, total: 250 }; // fallback
+
+  return { unlocked: 105, total: 250 };
 }

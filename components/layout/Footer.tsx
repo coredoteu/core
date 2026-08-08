@@ -6,7 +6,11 @@ export default function Footer() {
     <footer className="w-full">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex-1 flex justify-center sm:justify-start">
-          <Link href="/" aria-label="CORE. home" className="flex items-baseline gap-3 group">
+          <Link
+            href="/"
+            aria-label="CORE. home"
+            className="flex items-baseline gap-3 group"
+          >
             <Image
               src="/CORE_logo_trans.svg"
               alt="CORE."

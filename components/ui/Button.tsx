@@ -25,14 +25,21 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={`${base} ${variants[variant]} ${className}`} onClick={onClick}>
+      <Link
+        href={href}
+        className={`${base} ${variants[variant]} ${className}`}
+        onClick={onClick}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button onClick={onClick} className={`${base} ${variants[variant]} ${className}`}>
+    <button
+      onClick={onClick}
+      className={`${base} ${variants[variant]} ${className}`}
+    >
       {children}
     </button>
   );

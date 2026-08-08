@@ -14,14 +14,11 @@ export async function joinWaitlist(formData: FormData) {
     return { error: "invalid email format" };
   }
 
-  // Insert email into Supabase waitlist table
-  const { error } = await supabase
-    .from("waitlist")
-    .insert([{ email }]);
+  const { error } = await supabase.from("waitlist").insert([{ email }]);
 
   if (error) {
     console.error("Supabase insert error:", error);
-    // 23505 is unique violation in Postgres
+
     if (error.code === "23505") {
       return { error: "already registered" };
     }

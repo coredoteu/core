@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
-import { getServerSession, createSupabaseServerClient } from "@/lib/supabase-server";
+import {
+  getServerSession,
+  createSupabaseServerClient,
+} from "@/lib/supabase-server";
 import { supabaseAdmin } from "@/lib/supabase";
 import SignOutButton from "@/components/account/SignOutButton";
 import type { Metadata } from "next";
@@ -8,8 +11,6 @@ export const metadata: Metadata = {
   title: "account - CORE.",
   description: "manage your CORE. account and order history.",
 };
-
-// ── Types ───────────────────────────────────────────────────────────────────
 
 interface OrderItem {
   id: string;
@@ -46,14 +47,14 @@ interface Order {
   order_items: OrderItem[];
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).toLowerCase();
+  return new Date(iso)
+    .toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+    .toLowerCase();
 }
 
 function formatCurrency(amount: number, currency: string) {
@@ -63,25 +64,21 @@ function formatCurrency(amount: number, currency: string) {
   }).format(amount);
 }
 
-function formatAddress(
-  details: Order["shipping_details"]
-): string | null {
+function formatAddress(details: Order["shipping_details"]): string | null {
   if (!details?.address) return null;
   const { line1, city, postal_code, country } = details.address;
   return [line1, city, postal_code, country].filter(Boolean).join(", ");
 }
 
-// ── Page ─────────────────────────────────────────────────────────────────────
-
 export default async function AccountPage() {
-  // 1. Auth guard
   const session = await getServerSession();
   if (!session) redirect("/login");
 
   const user = session.user;
   const email = user.email ?? "";
   const fullName =
-    (user.user_metadata?.full_name as string | undefined) ?? email.split("@")[0];
+    (user.user_metadata?.full_name as string | undefined) ??
+    email.split("@")[0];
   const initials = fullName
     .split(" ")
     .map((n: string) => n[0])
@@ -115,7 +112,7 @@ export default async function AccountPage() {
           image
         )
       )
-    `
+    `,
     )
     .eq("customer_email", email)
     .order("created_at", { ascending: false });
@@ -124,7 +121,7 @@ export default async function AccountPage() {
 
   return (
     <main className="min-h-screen bg-[#0D0D0D] pt-24 pb-20 px-6">
-      {/* Subtle top glow */}
+      {}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -134,17 +131,17 @@ export default async function AccountPage() {
       />
 
       <div className="relative z-10 max-w-3xl mx-auto space-y-12">
-        {/* ── Profile Header ─────────────────────────────────────────────── */}
+        {}
         <section>
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-5">
-              {/* Avatar */}
+              {}
               <div className="w-12 h-12  border border-hairline bg-white/[0.03] flex items-center justify-center shrink-0">
                 <span className="text-xs font-mono text-text-muted tracking-wider">
                   {initials}
                 </span>
               </div>
-              {/* Name + email */}
+              {}
               <div>
                 <div className="flex items-center gap-2.5 mb-0.5">
                   <h1 className="text-base font-light text-white/90 tracking-tight lowercase">
@@ -160,11 +157,11 @@ export default async function AccountPage() {
             <SignOutButton />
           </div>
 
-          {/* Divider */}
+          {}
           <div className="mt-8 h-px bg-white/[0.06]" />
         </section>
 
-        {/* ── Order History ───────────────────────────────────────────────── */}
+        {}
         <section>
           <div className="mb-6">
             <p className="text-[10px] font-mono tracking-[0.3em] text-text-faint lowercase mb-1">
@@ -183,7 +180,6 @@ export default async function AccountPage() {
           </div>
 
           {safeOrders.length === 0 ? (
-            /* Empty state */
             <div className="border border-hairline  px-6 py-10 text-center">
               <p className="text-[11px] font-mono text-text-dim lowercase tracking-wider">
                 your orders will appear here
@@ -204,7 +200,7 @@ export default async function AccountPage() {
                     key={order.id}
                     className="border border-hairline  bg-white/[0.01] hover:bg-white/[0.02] transition-colors duration-300"
                   >
-                    {/* Order header */}
+                    {}
                     <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-hairline">
                       <div>
                         <p className="text-[9px] font-mono tracking-[0.25em] text-text-dim lowercase mb-1">
@@ -215,18 +211,18 @@ export default async function AccountPage() {
                         </p>
                       </div>
                       <div className="flex items-center gap-3 shrink-0">
-                        {/* Payment status pill */}
+                        {}
                         <span className="text-[9px] font-mono tracking-[0.2em] text-white border-white/30 bg-white/[0.04] px-2 py-0.5 border lowercase">
                           status / {order.payment_status}
                         </span>
-                        {/* Total */}
+                        {}
                         <span className="text-sm font-light text-white/80">
                           {formatCurrency(order.amount_total, order.currency)}
                         </span>
                       </div>
                     </div>
 
-                    {/* Items */}
+                    {}
                     <div className="px-5 py-4 space-y-3">
                       {order.order_items.map((item) => (
                         <div
@@ -234,7 +230,7 @@ export default async function AccountPage() {
                           className="flex items-center justify-between gap-4"
                         >
                           <div className="flex items-center gap-3">
-                            {/* Quantity badge */}
+                            {}
                             <span className="text-[9px] font-mono text-text-faint bg-white/[0.04] border border-hairline  w-6 h-6 flex items-center justify-center shrink-0">
                               {item.quantity}
                             </span>
@@ -250,13 +246,16 @@ export default async function AccountPage() {
                             </div>
                           </div>
                           <span className="text-[12px] font-mono text-text-faint shrink-0">
-                            {formatCurrency(item.price_at_purchase, order.currency)}
+                            {formatCurrency(
+                              item.price_at_purchase,
+                              order.currency,
+                            )}
                           </span>
                         </div>
                       ))}
                     </div>
 
-                    {/* Shipping address */}
+                    {}
                     {address && (
                       <div className="px-5 pb-4 pt-1">
                         <p className="text-[9px] font-mono tracking-[0.2em] text-text-dim lowercase mb-1">

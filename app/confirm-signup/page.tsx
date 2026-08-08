@@ -3,9 +3,6 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-
-// ─── Loading skeleton ─────────────────────────────────────────────────────────
-
 function LoaderState() {
   return (
     <div className="flex flex-col items-center justify-center gap-6 py-20">
@@ -24,15 +21,11 @@ function LoaderState() {
   );
 }
 
-// ─── Error state ──────────────────────────────────────────────────────────────
-
 function InvalidLinkState() {
   return (
     <div className="flex flex-col gap-5 border border-white/10 p-8 md:p-12 max-w-md w-full bg-white/[0.018]">
-      {/* mono tag */}
-      <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 lowercase">
-        // error
-      </span>
+      {}
+      <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 lowercase"></span>
 
       <h1 className="text-2xl font-extralight text-white lowercase tracking-tight">
         invalid link.
@@ -45,8 +38,6 @@ function InvalidLinkState() {
   );
 }
 
-// ─── Main content ─────────────────────────────────────────────────────────────
-
 function ConfirmSignupContent() {
   const searchParams = useSearchParams();
   const confirmationUrl = searchParams.get("confirmation_url");
@@ -57,23 +48,21 @@ function ConfirmSignupContent() {
 
   return (
     <div className="flex flex-col gap-6 border border-white/10 p-8 md:p-12 max-w-md w-full bg-white/[0.018]">
-      {/* mono tag */}
-      <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 lowercase">
-        // verification required
-      </span>
+      {}
+      <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 lowercase"></span>
 
-      {/* header */}
+      {}
       <h1 className="text-3xl md:text-4xl font-extralight text-white lowercase tracking-tight">
         almost there.
       </h1>
 
-      {/* body copy */}
+      {}
       <p className="font-mono text-xs text-white/45 leading-relaxed lowercase">
         click the button below to confirm your email address and activate your
         core. account.
       </p>
 
-      {/* CTA */}
+      {}
       <a
         id="cta-confirm-email"
         href={confirmationUrl}
@@ -85,14 +74,10 @@ function ConfirmSignupContent() {
   );
 }
 
-// ─── Page shell ───────────────────────────────────────────────────────────────
-
 export default function ConfirmSignupPage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-
-
-      {/* centred layout */}
+      {}
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-6">
         <Suspense fallback={<LoaderState />}>
           <ConfirmSignupContent />

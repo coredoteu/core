@@ -5,39 +5,40 @@ import { useCart, CartProduct } from "@/context/CartContext";
 import { Icon } from "@/components/ui/Icon";
 import { STORE_CONFIG, PRICING } from "@/lib/storeConfig";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export type BatchPhase = "preorder" | "buffer" | "soldout";
 
 export interface BatchCartSectionProps {
-  /** Product ID used to resolve dynamic pricing */
   productId: string;
-  /** Controls which purchasing state is rendered. Defaults to global store phase */
+
   phase?: BatchPhase;
-  /** CartProduct to add to the cart (preorder or buffer phases) */
+
   product?: CartProduct;
-  /** Remaining stock units — defaults to global store config */
+
   stockCount?: number;
-  /** Pre-order close date label, defaults to global store config */
+
   closeDate?: string;
-  /** Estimated shipping label, defaults to global store config */
+
   shipDate?: string;
-  /** Optional extra Tailwind classes applied to the root wrapper */
+
   className?: string;
 }
 
-// ─── Internal button animation type ──────────────────────────────────────────
-
 type ButtonStatus = "idle" | "adding" | "success";
 
-// ─── Sub-component: Price Display ─────────────────────────────────────────────
-
-function PriceDisplay({ phase, productId }: { phase: BatchPhase, productId: string }) {
+function PriceDisplay({
+  phase,
+  productId,
+}: {
+  phase: BatchPhase;
+  productId: string;
+}) {
   const pricing = PRICING[productId];
   if (!pricing) return null;
 
   if (phase === "buffer") {
-    const savings = pricing.valuePrice ? (pricing.valuePrice - pricing.regularPrice).toFixed(2) : null;
+    const savings = pricing.valuePrice
+      ? (pricing.valuePrice - pricing.regularPrice).toFixed(2)
+      : null;
     return (
       <div className="flex items-baseline gap-3 flex-wrap">
         <span
@@ -63,7 +64,6 @@ function PriceDisplay({ phase, productId }: { phase: BatchPhase, productId: stri
     );
   }
 
-  // preorder & soldout: show active preorder price and struck through regular / value prices
   const activeAriaLabel =
     phase === "preorder"
       ? `early bird price: €${pricing.preorderPrice.toFixed(2)}`
@@ -100,8 +100,6 @@ function PriceDisplay({ phase, productId }: { phase: BatchPhase, productId: stri
   );
 }
 
-// ─── Sub-component: Subtext ───────────────────────────────────────────────────
-
 function Subtext({
   phase,
   stockCount,
@@ -116,8 +114,7 @@ function Subtext({
   if (phase === "preorder") {
     return (
       <p className="font-mono text-xs text-text-muted leading-relaxed">
-        pre-orders close on {closeDate}.{" "}
-        estimated shipping: {shipDate}.
+        pre-orders close on {closeDate}. estimated shipping: {shipDate}.
       </p>
     );
   }
@@ -139,16 +136,13 @@ function Subtext({
     );
   }
 
-  // soldout
   return (
     <p className="font-mono text-xs text-text-muted leading-relaxed">
-      batch 01 completely sold out. reserve now for batch 02{" "}
-      (shipping mid-september).
+      batch 01 completely sold out. reserve now for batch 02 (shipping
+      mid-september).
     </p>
   );
 }
-
-// ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function BatchCartSection({
   productId,
@@ -165,12 +159,10 @@ export default function BatchCartSection({
 
   const pricing = PRICING[productId];
 
-  // Cleanup any pending timeouts on unmount
   useEffect(() => {
     return () => timeoutRefs.current.forEach(clearTimeout);
   }, []);
 
-  // Reset animation state whenever phase changes
   useEffect(() => {
     setBtnStatus("idle");
   }, [phase]);
@@ -179,8 +171,8 @@ export default function BatchCartSection({
     if (!product || btnStatus === "adding") return;
     setBtnStatus("adding");
 
-    // Override the product price with the correct phase price before adding to cart
-    const activePrice = phase === "buffer" ? pricing?.regularPrice : pricing?.preorderPrice;
+    const activePrice =
+      phase === "buffer" ? pricing?.regularPrice : pricing?.preorderPrice;
     const cartProduct: CartProduct = {
       ...product,
       price: activePrice ?? product.price,
@@ -194,8 +186,6 @@ export default function BatchCartSection({
     }, 350);
     timeoutRefs.current.push(t1);
   }
-
-  // ── Per-phase button configuration ────────────────────────────────────────
 
   const isCartAction = phase !== "soldout";
 
@@ -232,7 +222,6 @@ export default function BatchCartSection({
 
   return (
     <div className={`flex flex-col space-y-4 ${className}`}>
-
       {/* ── Price display ─────────────────────────────────────────────────── */}
       <PriceDisplay phase={phase} productId={productId} />
 
@@ -279,7 +268,7 @@ export default function BatchCartSection({
         )}
       </button>
 
-      {/* ── Phase subtext ─────────────────────────────────────────────────── */}
+      {}
       <Subtext
         phase={phase}
         stockCount={stockCount}
@@ -289,4 +278,3 @@ export default function BatchCartSection({
     </div>
   );
 }
-

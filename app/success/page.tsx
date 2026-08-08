@@ -7,8 +7,6 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { CATALOG } from "@/lib/catalog";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface OrderDetail {
   id: string;
   stripe_session_id: string;
@@ -36,8 +34,6 @@ interface OrderDetail {
   }[];
 }
 
-// ─── Loader ───────────────────────────────────────────────────────────────────
-
 function LoaderState() {
   return (
     <div className="flex flex-col items-center justify-center py-32 gap-6">
@@ -61,8 +57,6 @@ function LoaderState() {
   );
 }
 
-// ─── Row helper ───────────────────────────────────────────────────────────────
-
 function DataRow({
   label,
   value,
@@ -77,12 +71,12 @@ function DataRow({
       <span className="text-[10px] font-mono tracking-[0.2em] text-text-faint lowercase">
         {label}
       </span>
-      <span className={`text-xs font-mono ${valueClass} lowercase`}>{value}</span>
+      <span className={`text-xs font-mono ${valueClass} lowercase`}>
+        {value}
+      </span>
     </div>
   );
 }
-
-// ─── Main content ─────────────────────────────────────────────────────────────
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -95,7 +89,6 @@ function SuccessContent() {
   const [syncError, setSyncError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Clear cart exactly once — not reactive to clearCart reference changes
     if (!cartCleared.current) {
       clearCart();
       cartCleared.current = true;
@@ -113,7 +106,7 @@ function SuccessContent() {
       try {
         const res = await fetch(
           `/api/orders/confirm?session_id=${encodeURIComponent(sessionId!)}`,
-          { cache: "no-store" }
+          { cache: "no-store" },
         );
         const data = await res.json();
 
@@ -122,7 +115,6 @@ function SuccessContent() {
         if (res.ok && data.order) {
           setOrder(data.order);
         } else {
-          // Payment was captured by Stripe even if DB sync fails
           setSyncError(data.error || "order details unavailable.");
         }
       } catch (err: unknown) {
@@ -138,12 +130,10 @@ function SuccessContent() {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   if (loading) return <LoaderState />;
 
-  // ── No session at all ────────────────────────────────────────────────────
   if (!sessionId) {
     return (
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
@@ -170,7 +160,6 @@ function SuccessContent() {
     );
   }
 
-  // ── Payment confirmed / DB sync failed (non-blocking) ────────────────────
   if (syncError && !order) {
     return (
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
@@ -227,22 +216,22 @@ function SuccessContent() {
     );
   }
 
-  // ── Full success with order data ─────────────────────────────────────────
   const hasItems = order?.order_items && order.order_items.length > 0;
   const orderRef = order?.id ? order.id.slice(0, 8).toUpperCase() : "—";
   const createdAt = order?.created_at
-    ? new Date(order.created_at).toLocaleDateString("en-GB", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      }).toLowerCase()
+    ? new Date(order.created_at)
+        .toLocaleDateString("en-GB", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+        .toLowerCase()
     : null;
 
   return (
     <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
       <div className="flex flex-col gap-14">
-
-        {/* ── Page header ────────────────────────────────────────────────── */}
+        {}
         <div className="flex flex-col gap-5 border-b border-hairline pb-10">
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5">
@@ -278,13 +267,11 @@ function SuccessContent() {
           </p>
         </div>
 
-        {/* ── Two-column grid ────────────────────────────────────────────── */}
+        {}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-
-          {/* Left: order details */}
+          {}
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-
-            {/* Reference panel */}
+            {}
             <div className="border border-hairline bg-white/[0.018]">
               <div className="px-6 py-4 border-b border-hairline flex items-center justify-between">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
@@ -320,7 +307,7 @@ function SuccessContent() {
               </div>
             </div>
 
-            {/* Shipping address panel */}
+            {}
             {order?.shipping_details && (
               <div className="border border-hairline bg-white/[0.018]">
                 <div className="px-6 py-4 border-b border-hairline">
@@ -360,7 +347,7 @@ function SuccessContent() {
               </div>
             )}
 
-            {/* Items panel */}
+            {}
             <div className="border border-hairline bg-white/[0.018]">
               <div className="px-6 py-4 border-b border-hairline">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
@@ -371,9 +358,9 @@ function SuccessContent() {
                 {hasItems ? (
                   order!.order_items!.map((item) => {
                     const catalogItem = CATALOG.find(
-                      (c) => c.id === item.product_id
+                      (c) => c.id === item.product_id,
                     );
-                    // price_at_purchase is stored as unit price per item
+
                     const unitPrice = item.price_at_purchase;
                     const lineTotal = item.price_at_purchase * item.quantity;
 
@@ -384,12 +371,15 @@ function SuccessContent() {
                       >
                         <div className="flex flex-col gap-1 min-w-0">
                           <span className="text-sm font-light text-white lowercase leading-snug">
-                            <span className="font-normal not-lowercase">CORE.</span>{" "}
+                            <span className="font-normal not-lowercase">
+                              CORE.
+                            </span>{" "}
                             {catalogItem?.name ?? item.product_id}
                           </span>
                           <span className="font-mono text-[10px] text-white/35 lowercase">
                             {catalogItem?.unit && `${catalogItem.unit} / `}
-                            qty: {item.quantity} &times; &euro;{unitPrice.toFixed(2)}
+                            qty: {item.quantity} &times; &euro;
+                            {unitPrice.toFixed(2)}
                           </span>
                         </div>
                         <span className="font-mono text-sm text-white tabular-nums shrink-0">
@@ -413,10 +403,9 @@ function SuccessContent() {
             </div>
           </div>
 
-          {/* Right: summary + actions */}
+          {}
           <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-4">
-
-            {/* Summary card */}
+            {}
             <div className="border border-hairline bg-white/[0.018]">
               <div className="px-6 py-4 border-b border-hairline">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
@@ -451,7 +440,7 @@ function SuccessContent() {
               </div>
             </div>
 
-            {/* Session ID micro-panel */}
+            {}
             <div className="border border-hairline px-5 py-4 flex flex-col gap-1.5">
               <span className="font-mono text-[9px] tracking-[0.25em] text-text-dim lowercase">
                 stripe session
@@ -461,7 +450,7 @@ function SuccessContent() {
               </p>
             </div>
 
-            {/* CTAs */}
+            {}
             <div className="flex flex-col gap-2.5 pt-2">
               <Link
                 id="cta-continue-shopping"
@@ -479,7 +468,7 @@ function SuccessContent() {
               </Link>
             </div>
 
-            {/* What happens next */}
+            {}
             <div className="border border-hairline px-5 py-5 flex flex-col gap-4 mt-2">
               <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                 what happens next
@@ -508,12 +497,9 @@ function SuccessContent() {
   );
 }
 
-// ─── Page shell ───────────────────────────────────────────────────────────────
-
 export default function SuccessPage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-
       <Suspense
         fallback={
           <div className="flex items-center justify-center min-h-[60vh]">

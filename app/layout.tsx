@@ -26,7 +26,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://bycore.eu"),
   openGraph: {
     title: "CORE. - technical, high-performance hair care",
-    description: "CORE. is a stealth, engineered hair care brand. technical, high-performance formulas refined for scalp and strand perfection.",
+    description:
+      "CORE. is a stealth, engineered hair care brand. technical, high-performance formulas refined for scalp and strand perfection.",
     url: "https://bycore.eu",
     siteName: "CORE.",
     locale: "en_US",
@@ -35,7 +36,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "CORE. - technical, high-performance hair care",
-    description: "CORE. is a stealth, engineered hair care brand. technical, high-performance formulas refined for scalp and strand perfection.",
+    description:
+      "CORE. is a stealth, engineered hair care brand. technical, high-performance formulas refined for scalp and strand perfection.",
   },
   icons: {
     icon: [
@@ -81,9 +83,9 @@ export default function RootLayout({
               description: "technical, high-performance hair care",
               sameAs: [
                 "https://instagram.com/bycore.eu",
-                "https://twitter.com/bycore_eu"
-              ]
-            })
+                "https://twitter.com/bycore_eu",
+              ],
+            }),
           }}
         />
         <script
@@ -93,8 +95,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "CORE.",
-              url: "https://bycore.eu"
-            })
+              url: "https://bycore.eu",
+            }),
           }}
         />
         <Providers>

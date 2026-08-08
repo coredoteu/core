@@ -10,20 +10,27 @@ export default function ActiveCompoundIndex() {
   const [filter, setFilter] = useState<"all" | Unit>("all");
 
   const visibleActives = CORE_ACTIVES.filter(
-    (a) => filter === "all" || a.units.includes(filter)
+    (a) => filter === "all" || a.units.includes(filter),
   );
 
   return (
-    <section id="actives" className="border-t border-hairline py-16 md:py-24 bg-white/[0.015] scroll-mt-24">
+    <section
+      id="actives"
+      className="border-t border-hairline py-16 md:py-24 bg-white/[0.015] scroll-mt-24"
+    >
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="mb-10 md:mb-14">
-          <SectionHeader index="03" title="active compound index" variant="compact" />
+          <SectionHeader
+            index="03"
+            title="active compound index"
+            variant="compact"
+          />
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
           <p className="text-sm text-text-muted lowercase leading-relaxed max-w-md">
-            six core actives, shared and split across the duo system. filter
-            by unit to see exactly what is in each formula.
+            six core actives, shared and split across the duo system. filter by
+            unit to see exactly what is in each formula.
           </p>
 
           <div className="flex items-center border border-hairline p-1 w-full sm:w-auto overflow-x-auto">
@@ -32,10 +39,11 @@ export default function ActiveCompoundIndex() {
                 key={tab}
                 onClick={() => setFilter(tab)}
                 aria-pressed={filter === tab}
-                className={`flex-1 sm:flex-none px-4 sm:px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${filter === tab
+                className={`flex-1 sm:flex-none px-4 sm:px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${
+                  filter === tab
                     ? "bg-white text-background"
                     : "text-text-muted hover:text-white"
-                  }`}
+                }`}
               >
                 {tab === "all" ? "all actives" : `unit / ${tab}`}
               </button>

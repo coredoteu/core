@@ -9,7 +9,11 @@ const logLines = [
   { id: "L01", text: "project_codename: void", redact: false },
   { id: "L02", text: "edition: stealth black", redact: false },
   { id: "L03", text: "tooling_status: [████████████]", redact: false },
-  { id: "L04", text: "formula_lock: pending v1 funding threshold", redact: false },
+  {
+    id: "L04",
+    text: "formula_lock: pending v1 funding threshold",
+    redact: false,
+  },
   { id: "L05", text: "clearance: restricted", redact: true },
   { id: "L06", text: "est. drop: q4 // undisclosed", redact: false },
 ];
@@ -22,7 +26,11 @@ const statusNodes = [
 
 export default function V2SneakPeek() {
   const [isHovered, setIsHovered] = useState(false);
-  const [funding, setFunding] = useState({ unlocked: 105, total: 250, isLoading: true });
+  const [funding, setFunding] = useState({
+    unlocked: 105,
+    total: 250,
+    isLoading: true,
+  });
 
   useEffect(() => {
     async function loadStats() {
@@ -35,18 +43,21 @@ export default function V2SneakPeek() {
   const percentage = Math.round((funding.unlocked / funding.total) * 100);
 
   return (
-    <section id="roadmap" className="border-b border-hairline bg-[#0D0D0D] overflow-hidden">
+    <section
+      id="roadmap"
+      className="border-b border-hairline bg-[#0D0D0D] overflow-hidden"
+    >
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36">
-
         <div className="flex items-center gap-4">
-          <span className="font-mono text-xs tracking-[0.2em] text-text-muted">07 //</span>
+          <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
+            07 //
+          </span>
           <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
             what comes next
           </h2>
         </div>
 
         <div className="mt-12 md:mt-20 grid grid-cols-1 lg:grid-cols-2 border border-hairline">
-
           <div className="border-b lg:border-b-0 lg:border-r border-hairline flex flex-col">
             <div className="flex items-center justify-between px-6 md:px-8 py-4 border-b border-hairline bg-white/[0.02]">
               <div className="flex items-center gap-3">
@@ -119,8 +130,10 @@ export default function V2SneakPeek() {
               <div
                 className="relative z-10 w-40 md:w-52 aspect-[1/2.4] -rotate-12 scale-110 transition-transform duration-[2000ms] hover:-rotate-6 hover:scale-125 ease-out"
                 style={{
-                  maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
-                  WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+                  maskImage:
+                    "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
                 }}
               >
                 <Image
@@ -160,7 +173,10 @@ export default function V2SneakPeek() {
                   <span className="text-white">{percentage}%</span>
                 </div>
                 <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                  <div className={`h-full bg-white relative transition-all duration-1000 ease-out ${funding.isLoading ? "animate-pulse opacity-50" : ""}`} style={{ width: `${percentage}%` }}>
+                  <div
+                    className={`h-full bg-white relative transition-all duration-1000 ease-out ${funding.isLoading ? "animate-pulse opacity-50" : ""}`}
+                    style={{ width: `${percentage}%` }}
+                  >
                     <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                   </div>
                 </div>
@@ -173,8 +189,10 @@ export default function V2SneakPeek() {
                 id="v2-waitlist-cta"
                 aria-label="join the v2 waitlist"
                 onClick={() => {
-                  document.getElementById("waitlist-section")?.scrollIntoView({ behavior: "smooth" });
-                  // Focus the email input after scrolling
+                  document
+                    .getElementById("waitlist-section")
+                    ?.scrollIntoView({ behavior: "smooth" });
+
                   setTimeout(() => {
                     document.getElementById("waitlist-email")?.focus();
                   }, 500);
@@ -208,7 +226,6 @@ export default function V2SneakPeek() {
               </p>
             </div>
           </div>
-
         </div>
 
         <V2IngredientsGrid />
@@ -227,9 +244,16 @@ function CrosshairCorners() {
   return (
     <>
       {corners.map((pos, i) => (
-        <span key={i} className={`absolute ${pos} z-20 pointer-events-none opacity-20`}>
+        <span
+          key={i}
+          className={`absolute ${pos} z-20 pointer-events-none opacity-20`}
+        >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M0 6H5M6 0V5M6 7V12M7 6H12" stroke="white" strokeWidth="0.75" />
+            <path
+              d="M0 6H5M6 0V5M6 7V12M7 6H12"
+              stroke="white"
+              strokeWidth="0.75"
+            />
           </svg>
         </span>
       ))}

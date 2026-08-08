@@ -10,17 +10,15 @@ import React, {
   ReactNode,
 } from "react";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 export interface CartProduct {
   id: string;
-  name: string;       // e.g. "daily balancing shampoo"
-  brand: string;      // always "CORE."
-  size: string;       // e.g. "290 ml / 9.81 fl oz"
-  function: string;   // e.g. "cleanse & scalp equilibrium"
-  price: number;      // in EUR
-  image: string;      // path relative to /public
-  unit: string;       // e.g. "unit 01"
+  name: string;
+  brand: string;
+  size: string;
+  function: string;
+  price: number;
+  image: string;
+  unit: string;
 }
 
 export interface CartItem {
@@ -42,11 +40,7 @@ interface CartContextType {
   clearCart: () => void;
 }
 
-// ─── Context ─────────────────────────────────────────────────────────────────
-
 const CartContext = createContext<CartContextType | undefined>(undefined);
-
-// ─── Provider ────────────────────────────────────────────────────────────────
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -56,19 +50,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       const saved = localStorage.getItem("core-cart");
       if (saved) setItems(JSON.parse(saved));
-    } catch { /* corrupted/missing — start empty */ }
+    } catch {}
   }, []);
 
   useEffect(() => {
     try {
       localStorage.setItem("core-cart", JSON.stringify(items));
-    } catch { /* storage unavailable (private mode, quota) — fail silently */ }
+    } catch {}
   }, [items]);
 
-  const itemCount = useMemo(() => items.reduce((sum, i) => sum + i.quantity, 0), [items]);
+  const itemCount = useMemo(
+    () => items.reduce((sum, i) => sum + i.quantity, 0),
+    [items],
+  );
   const subtotal = useMemo(
     () => items.reduce((sum, i) => sum + i.product.price * i.quantity, 0),
-    [items]
+    [items],
   );
 
   const openDrawer = useCallback(() => setIsDrawerOpen(true), []);
@@ -80,9 +77,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const existing = prev.find((i) => i.product.id === product.id);
       if (existing) {
         return prev.map((i) =>
-          i.product.id === product.id
-            ? { ...i, quantity: i.quantity + 1 }
-            : i
+          i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i,
         );
       }
       return [...prev, { product, quantity: 1 }];
@@ -94,36 +89,49 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => prev.filter((i) => i.product.id !== productId));
   }, []);
 
-  const updateQuantity = useCallback(
-    (productId: string, quantity: number) => {
-      if (quantity < 1) {
-        setItems((prev) => prev.filter((i) => i.product.id !== productId));
-        return;
-      }
-      setItems((prev) =>
-        prev.map((i) =>
-          i.product.id === productId ? { ...i, quantity } : i
-        )
-      );
-    },
-    []
-  );
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
+    if (quantity < 1) {
+      setItems((prev) => prev.filter((i) => i.product.id !== productId));
+      return;
+    }
+    setItems((prev) =>
+      prev.map((i) => (i.product.id === productId ? { ...i, quantity } : i)),
+    );
+  }, []);
 
   const clearCart = useCallback(() => setItems([]), []);
 
   const value = useMemo(
-    () => ({ items, itemCount, subtotal, isDrawerOpen, openDrawer, closeDrawer, toggleDrawer, addItem, removeItem, updateQuantity, clearCart }),
-    [items, itemCount, subtotal, isDrawerOpen, openDrawer, closeDrawer, toggleDrawer, addItem, removeItem, updateQuantity, clearCart]
+    () => ({
+      items,
+      itemCount,
+      subtotal,
+      isDrawerOpen,
+      openDrawer,
+      closeDrawer,
+      toggleDrawer,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+    }),
+    [
+      items,
+      itemCount,
+      subtotal,
+      isDrawerOpen,
+      openDrawer,
+      closeDrawer,
+      toggleDrawer,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+    ],
   );
 
-  return (
-    <CartContext.Provider value={value}>
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useCart() {
   const context = useContext(CartContext);

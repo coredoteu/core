@@ -10,11 +10,17 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
   return (
     <div className="flex flex-col gap-8">
       <nav className="flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-text-muted">
-        <Link href="/" className="hover:text-white/60 transition-colors duration-200">
+        <Link
+          href="/"
+          className="hover:text-white/60 transition-colors duration-200"
+        >
           home
         </Link>
         <span>/</span>
-        <Link href="/shop" className="hover:text-white/60 transition-colors duration-200">
+        <Link
+          href="/shop"
+          className="hover:text-white/60 transition-colors duration-200"
+        >
           shop
         </Link>
         <span>/</span>
@@ -43,10 +49,22 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
 
       <div className="grid grid-cols-2 gap-px border border-hairline">
         {[
-          { icon: "/icons/layers-minimalistic.svg", label: "volume",       value: product.size },
-          { icon: "/icons/wind.svg",                label: "scent profile", value: product.scent },
-          { icon: "/icons/leaf.svg",                label: "natural origin",value: product.naturalOrigin },
-          { icon: "/icons/atom.svg",                label: "system",        value: product.function },
+          {
+            icon: "/icons/layers-minimalistic.svg",
+            label: "volume",
+            value: product.size,
+          },
+          {
+            icon: "/icons/wind.svg",
+            label: "scent profile",
+            value: product.scent,
+          },
+          {
+            icon: "/icons/leaf.svg",
+            label: "natural origin",
+            value: product.naturalOrigin,
+          },
+          { icon: "/icons/atom.svg", label: "system", value: product.function },
         ].map((spec, i) => (
           <div
             key={spec.label}
@@ -60,7 +78,9 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
                 {spec.label}
               </span>
             </div>
-            <span className="text-sm text-text-muted lowercase">{spec.value}</span>
+            <span className="text-sm text-text-muted lowercase">
+              {spec.value}
+            </span>
           </div>
         ))}
       </div>
@@ -85,7 +105,12 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
       </div>
 
       <div className="border border-hairline p-4 flex items-start gap-3">
-        <Icon src="/icons/target.svg" size={14} opacity={0.2} className="mt-0.5" />
+        <Icon
+          src="/icons/target.svg"
+          size={14}
+          opacity={0.2}
+          className="mt-0.5"
+        />
         <div className="flex flex-col gap-1">
           <span className="font-mono text-[10px] tracking-[0.2em] text-text-muted lowercase">
             designed for

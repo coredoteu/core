@@ -16,9 +16,9 @@ export default function ScienceContent() {
       <section className="pt-28 md:pt-36 pb-16 md:pb-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-text-muted pb-8 md:pb-14 border-b border-hairline">
-            <span>CORE. {"//"}  formulation index</span>
+            <span>CORE. {"//"} formulation index</span>
             <span className="hidden sm:inline">technical hair care.</span>
-            <span>ph 4.5 {"//"}  5.5</span>
+            <span>ph 4.5 {"//"} 5.5</span>
           </div>
 
           <div className="pt-12 md:pt-16 flex flex-col gap-6 max-w-3xl">
@@ -38,7 +38,9 @@ export default function ScienceContent() {
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <Button href="/shop" variant="solid">shop the duo</Button>
+            <Button href="/shop" variant="solid">
+              shop the duo
+            </Button>
             <a
               href="#actives"
               className="flex items-center justify-center px-8 py-4 border border-white/20 text-sm tracking-[0.2em] lowercase text-text-muted hover:text-white hover:border-white/40 active:scale-[0.98] transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 focus-visible:outline-offset-2"
@@ -52,7 +54,11 @@ export default function ScienceContent() {
       <section className="border-t border-hairline py-16 md:py-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="mb-10 md:mb-14">
-            <SectionHeader index="02" title="formulation philosophy" variant="compact" />
+            <SectionHeader
+              index="02"
+              title="formulation philosophy"
+              variant="compact"
+            />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-white/10 border border-hairline">
@@ -73,26 +79,33 @@ export default function ScienceContent() {
                 desc: "formulated inside the scalp's natural 4.5 to 5.5 range, so the barrier is supported, not stripped.",
               },
             ].map((card) => (
-              <div key={card.title} className="bg-[#0D0D0D] p-8 md:p-10 flex flex-col gap-5">
+              <div
+                key={card.title}
+                className="bg-[#0D0D0D] p-8 md:p-10 flex flex-col gap-5"
+              >
                 <div className="w-9 h-9 border border-white/[0.1] flex items-center justify-center">
                   <Icon src={card.icon} size={15} opacity={0.5} />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-lg font-light lowercase text-white/90">{card.title}</h3>
-                  <p className="text-sm text-text-muted lowercase leading-relaxed">{card.desc}</p>
+                  <h3 className="text-lg font-light lowercase text-white/90">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm text-text-muted lowercase leading-relaxed">
+                    {card.desc}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-      {/* ── Active Compound Index ── */}
+      {}
       <ActiveCompoundIndex />
 
-      {/* ── Clinical Parameters ── */}
+      {}
       <ClinicalParameters />
 
-      {/* ── FAQs ── */}
+      {}
       <ScienceFAQ />
 
       <section className="border-t border-hairline">
@@ -102,7 +115,9 @@ export default function ScienceContent() {
               formulation you can read start to finish.
             </h3>
             <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
-              <Button href="/shop" variant="solid">shop the system</Button>
+              <Button href="/shop" variant="solid">
+                shop the system
+              </Button>
             </div>
           </div>
         </div>

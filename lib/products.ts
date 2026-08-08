@@ -1,5 +1,3 @@
-// ─── Full product data for individual product pages ─────────────────────────
-
 import { getActivePrice } from "@/lib/storeConfig";
 
 export interface ProductActive {
@@ -57,7 +55,8 @@ export const PRODUCTS: ProductPageData[] = [
     price: getActivePrice("shampoo-290"),
     function: "cleanse & scalp equilibrium",
     tagline: "precision cleanse. scalp in equilibrium.",
-    targetAudience: "all hair types. special focus on scalp hydration and volume restoration.",
+    targetAudience:
+      "all hair types. special focus on scalp hydration and volume restoration.",
     scent: "juicy fruits / warm woods",
     naturalOrigin: "99%",
     certifications: [
@@ -78,36 +77,43 @@ export const PRODUCTS: ProductPageData[] = [
     actives: [
       {
         name: "aloe vera juice",
-        benefit: "deep scalp hydration. soothes irritation and conditions at the root.",
+        benefit:
+          "deep scalp hydration. soothes irritation and conditions at the root.",
       },
       {
         name: "sea kale extract",
-        benefit: "marine-derived fortification. strengthens the hair shaft from within.",
+        benefit:
+          "marine-derived fortification. strengthens the hair shaft from within.",
       },
       {
         name: "ginkgo biloba leaf extract",
-        benefit: "circulatory activator. stimulates scalp microcirculation for density.",
+        benefit:
+          "circulatory activator. stimulates scalp microcirculation for density.",
       },
       {
         name: "burdock root extract",
-        benefit: "sebum regulation. keeps scalp in clean equilibrium between washes.",
+        benefit:
+          "sebum regulation. keeps scalp in clean equilibrium between washes.",
       },
     ],
     usageSteps: [
       {
         index: "01",
         label: "massage",
-        description: "apply to wet hair and scalp. work in with fingertips using circular pressure to activate the formula.",
+        description:
+          "apply to wet hair and scalp. work in with fingertips using circular pressure to activate the formula.",
       },
       {
         index: "02",
         label: "cleanse",
-        description: "lather for 60 seconds minimum. allow actives full contact time with the scalp.",
+        description:
+          "lather for 60 seconds minimum. allow actives full contact time with the scalp.",
       },
       {
         index: "03",
         label: "rinse",
-        description: "rinse thoroughly with lukewarm water. follow immediately with CORE. conditioner for the complete system.",
+        description:
+          "rinse thoroughly with lukewarm water. follow immediately with CORE. conditioner for the complete system.",
       },
     ],
     inci: "aloe barbadensis (aloe) leaf juice➀, lauryl glucoside, sodium coco-sulfate, aqua/water, citric acid, disodium cocoyl glutamate, sodium pca, coco-glucoside, glyceryl oleate, butylene glycol, parfum/fragrance, benzyl alcohol, sodium cocoyl glutamate, sodium benzoate, glycerin, potassium sorbate, crambe maritima (sea kale) leaf extract, ginkgo biloba (ginkgo) leaf extract➀, arctium lappa (burdock) root extract➀, linalool➁, limonene➁",
@@ -115,20 +121,29 @@ export const PRODUCTS: ProductPageData[] = [
     faqs: [
       {
         question: "does the scent contain phthalates?",
-        answer: "no. our perfume compositions are 100% free of phthalates and built from natural raw materials.",
+        answer:
+          "no. our perfume compositions are 100% free of phthalates and built from natural raw materials.",
       },
       {
         question: "can this be combined with conditioner?",
-        answer: "yes. use the CORE. conditioner immediately after washing to enhance softness and shine.",
+        answer:
+          "yes. use the CORE. conditioner immediately after washing to enhance softness and shine.",
       },
       {
         question: "can it be used with scalp scrubs?",
-        answer: "yes. use this shampoo after a scrub to cleanse and calm the scalp.",
+        answer:
+          "yes. use this shampoo after a scrub to cleanse and calm the scalp.",
       },
     ],
     images: [
-      { src: "/images/shampoo-front.png", alt: "CORE. daily balancing shampoo - front" },
-      { src: "/images/shampoo-back.png", alt: "CORE. daily balancing shampoo - back" },
+      {
+        src: "/images/shampoo-front.png",
+        alt: "CORE. daily balancing shampoo - front",
+      },
+      {
+        src: "/images/shampoo-back.png",
+        alt: "CORE. daily balancing shampoo - back",
+      },
     ],
   },
   {
@@ -141,7 +156,8 @@ export const PRODUCTS: ProductPageData[] = [
     price: getActivePrice("conditioner-290"),
     function: "repair, lipids & weightless seal",
     tagline: "repair. seal. natural shine. no weight.",
-    targetAudience: "all hair types. helps repair dry ends and gives a natural shine without weighing the hair down.",
+    targetAudience:
+      "all hair types. helps repair dry ends and gives a natural shine without weighing the hair down.",
     scent: "juicy fruits / warm woods",
     naturalOrigin: "98%",
     certifications: [
@@ -160,15 +176,18 @@ export const PRODUCTS: ProductPageData[] = [
     actives: [
       {
         name: "aloe vera juice",
-        benefit: "hydration delivery system. binds moisture into the cortex layer.",
+        benefit:
+          "hydration delivery system. binds moisture into the cortex layer.",
       },
       {
         name: "hydrolyzed wheat protein",
-        benefit: "structural repair. fills micro-damage along the hair shaft surface.",
+        benefit:
+          "structural repair. fills micro-damage along the hair shaft surface.",
       },
       {
         name: "argan oil",
-        benefit: "lipid restoration. seals the cuticle for shine without grease.",
+        benefit:
+          "lipid restoration. seals the cuticle for shine without grease.",
       },
       {
         name: "sea kale extract",
@@ -176,28 +195,33 @@ export const PRODUCTS: ProductPageData[] = [
       },
       {
         name: "ginkgo biloba leaf extract",
-        benefit: "antioxidant defense. protects against oxidative strand degradation.",
+        benefit:
+          "antioxidant defense. protects against oxidative strand degradation.",
       },
       {
         name: "burdock root extract",
-        benefit: "scalp carry-on benefit. extends the equilibrium from your shampoo step.",
+        benefit:
+          "scalp carry-on benefit. extends the equilibrium from your shampoo step.",
       },
     ],
     usageSteps: [
       {
         index: "01",
         label: "apply",
-        description: "after shampooing, apply generously from mid-length to ends. avoid direct scalp application.",
+        description:
+          "after shampooing, apply generously from mid-length to ends. avoid direct scalp application.",
       },
       {
         index: "02",
         label: "nourish",
-        description: "leave for 1-2 minutes. use a wide-tooth comb to distribute evenly through strands.",
+        description:
+          "leave for 1-2 minutes. use a wide-tooth comb to distribute evenly through strands.",
       },
       {
         index: "03",
         label: "rinse",
-        description: "rinse thoroughly with cool water to lock in the cuticle-sealing effect.",
+        description:
+          "rinse thoroughly with cool water to lock in the cuticle-sealing effect.",
       },
     ],
     inci: "aloe barbadensis (aloe) leaf juice➀, cetearyl alcohol, aqua, glycerin, distearoylethyl dimonium chloride, betaine, cocos nucifera (coconut) oil➀, sodium pca, parfum, tocopherol, butylene glycol, benzyl alcohol, guar hydroxypropyltrimonium chloride, hydrolyzed wheat protein, sodium benzoate, lactic acid, argania spinosa (argan) kernel oil➀, potassium sorbate, crambe maritima (sea kale) leaf extract, citric acid, arctium lappa (burdock) root extract➀, ginkgo biloba (gingko) leaf extract➀, linalool, limonene",
@@ -205,11 +229,13 @@ export const PRODUCTS: ProductPageData[] = [
     faqs: [
       {
         question: "does it help detangle hair?",
-        answer: "yes. it softens the hair strands making combing easier and reducing breakage.",
+        answer:
+          "yes. it softens the hair strands making combing easier and reducing breakage.",
       },
       {
         question: "does it enhance hair shine?",
-        answer: "yes. the smoothing properties provide a healthy, natural shine.",
+        answer:
+          "yes. the smoothing properties provide a healthy, natural shine.",
       },
       {
         question: "suitable for dry or damaged hair?",
@@ -217,8 +243,14 @@ export const PRODUCTS: ProductPageData[] = [
       },
     ],
     images: [
-      { src: "/images/conditioner-front.png", alt: "CORE. daily nourishing conditioner - front" },
-      { src: "/images/conditioner-back.png", alt: "CORE. daily nourishing conditioner - back" },
+      {
+        src: "/images/conditioner-front.png",
+        alt: "CORE. daily nourishing conditioner - front",
+      },
+      {
+        src: "/images/conditioner-back.png",
+        alt: "CORE. daily nourishing conditioner - back",
+      },
     ],
   },
 ];

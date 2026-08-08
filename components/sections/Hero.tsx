@@ -22,15 +22,17 @@ export default function Hero() {
               to the core.
             </h1>
             <p className="mt-8 text-text-muted text-base md:text-lg leading-relaxed lowercase max-w-sm sm:max-w-md lg:max-w-none">
-              technical hair care, engineered right.
-              a shampoo and conditioner system
-              built from 98-99% natural origin
-              actives, zero shortcuts.
+              technical hair care, engineered right. a shampoo and conditioner
+              system built from 98-99% natural origin actives, zero shortcuts.
             </p>
           </div>
 
           <div className="lg:col-span-4 flex flex-col gap-4">
-            <Button href="/shop" variant="solid" className="w-full justify-between group">
+            <Button
+              href="/shop"
+              variant="solid"
+              className="w-full justify-between group"
+            >
               <span>shop the duo</span>
               <img
                 src="/icons/arrow-right.svg"
@@ -40,7 +42,11 @@ export default function Hero() {
                 style={{ filter: "brightness(0)" }}
               />
             </Button>
-            <Button href="#formula" variant="outline" className="w-full justify-between">
+            <Button
+              href="#formula"
+              variant="outline"
+              className="w-full justify-between"
+            >
               <span>see the formulation</span>
               <span className="font-mono text-text-muted">→</span>
             </Button>
@@ -63,8 +69,10 @@ export default function Hero() {
               fill
               className="object-cover object-center lg:object-contain lg:object-center"
               style={{
-                WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)",
-                maskImage: "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)",
+                maskImage:
+                  "linear-gradient(to bottom, black 0%, black 90%, transparent 100%)",
               }}
               priority
               sizes="100vw"

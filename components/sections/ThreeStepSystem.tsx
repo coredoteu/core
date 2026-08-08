@@ -7,9 +7,16 @@ const shampooSteps = [
   {
     id: "01",
     title: "massage",
-    description: "dispense 1-2 pumps. massage vigorously into wet scalp using fingertips.",
+    description:
+      "dispense 1-2 pumps. massage vigorously into wet scalp using fingertips.",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        className="w-8 h-8"
+      >
         <path d="M12 2C7.02944 2 3 6.02944 3 11C3 15.9706 7.02944 20 12 20C16.9706 20 21 15.9706 21 11" />
         <path d="M12 22V20" />
         <path d="M15 2L15 4" />
@@ -23,9 +30,16 @@ const shampooSteps = [
   {
     id: "02",
     title: "cleanse",
-    description: "build a rich lather. ensure complete coverage from root to tip.",
+    description:
+      "build a rich lather. ensure complete coverage from root to tip.",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        className="w-8 h-8"
+      >
         <circle cx="12" cy="12" r="4" />
         <circle cx="18" cy="8" r="2" />
         <circle cx="6" cy="9" r="3" />
@@ -39,7 +53,13 @@ const shampooSteps = [
     title: "rinse",
     description: "rinse thoroughly with lukewarm water until water runs clear.",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        className="w-8 h-8"
+      >
         <path d="M12 4V16" />
         <path d="M8 12L12 16L16 12" />
         <path d="M7 8V12" />
@@ -55,9 +75,16 @@ const conditionerSteps = [
   {
     id: "01",
     title: "apply",
-    description: "dispense 1-2 pumps. distribute evenly through mid-lengths and ends.",
+    description:
+      "dispense 1-2 pumps. distribute evenly through mid-lengths and ends.",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        className="w-8 h-8"
+      >
         <path d="M12 2L12 12" />
         <path d="M12 12L8 8" />
         <path d="M12 12L16 8" />
@@ -69,9 +96,16 @@ const conditionerSteps = [
   {
     id: "02",
     title: "wait",
-    description: "leave in for 2-3 minutes to allow actives to penetrate the cuticle.",
+    description:
+      "leave in for 2-3 minutes to allow actives to penetrate the cuticle.",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        className="w-8 h-8"
+      >
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         <path d="M12 8v4" />
         <path d="M10 10h4" />
@@ -83,7 +117,13 @@ const conditionerSteps = [
     title: "rinse",
     description: "rinse thoroughly with cool water to seal the hair cuticle.",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        className="w-8 h-8"
+      >
         <path d="M12 4V16" />
         <path d="M8 12L12 16L16 12" />
         <path d="M7 8V12" />
@@ -97,16 +137,21 @@ const conditionerSteps = [
 
 export default function ThreeStepSystem() {
   const [activeStep, setActiveStep] = useState<string | null>(null);
-  const [activeUnit, setActiveUnit] = useState<"shampoo" | "conditioner">("shampoo");
+  const [activeUnit, setActiveUnit] = useState<"shampoo" | "conditioner">(
+    "shampoo",
+  );
 
-  const currentSteps = activeUnit === "shampoo" ? shampooSteps : conditionerSteps;
+  const currentSteps =
+    activeUnit === "shampoo" ? shampooSteps : conditionerSteps;
 
   return (
     <section className="border-b border-hairline bg-[#0D0D0D]">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 md:mb-24">
           <div className="flex items-center gap-4">
-            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">02 //</span>
+            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
+              02 //
+            </span>
             <h2 className="text-3xl md:text-4xl font-light tracking-tight lowercase text-white">
               usage protocol
             </h2>
@@ -151,8 +196,12 @@ export default function ThreeStepSystem() {
               </div>
               <div className="mt-12 w-full">
                 <div className="flex items-baseline gap-3 mb-4">
-                  <span className="font-mono text-xs tracking-[0.2em] text-text-muted">{step.id}.</span>
-                  <h3 className="text-2xl font-light text-white tracking-tight lowercase">{step.title}</h3>
+                  <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
+                    {step.id}.
+                  </span>
+                  <h3 className="text-2xl font-light text-white tracking-tight lowercase">
+                    {step.title}
+                  </h3>
                 </div>
                 <p className="text-sm text-text-muted lowercase leading-relaxed max-w-[250px]">
                   {step.description}

@@ -25,17 +25,20 @@ export default function ProductHoverViewer({
   const [flipped, setFlipped] = useState(false);
 
   return (
-    <div 
+    <div
       className="group relative aspect-[3/4] w-full max-w-xs mx-auto focus-within:outline-none"
       style={{ perspective: "1000px" }}
     >
       <div className="absolute inset-6 border border-hairline" />
 
-      <div 
+      <div
         className={`absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] md:group-hover:[transform:rotateY(180deg)] md:group-focus-within:[transform:rotateY(180deg)] ${flipped ? "[transform:rotateY(180deg)]" : ""}`}
         style={{ transformStyle: "preserve-3d" }}
       >
-        <div className="absolute inset-0" style={{ backfaceVisibility: "hidden" }}>
+        <div
+          className="absolute inset-0"
+          style={{ backfaceVisibility: "hidden" }}
+        >
           <Image
             src={frontSrc}
             alt={`${alt}, front label`}
@@ -45,8 +48,8 @@ export default function ProductHoverViewer({
           />
         </div>
 
-        <div 
-          className="absolute inset-0" 
+        <div
+          className="absolute inset-0"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <Image
@@ -79,7 +82,9 @@ export default function ProductHoverViewer({
         type="button"
         onClick={() => setFlipped((v) => !v)}
         aria-pressed={flipped}
-        aria-label={flipped ? `show ${alt} front label` : `show ${alt} ingredient panel`}
+        aria-label={
+          flipped ? `show ${alt} front label` : `show ${alt} ingredient panel`
+        }
         className="absolute inset-0 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-white/40"
       />
 

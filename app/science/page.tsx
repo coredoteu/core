@@ -17,7 +17,6 @@ export const metadata: Metadata = {
 export default function SciencePage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans overflow-x-hidden">
-
       <ScienceContent />
     </main>
   );

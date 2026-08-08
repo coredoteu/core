@@ -9,12 +9,6 @@ import { CATALOG } from "@/lib/catalog";
 import { QuantityControl } from "@/components/cart/QuantityControl";
 import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 
-// ─── Quantity Control ─────────────────────────────────────────────────────────
-
-
-
-// ─── Cart Item Row ────────────────────────────────────────────────────────────
-
 function CartItemRow({
   item,
 }: {
@@ -37,15 +31,33 @@ function CartItemRow({
         {isDuo ? (
           <div className="flex items-center justify-center w-full h-full gap-0.5 px-1 py-2">
             <div className="relative flex-1 h-full">
-              <Image src="/images/shampoo-front.png" alt="shampoo" fill className="object-contain" sizes="50px" />
+              <Image
+                src="/images/shampoo-front.png"
+                alt="shampoo"
+                fill
+                className="object-contain"
+                sizes="50px"
+              />
             </div>
             <div className="relative flex-1 h-full">
-              <Image src="/images/conditioner-front.png" alt="conditioner" fill className="object-contain" sizes="50px" />
+              <Image
+                src="/images/conditioner-front.png"
+                alt="conditioner"
+                fill
+                className="object-contain"
+                sizes="50px"
+              />
             </div>
           </div>
         ) : (
           <div className="relative w-full h-full">
-            <Image src={product.image} alt={product.name} fill className="object-contain" sizes="100px" />
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-contain"
+              sizes="100px"
+            />
           </div>
         )}
       </div>
@@ -58,11 +70,15 @@ function CartItemRow({
           <h3 className="text-base md:text-lg font-light text-white lowercase leading-snug">
             <span className="font-normal uppercase">CORE.</span> {product.name}
           </h3>
-          <span className="text-xs text-text-muted lowercase">{product.size}</span>
+          <span className="text-xs text-text-muted lowercase">
+            {product.size}
+          </span>
         </div>
         <div className="flex items-center gap-1.5 mt-1">
           <div className="w-1 h-1 rounded-[50%] bg-white/15 shrink-0" />
-          <span className="text-[11px] text-text-muted lowercase">{product.function}</span>
+          <span className="text-[11px] text-text-muted lowercase">
+            {product.function}
+          </span>
         </div>
 
         <div className="flex items-center gap-4 mt-3 md:hidden">
@@ -103,8 +119,6 @@ function CartItemRow({
   );
 }
 
-// ─── Empty State ─────────────────────────────────────────────────────────────
-
 function EmptyCart() {
   return (
     <div className="flex flex-col items-center justify-center gap-8 py-32 px-6 text-center">
@@ -134,10 +148,11 @@ function EmptyCart() {
   );
 }
 
-// ─── Suggested Products ──────────────────────────────────────────────────────
-
 function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
-  const suggestions = CATALOG.filter((p) => !currentIds.includes(p.id)).slice(0, 2);
+  const suggestions = CATALOG.filter((p) => !currentIds.includes(p.id)).slice(
+    0,
+    2,
+  );
   if (suggestions.length === 0) return null;
 
   return (
@@ -155,14 +170,24 @@ function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
             className="flex items-center gap-5 border border-hairline p-5 hover:border-hairline transition-colors duration-300"
           >
             <div className="relative w-14 h-16 shrink-0">
-              <Image src={p.image} alt={p.name} fill className="object-contain" sizes="56px" />
+              <Image
+                src={p.image}
+                alt={p.name}
+                fill
+                className="object-contain"
+                sizes="56px"
+              />
             </div>
             <div className="flex flex-col gap-1 flex-1 min-w-0">
-              <span className="text-[10px] font-mono text-text-muted lowercase">{p.unit}</span>
+              <span className="text-[10px] font-mono text-text-muted lowercase">
+                {p.unit}
+              </span>
               <span className="text-sm text-text-muted lowercase leading-snug truncate">
                 <span className="uppercase">CORE.</span> {p.name}
               </span>
-              <span className="text-xs text-text-muted">€{p.price.toFixed(2)}</span>
+              <span className="text-xs text-text-muted">
+                €{p.price.toFixed(2)}
+              </span>
             </div>
             <Link
               href="/shop"
@@ -177,26 +202,27 @@ function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
   );
 }
 
-// ─── Main Component ────────────────────────────────────────────────────────────
-
 export default function CartPageClient() {
   const { items, subtotal, clearCart } = useCart();
   const isEmpty = items.length === 0;
   const [isLoading, setIsLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
-
-  const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD_EUR - subtotal);
+  const freeShippingRemaining = Math.max(
+    0,
+    FREE_SHIPPING_THRESHOLD_EUR - subtotal,
+  );
   const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD_EUR;
   const itemCount = items.reduce((s, i) => s + i.quantity, 0);
 
   return (
     <div className="max-w-[1600px] mx-auto px-6 md:px-10 pt-28 md:pt-36 pb-24">
-
       <div className="flex items-start justify-between gap-4 mb-12 md:mb-16 pb-8 border-b border-hairline">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">02 //</span>
+            <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
+              02 //
+            </span>
             <h1 className="text-3xl md:text-4xl font-light text-white lowercase tracking-tight">
               your system
             </h1>
@@ -221,7 +247,6 @@ export default function CartPageClient() {
         <EmptyCart />
       ) : (
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-24 items-start">
-
           <div className="flex-1 min-w-0">
             <div className="mb-8 border border-hairline p-5">
               <div className="flex items-center justify-between mb-3">
@@ -230,7 +255,9 @@ export default function CartPageClient() {
                     ? "free shipping unlocked"
                     : `add €${freeShippingRemaining.toFixed(2)} for free shipping`}
                 </span>
-                <span className={`text-[10px] font-mono lowercase ${qualifiesForFreeShipping ? "text-text-muted" : "text-text-muted"}`}>
+                <span
+                  className={`text-[10px] font-mono lowercase ${qualifiesForFreeShipping ? "text-text-muted" : "text-text-muted"}`}
+                >
                   {qualifiesForFreeShipping ? "pass" : "pending"}
                 </span>
               </div>
@@ -238,7 +265,9 @@ export default function CartPageClient() {
                 <motion.div
                   className="absolute inset-y-0 left-0 bg-white/30"
                   initial={false}
-                  animate={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%` }}
+                  animate={{
+                    width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%`,
+                  }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 />
               </div>
@@ -246,7 +275,10 @@ export default function CartPageClient() {
 
             <div className="hidden md:grid grid-cols-[100px_1fr_auto_auto] gap-6 mb-2 pb-3 border-b border-hairline">
               {["product", "", "qty", "total"].map((h, i) => (
-                <span key={i} className="text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase">
+                <span
+                  key={i}
+                  className="text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase"
+                >
                   {h}
                 </span>
               ))}
@@ -286,10 +318,14 @@ export default function CartPageClient() {
 
               <div className="px-7 py-6 flex flex-col gap-4">
                 {items.map((item) => (
-                  <div key={item.product.id} className="flex items-start justify-between gap-3">
+                  <div
+                    key={item.product.id}
+                    className="flex items-start justify-between gap-3"
+                  >
                     <div className="flex flex-col gap-0.5">
                       <span className="text-xs text-text-muted lowercase">
-                        <span className="uppercase">CORE.</span> {item.product.name}
+                        <span className="uppercase">CORE.</span>{" "}
+                        {item.product.name}
                       </span>
                       <span className="text-[10px] font-mono text-text-muted">
                         × {item.quantity}
@@ -318,7 +354,9 @@ export default function CartPageClient() {
                     shipping
                   </span>
                   <span className="text-xs text-text-muted lowercase font-mono">
-                    {qualifiesForFreeShipping ? "free" : "calculated at checkout"}
+                    {qualifiesForFreeShipping
+                      ? "free"
+                      : "calculated at checkout"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -354,26 +392,26 @@ export default function CartPageClient() {
                     try {
                       setIsLoading(true);
                       setCheckoutError(null);
-                      const res = await fetch('/api/checkout', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                      const res = await fetch("/api/checkout", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ items }),
                       });
                       const data = await res.json();
                       if (data.url) {
                         window.location.href = data.url;
                       } else {
-                        setCheckoutError(data.error || 'Checkout failed');
+                        setCheckoutError(data.error || "Checkout failed");
                         setIsLoading(false);
                       }
                     } catch (err: any) {
-                      setCheckoutError(err.message || 'Checkout failed');
+                      setCheckoutError(err.message || "Checkout failed");
                       setIsLoading(false);
                     }
                   }}
                   className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  {isLoading ? 'redirecting...' : 'proceed to checkout'}
+                  {isLoading ? "redirecting..." : "proceed to checkout"}
                 </button>
                 <Link
                   href="/shop"
@@ -387,8 +425,14 @@ export default function CartPageClient() {
                 <div className="h-px bg-white/[0.06] mb-1" />
                 {[
                   { icon: "/icons/lock.svg", text: "secure checkout" },
-                  { icon: "/icons/truck.svg", text: `free shipping over €${FREE_SHIPPING_THRESHOLD_EUR}` },
-                  { icon: "/icons/leaf.svg", text: "natural origin / eu certified" },
+                  {
+                    icon: "/icons/truck.svg",
+                    text: `free shipping over €${FREE_SHIPPING_THRESHOLD_EUR}`,
+                  },
+                  {
+                    icon: "/icons/leaf.svg",
+                    text: "natural origin / eu certified",
+                  },
                 ].map((trust) => (
                   <div key={trust.text} className="flex items-center gap-2.5">
                     <img

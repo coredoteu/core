@@ -11,8 +11,6 @@ import { CATALOG } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
-
-
 import ProductGallery from "@/components/product/ProductGallery";
 import HeroPanel from "@/components/product/HeroPanel";
 import FormulationSection from "@/components/product/FormulationSection";
@@ -20,8 +18,6 @@ import UsageSection from "@/components/product/UsageSection";
 import TechnicalSpecsSection from "@/components/product/TechnicalSpecsSection";
 import ProductFAQ from "@/components/product/ProductFAQ";
 import CrossSell from "@/components/product/CrossSell";
-
-// ─── Main Template ────────────────────────────────────────────────────────────
 
 export default function ProductPageTemplate({
   product,
@@ -42,7 +38,7 @@ export default function ProductPageTemplate({
             sku: product.id,
             brand: {
               "@type": "Brand",
-              name: "CORE."
+              name: "CORE.",
             },
             offers: {
               "@type": "Offer",
@@ -56,7 +52,7 @@ export default function ProductPageTemplate({
                 shippingRate: {
                   "@type": "MonetaryAmount",
                   value: 0,
-                  currency: "EUR"
+                  currency: "EUR",
                 },
                 deliveryTime: {
                   "@type": "ShippingDeliveryTime",
@@ -64,23 +60,25 @@ export default function ProductPageTemplate({
                     "@type": "QuantitativeValue",
                     minValue: 0,
                     maxValue: 1,
-                    unitCode: "d"
+                    unitCode: "d",
                   },
                   transitTime: {
                     "@type": "QuantitativeValue",
                     minValue: 1,
                     maxValue: 5,
-                    unitCode: "d"
-                  }
-                }
-              }
-            }
-          })
+                    unitCode: "d",
+                  },
+                },
+              },
+            },
+          }),
         }}
       />
 
-
-      <section data-mobile-sticky-trigger="true" className="pt-28 md:pt-36 pb-20 md:pb-28">
+      <section
+        data-mobile-sticky-trigger="true"
+        className="pt-28 md:pt-36 pb-20 md:pb-28"
+      >
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 xl:gap-28 items-start">
             <ProductGallery images={product.images} name={product.name} />

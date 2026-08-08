@@ -8,8 +8,6 @@ import { useCart } from "@/context/CartContext";
 import { QuantityControl } from "@/components/cart/QuantityControl";
 import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 
-// ─── Backdrop ────────────────────────────────────────────────────────────────
-
 function Backdrop({ onClose }: { onClose: () => void }) {
   return (
     <motion.div
@@ -24,12 +22,6 @@ function Backdrop({ onClose }: { onClose: () => void }) {
     />
   );
 }
-
-// ─── Quantity Control ─────────────────────────────────────────────────────────
-
-
-
-// ─── Cart Item Row ────────────────────────────────────────────────────────────
 
 function CartItemRow({
   item,
@@ -91,8 +83,7 @@ function CartItemRow({
               {product.unit}
             </span>
             <span className="text-sm font-light text-white lowercase leading-snug">
-              <span className="text-white uppercase">CORE.</span>{" "}
-              {product.name}
+              <span className="text-white uppercase">CORE.</span> {product.name}
             </span>
             <span className="text-[10px] text-text-muted lowercase mt-0.5">
               {product.size}
@@ -121,8 +112,6 @@ function CartItemRow({
     </motion.div>
   );
 }
-
-// ─── Empty State ──────────────────────────────────────────────────────────────
 
 function EmptyState({ onClose }: { onClose: () => void }) {
   return (
@@ -154,15 +143,12 @@ function EmptyState({ onClose }: { onClose: () => void }) {
   );
 }
 
-// ─── Cart Drawer ──────────────────────────────────────────────────────────────
-
 export default function CartDrawer() {
   const { items, subtotal, isDrawerOpen, closeDrawer } = useCart();
   const drawerRef = useRef<HTMLDivElement>(null);
   const isEmpty = items.length === 0;
   const [isLoading, setIsLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
-
 
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
@@ -171,12 +157,12 @@ export default function CartDrawer() {
       if (previousFocusRef.current) previousFocusRef.current.focus();
       return;
     }
-    
+
     previousFocusRef.current = document.activeElement as HTMLElement;
 
     if (!drawerRef.current) return;
     const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
-      'button, [href], input, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, [tabindex]:not([tabindex="-1"])',
     );
     if (focusable[0]) focusable[0].focus();
 
@@ -207,10 +193,15 @@ export default function CartDrawer() {
     } else {
       document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isDrawerOpen]);
 
-  const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD_EUR - subtotal);
+  const freeShippingRemaining = Math.max(
+    0,
+    FREE_SHIPPING_THRESHOLD_EUR - subtotal,
+  );
   const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD_EUR;
 
   return (
@@ -234,7 +225,7 @@ export default function CartDrawer() {
             <div className="flex items-center justify-between px-7 py-5 border-b border-hairline shrink-0">
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-text-muted">
-                  02 //
+                  02
                 </span>
                 <h2 className="text-sm tracking-[0.15em] text-white lowercase">
                   your system
@@ -268,14 +259,18 @@ export default function CartDrawer() {
                       : `€${freeShippingRemaining.toFixed(2)} away from free shipping`}
                   </span>
                   {qualifiesForFreeShipping && (
-                    <span className="text-[10px] font-mono text-text-muted lowercase">pass</span>
+                    <span className="text-[10px] font-mono text-text-muted lowercase">
+                      pass
+                    </span>
                   )}
                 </div>
                 <div className="h-px bg-white/[0.08] relative overflow-hidden">
                   <motion.div
                     className="absolute inset-y-0 left-0 bg-white/40"
                     initial={false}
-                    animate={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%` }}
+                    animate={{
+                      width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%`,
+                    }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                   />
                 </div>
@@ -312,7 +307,9 @@ export default function CartDrawer() {
                       shipping
                     </span>
                     <span className="text-xs text-text-muted lowercase font-mono tracking-[0.05em]">
-                      {qualifiesForFreeShipping ? "free" : "calculated at checkout"}
+                      {qualifiesForFreeShipping
+                        ? "free"
+                        : "calculated at checkout"}
                     </span>
                   </div>
                   <div className="h-px bg-white/10" />
@@ -338,26 +335,26 @@ export default function CartDrawer() {
                     try {
                       setIsLoading(true);
                       setCheckoutError(null);
-                      const res = await fetch('/api/checkout', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                      const res = await fetch("/api/checkout", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ items }),
                       });
                       const data = await res.json();
                       if (data.url) {
                         window.location.href = data.url;
                       } else {
-                        setCheckoutError(data.error || 'Checkout failed');
+                        setCheckoutError(data.error || "Checkout failed");
                         setIsLoading(false);
                       }
                     } catch (err: any) {
-                      setCheckoutError(err.message || 'Checkout failed');
+                      setCheckoutError(err.message || "Checkout failed");
                       setIsLoading(false);
                     }
                   }}
                   className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  {isLoading ? 'redirecting...' : 'proceed to checkout'}
+                  {isLoading ? "redirecting..." : "proceed to checkout"}
                 </button>
 
                 <div className="flex items-center justify-center gap-6">
@@ -366,7 +363,10 @@ export default function CartDrawer() {
                       src="/icons/lock.svg"
                       alt=""
                       className="w-3 h-3"
-                      style={{ filter: "brightness(0) invert(1)", opacity: 0.4 }}
+                      style={{
+                        filter: "brightness(0) invert(1)",
+                        opacity: 0.4,
+                      }}
                     />
                     secure checkout
                   </span>
@@ -375,7 +375,10 @@ export default function CartDrawer() {
                       src="/icons/truck.svg"
                       alt=""
                       className="w-3 h-3"
-                      style={{ filter: "brightness(0) invert(1)", opacity: 0.4 }}
+                      style={{
+                        filter: "brightness(0) invert(1)",
+                        opacity: 0.4,
+                      }}
                     />
                     free shipping over €{FREE_SHIPPING_THRESHOLD_EUR}
                   </span>

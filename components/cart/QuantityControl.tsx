@@ -19,7 +19,9 @@ export function QuantityControl({
       >
         −
       </button>
-      <span className={`${dim} flex items-center justify-center text-xs font-mono text-white tabular-nums`}>
+      <span
+        className={`${dim} flex items-center justify-center text-xs font-mono text-white tabular-nums`}
+      >
         {quantity}
       </span>
       <button

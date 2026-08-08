@@ -15,28 +15,80 @@ const badges = [
 const specs = [
   { icon: "/icons/layers-minimalistic.svg", key: "volume", value: "290ml x 2" },
   { icon: "/icons/flask-conical.svg", key: "ph range", value: "4.5 - 5.5" },
-  { icon: "/icons/flower.svg", key: "scent", value: "juicy fruits & warm woods" },
-  { icon: "/icons/map-pin-check.svg", key: "origin", value: "netherlands / eu" },
-  { icon: "/icons/leaf.svg", key: "certification", value: "ecocert cosmos, 98-99%" },
+  {
+    icon: "/icons/flower.svg",
+    key: "scent",
+    value: "juicy fruits & warm woods",
+  },
+  {
+    icon: "/icons/map-pin-check.svg",
+    key: "origin",
+    value: "netherlands / eu",
+  },
+  {
+    icon: "/icons/leaf.svg",
+    key: "certification",
+    value: "ecocert cosmos, 98-99%",
+  },
 ];
 
 const shampooRitual = ["massage", "cleanse", "rinse"];
 const conditionerRitual = ["apply", "nourish", "rinse"];
 
 const shampooActives = [
-  { code: "sh.01", name: "aloe barbadensis leaf juice", desc: "hydrates the scalp directly and calms irritation on contact." },
-  { code: "sh.02", name: "lauryl & coco-glucoside cleansing base", desc: "mild coconut-derived cleansers that foam without stripping." },
-  { code: "sh.03", name: "crambe maritima (sea kale) leaf extract", desc: "marine-derived antioxidant that supports scalp equilibrium." },
-  { code: "sh.04", name: "ginkgo biloba leaf extract", desc: "organically farmed, supports micro-circulation at the follicle." },
-  { code: "sh.05", name: "arctium lappa (burdock) root extract", desc: "organically farmed, strengthens strand structure from the root." },
+  {
+    code: "sh.01",
+    name: "aloe barbadensis leaf juice",
+    desc: "hydrates the scalp directly and calms irritation on contact.",
+  },
+  {
+    code: "sh.02",
+    name: "lauryl & coco-glucoside cleansing base",
+    desc: "mild coconut-derived cleansers that foam without stripping.",
+  },
+  {
+    code: "sh.03",
+    name: "crambe maritima (sea kale) leaf extract",
+    desc: "marine-derived antioxidant that supports scalp equilibrium.",
+  },
+  {
+    code: "sh.04",
+    name: "ginkgo biloba leaf extract",
+    desc: "organically farmed, supports micro-circulation at the follicle.",
+  },
+  {
+    code: "sh.05",
+    name: "arctium lappa (burdock) root extract",
+    desc: "organically farmed, strengthens strand structure from the root.",
+  },
 ];
 
 const conditionerActives = [
-  { code: "co.01", name: "hydrolyzed wheat protein", desc: "rebuilds strand structure from the outside in." },
-  { code: "co.02", name: "argania spinosa (argan) kernel oil", desc: "organically farmed, deep lipid nourishment without weight." },
-  { code: "co.03", name: "aloe barbadensis leaf juice", desc: "core hydration carried through from the shampoo step." },
-  { code: "co.04", name: "crambe maritima & burdock root extract", desc: "antioxidant support paired with root-level strength." },
-  { code: "co.05", name: "ginkgo biloba leaf extract", desc: "organically farmed, closes the system with circulation support." },
+  {
+    code: "co.01",
+    name: "hydrolyzed wheat protein",
+    desc: "rebuilds strand structure from the outside in.",
+  },
+  {
+    code: "co.02",
+    name: "argania spinosa (argan) kernel oil",
+    desc: "organically farmed, deep lipid nourishment without weight.",
+  },
+  {
+    code: "co.03",
+    name: "aloe barbadensis leaf juice",
+    desc: "core hydration carried through from the shampoo step.",
+  },
+  {
+    code: "co.04",
+    name: "crambe maritima & burdock root extract",
+    desc: "antioxidant support paired with root-level strength.",
+  },
+  {
+    code: "co.05",
+    name: "ginkgo biloba leaf extract",
+    desc: "organically farmed, closes the system with circulation support.",
+  },
 ];
 
 function RitualSteps({ steps }: { steps: string[] }) {
@@ -75,10 +127,15 @@ function IngredientList({
       </div>
       <div className="divide-y divide-white/10">
         {items.map((item) => (
-          <div key={item.code} className="flex flex-col gap-1.5 px-6 md:px-8 py-5">
+          <div
+            key={item.code}
+            className="flex flex-col gap-1.5 px-6 md:px-8 py-5"
+          >
             <div className="flex items-center gap-2">
               <Icon src="/icons/atom.svg" size={14} opacity={0.5} />
-              <span className="text-sm text-white lowercase tracking-wider">{item.name}</span>
+              <span className="text-sm text-white lowercase tracking-wider">
+                {item.name}
+              </span>
               <span className="ml-auto font-mono text-[10px] text-text-muted lowercase shrink-0">
                 {item.code}
               </span>
@@ -99,7 +156,11 @@ export default function SystemSpecSheet() {
   const duo = getCatalogProduct("duo-system-001");
 
   return (
-    <section id="formula" data-mobile-sticky-trigger="true" className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline">
+    <section
+      id="formula"
+      data-mobile-sticky-trigger="true"
+      className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline"
+    >
       <div className="mb-6">
         <SectionHeader index="01" title="system 001" />
       </div>
@@ -125,10 +186,12 @@ export default function SystemSpecSheet() {
           <span className="absolute -top-px left-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-text-muted lowercase border border-hairline">
             recommended
           </span>
-          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">system 001</span>
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">
+            system 001
+          </span>
 
           <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20">
-            {/* Visual */}
+            {}
             <div className="relative aspect-square w-full max-w-[280px] flex items-center justify-center">
               <div className="relative h-full w-[44%]">
                 <Image
@@ -163,12 +226,15 @@ export default function SystemSpecSheet() {
               </div>
             </div>
 
-            {/* Info & CTA */}
+            {}
             <div className="flex flex-col gap-6 lg:max-w-md w-full">
               <div>
-                <h3 className="text-2xl font-light lowercase text-white">the duo bundle</h3>
+                <h3 className="text-2xl font-light lowercase text-white">
+                  the duo bundle
+                </h3>
                 <p className="mt-2 text-sm text-text-muted lowercase leading-relaxed">
-                  shampoo + conditioner. the complete daily system. engineered to work in sequence - cleanse, then seal.
+                  shampoo + conditioner. the complete daily system. engineered
+                  to work in sequence - cleanse, then seal.
                 </p>
               </div>
               <div className="mt-2">
@@ -179,7 +245,9 @@ export default function SystemSpecSheet() {
         </div>
 
         <div className="border-r border-b border-hairline p-8 flex flex-col gap-6 lg:col-span-1">
-          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 01</span>
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">
+            unit 01
+          </span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
               src="/images/shampoo-front.png"
@@ -202,7 +270,9 @@ export default function SystemSpecSheet() {
         </div>
 
         <div className="border-r border-b border-hairline p-8 flex flex-col gap-6 lg:col-span-1">
-          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">unit 02</span>
+          <span className="text-xs font-mono tracking-[0.2em] text-text-muted">
+            unit 02
+          </span>
           <div className="relative aspect-square w-full max-w-[160px] mx-auto">
             <Image
               src="/images/conditioner-front.png"
@@ -213,21 +283,29 @@ export default function SystemSpecSheet() {
             />
           </div>
           <div>
-            <h3 className="text-xl font-light lowercase text-white">conditioner</h3>
+            <h3 className="text-xl font-light lowercase text-white">
+              conditioner
+            </h3>
             <p className="mt-2 text-xs text-text-muted lowercase leading-relaxed">
               daily nourishing, weightless seal, 290ml.
             </p>
           </div>
           <RitualSteps steps={conditionerRitual} />
           <div className="mt-auto pt-2">
-            <BatchCartSection productId={conditioner.id} product={conditioner} />
+            <BatchCartSection
+              productId={conditioner.id}
+              product={conditioner}
+            />
           </div>
         </div>
       </div>
 
       <div className="mt-12 grid grid-cols-2 md:grid-cols-5 border-t border-l border-hairline">
         {specs.map((s) => (
-          <div key={s.key} className="border-r border-b border-hairline p-6 flex flex-col gap-3">
+          <div
+            key={s.key}
+            className="border-r border-b border-hairline p-6 flex flex-col gap-3"
+          >
             <Icon src={s.icon} size={16} opacity={0.6} />
             <span className="text-[10px] font-mono tracking-[0.15em] text-text-muted lowercase">
               {s.key}
@@ -238,8 +316,16 @@ export default function SystemSpecSheet() {
       </div>
 
       <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <IngredientList title="shampoo actives" prefix="unit 01" items={shampooActives} />
-        <IngredientList title="conditioner actives" prefix="unit 02" items={conditionerActives} />
+        <IngredientList
+          title="shampoo actives"
+          prefix="unit 01"
+          items={shampooActives}
+        />
+        <IngredientList
+          title="conditioner actives"
+          prefix="unit 02"
+          items={conditionerActives}
+        />
       </div>
     </section>
   );

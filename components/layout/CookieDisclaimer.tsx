@@ -22,10 +22,15 @@ export default function CookieDisclaimer() {
         <div className="flex-1">
           <p className="text-xs text-text-muted lowercase leading-relaxed max-w-2xl">
             we use cookies to ensure you get the best experience on our website.
-            by continuing to browse the site, you agree to our use of cookies and our{" "}
-            <Link href="/privacy" className="text-white underline underline-offset-2">
+            by continuing to browse the site, you agree to our use of cookies
+            and our{" "}
+            <Link
+              href="/privacy"
+              className="text-white underline underline-offset-2"
+            >
               privacy policy
-            </Link>.
+            </Link>
+            .
           </p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">

@@ -12,7 +12,9 @@ export default function DuoCard({
   const duoProduct = getCatalogProduct("duo-system-001");
 
   return (
-    <div className={`border border-white/20 p-8 md:p-10 relative flex flex-col lg:flex-row gap-10 group transition-colors duration-500 ${isHighlighted ? "bg-white/[0.04]" : "bg-white/[0.02]"}`}>
+    <div
+      className={`border border-white/20 p-8 md:p-10 relative flex flex-col lg:flex-row gap-10 group transition-colors duration-500 ${isHighlighted ? "bg-white/[0.04]" : "bg-white/[0.02]"}`}
+    >
       {isHighlighted && (
         <span className="absolute -top-px right-8 -translate-y-1/2 bg-[#0D0D0D] px-3 text-[10px] font-mono tracking-[0.25em] text-text-muted lowercase z-10 border border-hairline">
           recommended
@@ -22,7 +24,7 @@ export default function DuoCard({
         system 001 / bundle
       </span>
 
-      {/* Duo image group */}
+      {}
       <div className="flex items-center justify-center lg:w-[280px] shrink-0">
         <div className="relative flex items-end justify-center gap-4 h-[260px] w-full max-w-[260px]">
           <div className="relative w-[45%] h-full">
@@ -55,7 +57,7 @@ export default function DuoCard({
         </div>
       </div>
 
-      {/* Duo info */}
+      {}
       <div className="flex flex-col flex-1 gap-6 justify-between">
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
@@ -68,11 +70,11 @@ export default function DuoCard({
             <span className="font-normal uppercase">CORE.</span> the duo
           </h3>
           <p className="text-sm text-text-muted lowercase leading-relaxed">
-            shampoo + conditioner. the complete daily system.
-            engineered to work in sequence - cleanse, then seal.
+            shampoo + conditioner. the complete daily system. engineered to work
+            in sequence - cleanse, then seal.
           </p>
 
-          {/* spec pills */}
+          {}
           <div className="flex flex-wrap gap-2 mt-1">
             {[
               "2 × 290 ml",
@@ -90,31 +92,35 @@ export default function DuoCard({
           </div>
         </div>
 
-        {/* Included items list */}
+        {}
         <div className="flex flex-col gap-0 border border-hairline">
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-hairline">
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-text-muted lowercase">daily balancing shampoo</span>
-              <span className="text-[10px] font-mono text-text-muted">unit 01 / 290ml</span>
+              <span className="text-xs text-text-muted lowercase">
+                daily balancing shampoo
+              </span>
+              <span className="text-[10px] font-mono text-text-muted">
+                unit 01 / 290ml
+              </span>
             </div>
             <span className="text-xs text-text-muted font-mono">€28.00</span>
           </div>
           <div className="flex items-center justify-between px-5 py-3.5">
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-text-muted lowercase">daily nourishing conditioner</span>
-              <span className="text-[10px] font-mono text-text-muted">unit 02 / 290ml</span>
+              <span className="text-xs text-text-muted lowercase">
+                daily nourishing conditioner
+              </span>
+              <span className="text-[10px] font-mono text-text-muted">
+                unit 02 / 290ml
+              </span>
             </div>
             <span className="text-xs text-text-muted font-mono">€28.00</span>
           </div>
         </div>
 
-        {/* Modular Dynamic Batch Strategy Add-to-Cart Section */}
-        <BatchCartSection
-          productId={duoProduct.id}
-          product={duoProduct}
-        />
+        {}
+        <BatchCartSection productId={duoProduct.id} product={duoProduct} />
       </div>
     </div>
   );
 }
-

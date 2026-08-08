@@ -13,7 +13,12 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
     <section className="border-t border-hairline py-20 md:py-32 bg-white/[0.015]">
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="mb-10 md:mb-14">
-          <SectionHeader index="04" title="faq" icon="/icons/info-circle.svg" variant="compact" />
+          <SectionHeader
+            index="04"
+            title="faq"
+            icon="/icons/info-circle.svg"
+            variant="compact"
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24 items-start">
@@ -30,7 +35,9 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
             {product.faqs.map((faq, i) => (
               <div
                 key={i}
-                className={i < product.faqs.length - 1 ? "border-b border-hairline" : ""}
+                className={
+                  i < product.faqs.length - 1 ? "border-b border-hairline" : ""
+                }
               >
                 <button
                   id={`faq-${product.slug}-${i}`}
@@ -55,7 +62,11 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
                     transition={{ duration: 0.25, ease: "easeInOut" }}
                     className="shrink-0"
                   >
-                    <Icon src="/icons/chevron-down.svg" size={14} opacity={0.3} />
+                    <Icon
+                      src="/icons/chevron-down.svg"
+                      size={14}
+                      opacity={0.3}
+                    />
                   </motion.div>
                 </button>
 
@@ -68,7 +79,10 @@ export default function ProductFAQ({ product }: { product: ProductPageData }) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                      transition={{
+                        duration: 0.3,
+                        ease: [0.25, 0.46, 0.45, 0.94],
+                      }}
                       className="overflow-hidden"
                     >
                       <div className="flex items-start gap-3 px-6 pb-5">

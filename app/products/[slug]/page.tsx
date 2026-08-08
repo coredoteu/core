@@ -3,13 +3,9 @@ import type { Metadata } from "next";
 import { getProductBySlug, PRODUCTS } from "@/lib/products";
 import ProductPageTemplate from "@/components/product/ProductPageTemplate";
 
-// ─── Static params ────────────────────────────────────────────────────────────
-
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
 }
-
-// ─── Metadata ─────────────────────────────────────────────────────────────────
 
 export async function generateMetadata({
   params,
@@ -30,8 +26,6 @@ export async function generateMetadata({
     },
   };
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function ProductPage({
   params,

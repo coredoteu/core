@@ -4,10 +4,18 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const ingredients = [
-  { name: "baobab protein",   function: "cuticle repair & strength",  id: "v2-01" },
-  { name: "plant squalane",   function: "moisture lock & shine",      id: "v2-02" },
-  { name: "marshmallow root", function: "instant slip & detangle",    id: "v2-03" },
-  { name: "organic aloe vera",function: "deep core hydration",        id: "v2-04" },
+  {
+    name: "baobab protein",
+    function: "cuticle repair & strength",
+    id: "v2-01",
+  },
+  { name: "plant squalane", function: "moisture lock & shine", id: "v2-02" },
+  {
+    name: "marshmallow root",
+    function: "instant slip & detangle",
+    id: "v2-03",
+  },
+  { name: "organic aloe vera", function: "deep core hydration", id: "v2-04" },
 ];
 
 export default function V2IngredientsGrid() {

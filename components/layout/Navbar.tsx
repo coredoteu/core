@@ -99,7 +99,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4 md:gap-2.5">
-          {/* Desktop: User account icon */}
+          {}
           <Link
             href={accountHref}
             aria-label={session ? "my account" : "sign in"}
@@ -121,7 +121,7 @@ export default function Navbar() {
             </svg>
           </Link>
 
-          {/* Desktop: Cart button */}
+          {}
           <button
             onClick={toggleDrawer}
             aria-label="open cart"
@@ -207,7 +207,7 @@ export default function Navbar() {
                   </span>
                 </Link>
               ))}
-              {/* Account link in mobile menu */}
+              {}
               <Link
                 href={accountHref}
                 onClick={closeMenu}

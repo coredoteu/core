@@ -10,10 +10,10 @@ import SystemSpecSheet from "@/components/product/SystemSpecSheet";
 
 const V2SneakPeek = dynamic(() => import("@/components/sections/V2SneakPeek"));
 const FaqSection = dynamic(() => import("@/components/sections/FaqSection"));
-const WaitlistForm = dynamic(() => import("@/components/sections/WaitlistForm"));
+const WaitlistForm = dynamic(
+  () => import("@/components/sections/WaitlistForm"),
+);
 import { SectionHeader } from "@/components/ui/SectionHeader";
-
-// ─── Data ────────────────────────────────────────────────────────────────────
 
 const traditionalRows = [
   "synthetic silicones & sulfates",
@@ -36,13 +36,9 @@ const standards = [
   { value: "eu", label: "engineered & bottled" },
 ];
 
-
-
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-
       <Hero />
 
       <Ticker />
@@ -50,9 +46,7 @@ export default function Home() {
       <ThreeStepSystem />
       <ProductHoverSection />
 
-      {/* ──────────────────────────────────────────────────────────────────
-          04 / THE COMPARISON
-      ────────────────────────────────────────────────────────────────── */}
+      {}
       <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline">
         <SectionHeader index="04" title="the comparison" />
 
@@ -71,7 +65,9 @@ export default function Home() {
                   className="flex items-center justify-between py-4 text-sm text-text-muted lowercase"
                 >
                   <span>{row}</span>
-                  <span className="font-mono text-text-muted text-xs">fail</span>
+                  <span className="font-mono text-text-muted text-xs">
+                    fail
+                  </span>
                 </li>
               ))}
             </ul>
@@ -82,7 +78,14 @@ export default function Home() {
               CORE. spec
             </span>
             <h3 className="mt-4 text-2xl md:text-3xl font-light text-white flex items-center gap-3">
-              <Image src="/CORE_logo_trans.svg" alt="CORE." width={110} height={26} className="h-5 md:h-7 w-auto" /> engineered
+              <Image
+                src="/CORE_logo_trans.svg"
+                alt="CORE."
+                width={110}
+                height={26}
+                className="h-5 md:h-7 w-auto"
+              />{" "}
+              engineered
             </h3>
             <ul className="mt-10 flex flex-col divide-y divide-white/10">
               {coreRows.map((row) => (
@@ -91,7 +94,9 @@ export default function Home() {
                   className="flex items-center justify-between py-4 text-sm text-white lowercase"
                 >
                   <span>{row}</span>
-                  <span className="font-mono text-text-muted text-xs">pass</span>
+                  <span className="font-mono text-text-muted text-xs">
+                    pass
+                  </span>
                 </li>
               ))}
             </ul>
@@ -99,9 +104,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ──────────────────────────────────────────────────────────────────
-          05 / STANDARDS
-      ────────────────────────────────────────────────────────────────── */}
+      {}
       <section className="border-b border-hairline bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28">
           <SectionHeader index="05" title="standards" />
@@ -127,9 +130,7 @@ export default function Home() {
       <FaqSection />
       <V2SneakPeek />
 
-      {/* ──────────────────────────────────────────────────────────────────
-          WAITLIST
-      ────────────────────────────────────────────────────────────────── */}
+      {}
       <section id="waitlist" className="bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-hairline">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">

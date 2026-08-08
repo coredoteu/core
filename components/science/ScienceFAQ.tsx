@@ -16,7 +16,11 @@ export default function ScienceFAQ() {
     <section className="py-20 md:py-32 border-t border-hairline bg-[#0D0D0D]">
       <div className="max-w-[900px] mx-auto px-6 md:px-10">
         <div className="mb-12 md:mb-16">
-          <SectionHeader index="04" title="frequently asked questions" variant="compact" />
+          <SectionHeader
+            index="04"
+            title="frequently asked questions"
+            variant="compact"
+          />
         </div>
 
         <div className="flex flex-col border-t border-hairline">

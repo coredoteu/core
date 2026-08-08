@@ -61,39 +61,91 @@ export const CORE_ACTIVES: Active[] = [
 ];
 
 export const SHAMPOO_INGREDIENT_LIST = [
-  { code: "sh.01", name: "aloe barbadensis leaf juice", desc: "hydrates the scalp directly and calms irritation on contact." },
-  { code: "sh.02", name: "lauryl & coco-glucoside cleansing base", desc: "mild coconut-derived cleansers that foam without stripping." },
-  { code: "sh.03", name: "crambe maritima (sea kale) leaf extract", desc: "marine-derived antioxidant that supports scalp equilibrium." },
-  { code: "sh.04", name: "ginkgo biloba leaf extract", desc: "organically farmed, supports micro-circulation at the follicle." },
-  { code: "sh.05", name: "arctium lappa (burdock) root extract", desc: "organically farmed, strengthens strand structure from the root." },
+  {
+    code: "sh.01",
+    name: "aloe barbadensis leaf juice",
+    desc: "hydrates the scalp directly and calms irritation on contact.",
+  },
+  {
+    code: "sh.02",
+    name: "lauryl & coco-glucoside cleansing base",
+    desc: "mild coconut-derived cleansers that foam without stripping.",
+  },
+  {
+    code: "sh.03",
+    name: "crambe maritima (sea kale) leaf extract",
+    desc: "marine-derived antioxidant that supports scalp equilibrium.",
+  },
+  {
+    code: "sh.04",
+    name: "ginkgo biloba leaf extract",
+    desc: "organically farmed, supports micro-circulation at the follicle.",
+  },
+  {
+    code: "sh.05",
+    name: "arctium lappa (burdock) root extract",
+    desc: "organically farmed, strengthens strand structure from the root.",
+  },
 ];
 
 export const CONDITIONER_INGREDIENT_LIST = [
-  { code: "co.01", name: "hydrolyzed wheat protein", desc: "rebuilds strand structure from the outside in." },
-  { code: "co.02", name: "argania spinosa (argan) kernel oil", desc: "organically farmed, deep lipid nourishment without weight." },
-  { code: "co.03", name: "aloe barbadensis leaf juice", desc: "core hydration carried through from the shampoo step." },
-  { code: "co.04", name: "crambe maritima & burdock root extract", desc: "antioxidant support paired with root-level strength." },
-  { code: "co.05", name: "ginkgo biloba leaf extract", desc: "organically farmed, closes the system with circulation support." },
+  {
+    code: "co.01",
+    name: "hydrolyzed wheat protein",
+    desc: "rebuilds strand structure from the outside in.",
+  },
+  {
+    code: "co.02",
+    name: "argania spinosa (argan) kernel oil",
+    desc: "organically farmed, deep lipid nourishment without weight.",
+  },
+  {
+    code: "co.03",
+    name: "aloe barbadensis leaf juice",
+    desc: "core hydration carried through from the shampoo step.",
+  },
+  {
+    code: "co.04",
+    name: "crambe maritima & burdock root extract",
+    desc: "antioxidant support paired with root-level strength.",
+  },
+  {
+    code: "co.05",
+    name: "ginkgo biloba leaf extract",
+    desc: "organically farmed, closes the system with circulation support.",
+  },
 ];
 
 export const CLINICAL_SPECS = [
-  { icon: "/icons/flask-conical.svg",   key: "ph range",            value: "4.5 - 5.5" },
-  { icon: "/icons/leaf.svg",            key: "natural origin",      value: "98 - 99%" },
-  { icon: "/icons/ban.svg",             key: "silicones",           value: "0" },
-  { icon: "/icons/ban.svg",             key: "sulfates (sls)",      value: "0" },
-  { icon: "/icons/medal-star.svg",      key: "organic-farmed actives", value: "4 / 6" },
-  { icon: "/icons/map-pin-check.svg",   key: "formulated",          value: "netherlands / eu" },
-  { icon: "/icons/scan.svg",            key: "inci standard",       value: "eu 1223/2009" },
-  { icon: "/icons/microscope.svg",      key: "batch validation",    value: "per production run" },
+  { icon: "/icons/flask-conical.svg", key: "ph range", value: "4.5 - 5.5" },
+  { icon: "/icons/leaf.svg", key: "natural origin", value: "98 - 99%" },
+  { icon: "/icons/ban.svg", key: "silicones", value: "0" },
+  { icon: "/icons/ban.svg", key: "sulfates (sls)", value: "0" },
+  {
+    icon: "/icons/medal-star.svg",
+    key: "organic-farmed actives",
+    value: "4 / 6",
+  },
+  {
+    icon: "/icons/map-pin-check.svg",
+    key: "formulated",
+    value: "netherlands / eu",
+  },
+  { icon: "/icons/scan.svg", key: "inci standard", value: "eu 1223/2009" },
+  {
+    icon: "/icons/microscope.svg",
+    key: "batch validation",
+    value: "per production run",
+  },
 ];
 
 export const CORE_BADGES = [
-  { icon: "/icons/vegan.svg",        label: "vegan" },
-  { icon: "/icons/badge-check.svg",  label: "cruelty-free" },
-  { icon: "/icons/ban.svg",          label: "nut-free" },
-  { icon: "/icons/ban.svg",          label: "gluten-free" },
-  { icon: "/icons/ban.svg",          label: "silicone-free" },
-  { icon: "/icons/leaf.svg",         label: "ecocert cosmos natural" },
+  { icon: "/icons/vegan.svg", label: "vegan" },
+  { icon: "/icons/badge-check.svg", label: "cruelty-free" },
+  { icon: "/icons/ban.svg", label: "nut-free" },
+  { icon: "/icons/ban.svg", label: "gluten-free" },
+  { icon: "/icons/ban.svg", label: "silicone-free" },
+  { icon: "/icons/leaf.svg", label: "ecocert cosmos natural" },
 ];
 
 export const SCIENCE_FAQS = [

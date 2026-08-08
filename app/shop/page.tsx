@@ -4,7 +4,10 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 import SingleProductCard from "@/components/product/SingleProductCard";
 import DuoCard from "@/components/product/DuoCard";
-import { SHAMPOO_INGREDIENT_LIST, CONDITIONER_INGREDIENT_LIST } from "@/lib/content";
+import {
+  SHAMPOO_INGREDIENT_LIST,
+  CONDITIONER_INGREDIENT_LIST,
+} from "@/lib/content";
 import { getActivePrice } from "@/lib/storeConfig";
 
 export const metadata: Metadata = {
@@ -12,8 +15,6 @@ export const metadata: Metadata = {
   description:
     "the v1 system. clinical, ph-balanced formulations engineered for scalp and strand precision. shop the CORE. daily lineup.",
 };
-
-// ─── Spec Grid ────────────────────────────────────────────────────────────────
 
 const specs = [
   { key: "volume", value: "290ml × 2" },
@@ -26,24 +27,20 @@ const specs = [
   { key: "sulfates", value: "0" },
 ];
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function ShopPage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-
-
-      {/* ── Hero band ── */}
+      {}
       <section className="pt-32 md:pt-44 pb-16 md:pb-24 border-b border-hairline">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex flex-col gap-6 max-w-3xl">
             <SectionHeader index="01" title="shop" />
             <p className="text-sm text-text-muted lowercase max-w-lg leading-relaxed">
-              the v1 system. clinical, ph-balanced formulations built from a short
-              list of natural actives. nothing hidden behind a blend name. engineered
-              in the netherlands.
+              the v1 system. clinical, ph-balanced formulations built from a
+              short list of natural actives. nothing hidden behind a blend name.
+              engineered in the netherlands.
             </p>
-            {/* certification badges */}
+            {}
             <div className="flex flex-wrap gap-2 mt-2">
               {[
                 { icon: "/icons/vegan.svg", label: "vegan" },
@@ -70,7 +67,7 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* ── Product grid ── */}
+      {}
       <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-32 border-b border-hairline">
         <div className="flex items-center justify-between mb-12">
           <span className="text-xs font-mono tracking-[0.2em] text-text-muted lowercase">
@@ -81,12 +78,12 @@ export default function ShopPage() {
           </span>
         </div>
 
-        {/* Duo bundle */}
+        {}
         <div className="mb-8">
           <DuoCard isHighlighted />
         </div>
 
-        {/* Singles grid */}
+        {}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-hairline mb-8">
           <SingleProductCard
             unit="unit 01"
@@ -111,12 +108,12 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* ── Technical spec grid ── */}
+      {}
       <section className="border-b border-hairline">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-16 md:py-24">
           <div className="flex items-center gap-4 mb-10">
             <span className="font-mono text-xs tracking-[0.2em] text-text-muted">
-              02 //
+              02
             </span>
             <h2 className="text-xl font-light lowercase text-white">
               formulation specs
@@ -132,14 +129,16 @@ export default function ShopPage() {
                 <span className="text-[10px] font-mono tracking-[0.2em] text-text-muted lowercase">
                   {s.key}
                 </span>
-                <span className="text-sm text-text-muted lowercase">{s.value}</span>
+                <span className="text-sm text-text-muted lowercase">
+                  {s.value}
+                </span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Shipping & trust block ── */}
+      {}
       <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-14 md:py-20 border-b border-hairline">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-hairline">
           {[
@@ -161,8 +160,11 @@ export default function ShopPage() {
           ].map((item, i) => (
             <div
               key={item.title}
-              className={`flex flex-col gap-4 p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-hairline" : ""
-                }`}
+              className={`flex flex-col gap-4 p-8 ${
+                i < 2
+                  ? "md:border-r border-b md:border-b-0 border-hairline"
+                  : ""
+              }`}
             >
               <img
                 src={item.icon}
@@ -171,14 +173,17 @@ export default function ShopPage() {
                 style={{ filter: "brightness(0) invert(1)" }}
               />
               <div className="flex flex-col gap-1.5">
-                <span className="text-sm text-text-muted lowercase">{item.title}</span>
-                <p className="text-xs text-text-muted lowercase leading-relaxed">{item.desc}</p>
+                <span className="text-sm text-text-muted lowercase">
+                  {item.title}
+                </span>
+                <p className="text-xs text-text-muted lowercase leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </section>
-
     </main>
   );
 }

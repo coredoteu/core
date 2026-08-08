@@ -1,6 +1,3 @@
-// ─── Shared product catalog ────────────────────────────────────────────────
-// Import this wherever you need product data (shop page, spec sheet, etc.)
-
 import { CartProduct } from "@/context/CartContext";
 import { getActivePrice } from "@/lib/storeConfig";
 

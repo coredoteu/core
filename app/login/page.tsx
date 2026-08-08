@@ -35,7 +35,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#0D0D0D] flex flex-col items-center justify-center px-6">
-      {/* Subtle radial glow */}
+      {}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -50,7 +50,7 @@ export default function LoginPage() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="relative z-10 w-full max-w-sm"
       >
-        {/* Logo */}
+        {}
         <div className="flex justify-center mb-10">
           <Link href="/" aria-label="CORE. home">
             <Image
@@ -64,7 +64,7 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        {/* Heading */}
+        {}
         <div className="mb-8">
           <p className="text-[10px] font-mono tracking-[0.3em] text-text-faint lowercase mb-2">
             account access
@@ -74,9 +74,9 @@ export default function LoginPage() {
           </h1>
         </div>
 
-        {/* Form */}
+        {}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email */}
+          {}
           <div className="space-y-1.5">
             <label
               htmlFor="email"
@@ -96,7 +96,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Password */}
+          {}
           <div className="space-y-1.5">
             <label
               htmlFor="password"
@@ -116,7 +116,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Error */}
+          {}
           <AnimatePresence>
             {error && (
               <motion.div
@@ -133,7 +133,7 @@ export default function LoginPage() {
             )}
           </AnimatePresence>
 
-          {/* Submit */}
+          {}
           <button
             id="login-submit"
             type="submit"
@@ -169,14 +169,14 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Divider */}
+        {}
         <div className="flex items-center gap-3 my-6">
           <div className="flex-1 h-px bg-white/[0.06]" />
           <span className="text-[10px] font-mono text-text-dim">or</span>
           <div className="flex-1 h-px bg-white/[0.06]" />
         </div>
 
-        {/* Link to signup */}
+        {}
         <p className="text-center text-[11px] text-text-faint">
           no account?{" "}
           <Link
