@@ -45,13 +45,8 @@ export default function AddToCartButton({
     status === "success"
       ? "added"
       : status === "adding"
-      ? "adding"
-      : label;
-
-  const iconFilter =
-    status === "success"
-      ? "brightness(0)"
-      : "brightness(0) invert(1)";
+        ? "adding"
+        : label;
 
   return (
     <button
@@ -59,21 +54,19 @@ export default function AddToCartButton({
       onClick={handleClick}
       disabled={status === "adding"}
       aria-live="polite"
-      className={`group flex items-center justify-between gap-3 px-6 py-3.5 border text-sm tracking-[0.15em] lowercase transition-all duration-300 disabled:cursor-wait focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2 ${
-        status === "success"
+      className={`group flex items-center justify-between gap-3 px-6 py-3.5 border text-sm tracking-[0.15em] lowercase transition-all duration-300 disabled:cursor-wait focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2 ${status === "success"
           ? "border-white bg-white text-[#0D0D0D]"
           : "border-white/20 text-text-muted hover:text-white hover:border-white/40"
-      } ${className}`}
+        } ${className}`}
     >
       <span>{text}</span>
       <div
         className="h-4 w-4 transition-all duration-300 flex items-center justify-center"
         style={{
-          filter: iconFilter,
           opacity: status === "success" ? 1 : 0.8,
         }}
       >
-        <Icon src={icon} size={16} opacity={1} />
+        <Icon src={icon} size={16} opacity={1} invert={status !== "success"} />
       </div>
     </button>
   );

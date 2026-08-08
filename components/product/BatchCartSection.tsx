@@ -203,38 +203,32 @@ export default function BatchCartSection({
     phase === "preorder"
       ? "pre:order batch 01"
       : phase === "buffer"
-      ? `order batch 01 (${typeof stockCount === "number" ? `${stockCount} left` : "low stock"})`
-      : "pre:order batch 02";
+        ? `order batch 01 (${typeof stockCount === "number" ? `${stockCount} left` : "low stock"})`
+        : "pre:order batch 02";
 
   const buttonAriaLabel =
     phase === "preorder"
       ? `pre-order batch 01 at early bird price of €${pricing?.preorderPrice?.toFixed(2)}`
       : phase === "buffer"
-      ? `order batch 01 — ${typeof stockCount === "number" ? `${stockCount} units remaining` : "low stock"}`
-      : "pre-order batch 02 — batch 01 is sold out";
+        ? `order batch 01 — ${typeof stockCount === "number" ? `${stockCount} units remaining` : "low stock"}`
+        : "pre-order batch 02 — batch 01 is sold out";
 
   const buttonClassName =
     phase === "preorder"
       ? "bg-white text-black hover:bg-white/90 border border-white font-semibold"
       : phase === "buffer"
-      ? "border border-white text-white hover:bg-white hover:text-black transition-colors duration-200"
-      : "border border-white/30 text-white hover:border-white/60 transition-colors duration-200";
+        ? "border border-white text-white hover:bg-white hover:text-black transition-colors duration-200"
+        : "border border-white/30 text-white hover:border-white/60 transition-colors duration-200";
 
   // Animated display text for cart-action phases
   const displayLabel =
     isCartAction && btnStatus === "success"
       ? "added"
       : isCartAction && btnStatus === "adding"
-      ? "adding…"
-      : buttonLabel;
+        ? "adding…"
+        : buttonLabel;
 
   const isDisabled = isCartAction && btnStatus === "adding";
-
-  // Icon filter: white icon on dark bg vs. black icon on white (preorder) bg
-  const iconFilter =
-    phase === "preorder" && btnStatus !== "success"
-      ? "brightness(0)" // black icon on white button
-      : "brightness(0) invert(1)"; // white icon on dark/ghost button
 
   return (
     <div className={`flex flex-col space-y-4 ${className}`}>
@@ -267,7 +261,6 @@ export default function BatchCartSection({
           <div
             className="h-4 w-4 flex items-center justify-center shrink-0 transition-opacity duration-200"
             style={{
-              filter: iconFilter,
               opacity: btnStatus === "adding" ? 0.4 : 1,
             }}
             aria-hidden="true"
@@ -280,6 +273,7 @@ export default function BatchCartSection({
               }
               size={16}
               opacity={1}
+              invert={phase !== "preorder"}
             />
           </div>
         )}
