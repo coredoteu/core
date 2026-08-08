@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Navbar from "@/components/layout/Navbar";
+
 
 // ─── Loading skeleton ─────────────────────────────────────────────────────────
 
@@ -90,7 +90,7 @@ function ConfirmSignupContent() {
 export default function ConfirmSignupPage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-      <Navbar />
+
 
       {/* centred layout */}
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-6">

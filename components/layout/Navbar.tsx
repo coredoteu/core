@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useSupabaseSession } from "@/context/AuthContext";
+import { usePathname } from "next/navigation";
 
 const navLinks = ["shop", "science", "roadmap"] as const;
 
@@ -21,6 +22,7 @@ export default function Navbar() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -49,6 +51,10 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  if (pathname === "/login" || pathname === "/signup") {
+    return null;
+  }
 
   return (
     <motion.header

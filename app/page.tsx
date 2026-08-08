@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/layout/Navbar";
+
 import Hero from "@/components/sections/Hero";
 import Ticker from "@/components/sections/Ticker";
 import ProductHoverSection from "@/components/product/ProductHoverSection";
@@ -42,7 +42,7 @@ const standards = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-      <Navbar />
+
       <Hero />
 
       <Ticker />

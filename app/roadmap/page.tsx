@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar";
+
 import RoadmapContent from "@/components/sections/RoadmapContent";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RoadmapPage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans overflow-x-hidden">
-      <Navbar />
+
       <RoadmapContent />
     </main>
   );

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/layout/Navbar";
+
 import AddToCartButton from "@/components/product/AddToCartButton";
 import { ProductPageData } from "@/lib/products";
 import { CATALOG } from "@/lib/catalog";
@@ -78,7 +78,7 @@ export default function ProductPageTemplate({
           })
         }}
       />
-      <Navbar />
+
 
       <section data-mobile-sticky-trigger="true" className="pt-28 md:pt-36 pb-20 md:pb-28">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">

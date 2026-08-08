@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/layout/Providers";
+import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/layout/CustomCursor";
 import MobileStickyCart from "@/components/cart/MobileStickyCart";
 import CartDrawer from "@/components/cart/CartDrawer";
@@ -97,6 +98,7 @@ export default function RootLayout({
           }}
         />
         <Providers>
+          <Navbar />
           <CustomCursor />
           <CartDrawer />
           <MobileStickyCart />

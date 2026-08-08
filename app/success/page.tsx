@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Navbar from "@/components/layout/Navbar";
+
 import { useCart } from "@/context/CartContext";
 import { CATALOG } from "@/lib/catalog";
 
@@ -513,7 +513,7 @@ function SuccessContent() {
 export default function SuccessPage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-      <Navbar />
+
       <Suspense
         fallback={
           <div className="flex items-center justify-center min-h-[60vh]">

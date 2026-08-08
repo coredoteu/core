@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar";
+
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 import SingleProductCard from "@/components/product/SingleProductCard";
@@ -31,7 +31,7 @@ const specs = [
 export default function ShopPage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
-      <Navbar />
+
 
       {/* ── Hero band ── */}
       <section className="pt-32 md:pt-44 pb-16 md:pb-24 border-b border-hairline">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar";
+
 import ScienceContent from "@/components/sections/ScienceContent";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function SciencePage() {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans overflow-x-hidden">
-      <Navbar />
+
       <ScienceContent />
     </main>
   );
