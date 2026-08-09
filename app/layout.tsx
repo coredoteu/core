@@ -7,6 +7,7 @@ import MobileStickyCart from "@/components/cart/MobileStickyCart";
 import CartDrawer from "@/components/cart/CartDrawer";
 import Footer from "@/components/layout/Footer";
 import CookieDisclaimer from "@/components/layout/CookieDisclaimer";
+import { ChatWidget } from "@/components/ChatWidget";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -105,6 +106,7 @@ export default function RootLayout({
           <CartDrawer />
           <MobileStickyCart />
           <CookieDisclaimer />
+          <ChatWidget />
           <div className="flex-1 flex flex-col">{children}</div>
           <Footer />
         </Providers>
