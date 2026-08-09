@@ -21,14 +21,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CORE. - technical, high-performance hair care",
+  title: "system / 00 - CORE.",
   description:
-    "CORE. is a stealth, engineered hair care brand. technical, high-performance formulas refined for scalp and strand perfection.",
+    "technical & engineered hair care. 98-99% natural origin active formulas engineered in europe for scalp equilibrium and strand repair.",
   metadataBase: new URL("https://bycore.eu"),
   openGraph: {
-    title: "CORE. - technical, high-performance hair care",
+    title: "system / 00 - CORE.",
     description:
-      "CORE. is a stealth, engineered hair care brand. technical, high-performance formulas refined for scalp and strand perfection.",
+      "technical & engineered hair care. 98-99% natural origin active formulas engineered in europe for scalp equilibrium and strand repair.",
     url: "https://bycore.eu",
     siteName: "CORE.",
     locale: "en_US",
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CORE. - technical, high-performance hair care",
+    title: "system / 00 - CORE.",
     description:
-      "CORE. is a stealth, engineered hair care brand. technical, high-performance formulas refined for scalp and strand perfection.",
+      "technical & engineered hair care. 98-99% natural origin active formulas engineered in europe for scalp equilibrium and strand repair.",
   },
   icons: {
     icon: [
