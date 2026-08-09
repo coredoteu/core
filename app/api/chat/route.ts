@@ -4,9 +4,16 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { streamText } from "ai";
 
 export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
+
+  console.log("[AI Routing Environment Check]", {
+    hasGoogleKey: Boolean(process.env.GOOGLE_GENERATIVE_AI_API_KEY),
+    hasGroqKey: Boolean(process.env.GROQ_API_KEY),
+    hasOpenRouterKey: Boolean(process.env.OPENROUTER_API_KEY),
+  });
 
   const systemPrompt = `
 brand persona: you are the official automated support assistant for CORE. (bycore.eu), a premium european engineered haircare brand.
@@ -27,6 +34,10 @@ customer policies:
   const openrouter = createOpenAI({
     baseURL: "https://openrouter.ai/api/v1",
     apiKey: process.env.OPENROUTER_API_KEY,
+    headers: {
+      "HTTP-Referer": "https://bycore.eu",
+      "X-Title": "CORE.",
+    },
   });
 
   const groq = createGroq({
@@ -46,7 +57,6 @@ customer policies:
     { provider: "OpenRouter (Nemotron)", model: openrouter("nvidia/nemotron-3-ultra-550b-a55b:free") }
   ];
 
-
   for (const { provider, model } of fallbackModels) {
     try {
       const result = await streamText({
@@ -55,9 +65,14 @@ customer policies:
         messages,
         temperature: 0.5,
         maxTokens: 4000,
+        onError({ error }) {
+          console.error(`[AI Routing Detailed Error] ${provider}:`, error);
+        },
       });
 
-      const res = result.toDataStreamResponse();
+      const res = result.toDataStreamResponse({
+        getErrorMessage: (err) => (err instanceof Error ? err.message : String(err)),
+      });
 
       if (!res.body) throw new Error("Empty response body");
       const reader = res.body.getReader();
