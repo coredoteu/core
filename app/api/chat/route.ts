@@ -1,7 +1,7 @@
 import { createGroq } from "@ai-sdk/groq";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { streamText, tool } from "ai";
+import { createDataStreamResponse, streamText, tool } from "ai";
 import { z } from "zod";
 import { getServerSession, createSupabaseServerClient } from "@/lib/supabase-server";
 
@@ -161,10 +161,10 @@ export async function POST(req: Request) {
 
   tone & behavioral rules (strictly enforced):
   1. strict lowercase: every single word you write MUST be in lowercase. the ONLY exception is the brand name "CORE.", which must always be fully capitalized and end with a period. note: when using the word "core" as a regular english word (like in the slogan "refined to the core"), it MUST be lowercase.
-  2. slogan usage: do NOT use the phrase "refined to the core" frequently. use it very rarely.
+  2. extreme brevity: be brutally concise. never write 3 sentences if 1 is enough. do not over-explain policies, logistics, or routines unless the customer specifically asks "why" or "how".
   3. unbiased comparisons: if asked if CORE. is better than competitors (like based or olaplex), remain objective. do NOT just say "yes". explain that it depends on where the user lives (e.g. import fees in europe) and what their specific hair prefers.
   4. no em-dashes: never use em-dashes. use slashes (/), colons (:), or regular hyphens (-) instead.
-  5. clinical & factual: keep responses clinical, direct, and solution-oriented. use terms like: system, actives, equilibrium, precision, engineered. do not use emotional apologies (never say "i am so sorry to hear that"). provide immediate facts and solutions.
+  5. clinical & factual: keep responses clinical, direct, and solution-oriented. use terms like: system, actives, equilibrium, precision, engineered. do not use emotional apologies (never say "i am so sorry to hear that" or "i'm happy to help"). provide immediate facts and solutions.
   6. zero-bullshit sales: answer exactly what is asked. do not aggressively upsell "the duo" unless the user explicitly asks for recommendations, optimal routines, or discounts.
   7. formatting: no markdown bolding or bullet points unless absolutely necessary for a technical list. keep paragraphs short.
 
@@ -183,11 +183,10 @@ export async function POST(req: Request) {
   - single bottles: € 24.95 pre-order (regular € 28.00).
 
   shipping & delivery information (always answer factually based on this):
-  - currently, we operate on a pre-order model (system 001). to ensure maximum freshness and quality, orders are produced in batches based on a pre-order closing date.
-  - after the pre-order window closes, manufacturing and transit to our dutch fulfillment center takes about 10 days. 
-  - from our fulfillment center, standard delivery is 1 to 2 business days within the netherlands and belgium, and 2 to 4 business days to the rest of the eu.
-  - in total, customers should expect a maximum delivery time of around 2 weeks.
-  - IMPORTANT: do not overcomplicate this or reveal internal supply chain details (do NOT mention our supplier names, 20% buffer stock, or the exact backend logistics). just explain the timeline confidently and simply.
+  - currently, we operate on a pre-order model (system 001). 
+  - the timeline is: 10 days of production/transit AFTER the pre-order window closes, PLUS 1-2 business days for local delivery in NL/BE (or 2-4 days for EU).
+  - CRITICAL INSTRUCTION: because delivery depends on the pre-order closing date, never promise a specific arrival date like "in 2 weeks". instead, always state the rule: "delivery takes about 12 to 14 days after the pre-order window closes." (or for EU: "12 to 14 days plus a few days shipping"). 
+  - IMPORTANT: do not overcomplicate this or reveal internal supply chain details (do NOT mention our supplier names, 20% buffer stock, or the exact backend logistics).
   - free tracked shipping is available on all orders over €50.
 
   detailed return & guarantee policy (strictly enforced):
@@ -228,71 +227,92 @@ export async function POST(req: Request) {
     { provider: "OpenRouter (Nemotron)", model: openrouter("nvidia/nemotron-3-ultra-550b-a55b:free"), isGemini: false }
   ];
 
-  for (const { provider, model, isGemini } of fallbackModels) {
-    try {
-      const result = await streamText({
-        model,
-        system: systemPrompt,
-        messages: isGemini ? geminiMessages : messages,
-        temperature: 0.5,
-        maxTokens: 4000,
-        tools: orderTools,
-        maxSteps: 1,
-        onError({ error }) {
-          console.error(`[AI Routing Detailed Error] ${provider}:`, error);
-        },
-      });
+  return createDataStreamResponse({
+    execute: async (dataStream) => {
+      try {
+        const geminiModelInfo = fallbackModels.find(m => m.isGemini);
+        if (!geminiModelInfo) throw new Error("Gemini model not configured");
 
-      const res = result.toDataStreamResponse({
-        getErrorMessage: (err) => (err instanceof Error ? err.message : String(err)),
-      });
+        const stage1 = streamText({
+          model: geminiModelInfo.model,
+          system: systemPrompt,
+          messages: geminiMessages,
+          temperature: 0.5,
+          maxTokens: 4000,
+          tools: orderTools,
+          maxSteps: 1, // Prevent SDK from attempting a signature-less replay
+        });
 
-      if (!res.body) throw new Error("Empty response body");
-      const reader = res.body.getReader();
-      const firstChunk = await reader.read();
+        // Forward stage 1's parts (tool call/result) but keep stream open
+        // @ts-ignore - Bypass type check for internal sendFinish option
+        stage1.mergeIntoDataStream(dataStream, { sendFinish: false, experimental_sendFinish: false });
 
-      if (firstChunk.value) {
-        const textDecoder = new TextDecoder();
-        const chunkText = textDecoder.decode(firstChunk.value);
+        const toolCalls = await stage1.toolCalls.catch(() => []);
+        const toolResults = await stage1.toolResults.catch(() => []);
 
-        if (chunkText.includes('3:"')) {
-          throw new Error(`Stream returned an error chunk: ${chunkText}`);
+        if (!toolCalls || toolCalls.length === 0) return; // Stage 1 was just text
+
+        // Stage 2: Narration without tools, on Groq
+        const groqModelInfo = fallbackModels.find(m => m.provider.includes("Groq"));
+        if (!groqModelInfo) throw new Error("Groq model not configured");
+
+        const narrationSystem = `
+${systemPrompt}
+
+you already looked up the requested order data below. the ui already shows
+the customer a card with the full order details, so do not restate every
+line item. 
+
+CRITICAL INSTRUCTION: answer their last question directly in MAXIMUM 1 SHORT SENTENCE. 
+do not explain logistics (like 10 days + 2 days). just state the final delivery estimate rule 
+(e.g. "your package is expected to arrive about 12-14 days after the pre-order window closes.") or status. 
+be brutally concise and minimalist. never mention tools, emails, or databases. 
+if the data contains an "error" field, explain plainly. 
+RESPOND IN THE EXACT SAME LANGUAGE AS THE USER'S MESSAGE.
+
+order data:
+${JSON.stringify(toolResults)}
+`.trim();
+
+        const stage2 = streamText({
+          model: groqModelInfo.model,
+          system: narrationSystem,
+          messages, // Plain text messages only
+          temperature: 0.4,
+          maxTokens: 300,
+        });
+
+        stage2.mergeIntoDataStream(dataStream);
+      } catch (err) {
+        console.warn("[AI Routing] Gemini 2-stage flow failed, falling back", err);
+        
+        // Fallback for non-Gemini models that safely support native multi-step
+        let success = false;
+        for (const { provider, model, isGemini } of fallbackModels) {
+          if (isGemini) continue; 
+          try {
+            const fallbackStream = streamText({
+              model,
+              system: systemPrompt,
+              messages,
+              temperature: 0.5,
+              maxTokens: 4000,
+              tools: orderTools,
+              maxSteps: 3, 
+            });
+            fallbackStream.mergeIntoDataStream(dataStream);
+            success = true;
+            break;
+          } catch (e) {
+            console.warn(`[AI Routing] ${provider} fallback failed`, e);
+          }
+        }
+        
+        if (!success) {
+          console.error("[AI Routing] All fallback models failed completely.");
         }
       }
-
-      console.log(`[AI Routing] Successfully connected to: ${provider}`);
-
-      const healthyStream = new ReadableStream({
-        start(controller) {
-          if (!firstChunk.done) {
-            controller.enqueue(firstChunk.value);
-          }
-        },
-        async pull(controller) {
-          try {
-            const { done, value } = await reader.read();
-            if (done) controller.close();
-            else controller.enqueue(value);
-          } catch (e) {
-            controller.error(e);
-          }
-        },
-        cancel() {
-          reader.cancel();
-        }
-      });
-
-      return new Response(healthyStream, {
-        headers: res.headers,
-        status: res.status,
-        statusText: res.statusText
-      });
-
-    } catch (err) {
-      console.warn(`[AI Routing] ${provider} failed, falling back to next...`, err instanceof Error ? err.message : err);
-    }
-  }
-
-  console.error("[AI Routing] All fallback models failed completely.");
-  return new Response("All AI providers are currently unavailable.", { status: 503 });
+    },
+    onError: (error) => (error instanceof Error ? error.message : String(error)),
+  });
 }
