@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
+import { Icon } from "@/components/ui/Icon";
+import Image from "next/image";
 
 function stripThinking(raw: string): string | null {
   if (!raw.includes("<think>")) return raw.trim();
@@ -17,7 +19,7 @@ function AssistantText({ text }: { text: string }) {
     <span className="whitespace-pre-wrap leading-relaxed">
       {parts.map((part, i) =>
         part.toLowerCase() === "core." ? (
-          <span key={i} className="font-semibold">CORE.</span>
+          <strong key={i} className="font-semibold text-white tracking-wide">CORE.</strong>
         ) : (
           <span key={i} className="lowercase">{part}</span>
         )
@@ -28,12 +30,12 @@ function AssistantText({ text }: { text: string }) {
 
 function ThinkingDots() {
   return (
-    <span className="inline-flex items-center gap-[3px]">
+    <span className="inline-flex items-center gap-1.5 px-1 py-1">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-[3px] h-[3px] rounded-full bg-white/30"
-          style={{ animation: `pulse 1.2s ease-in-out ${i * 0.4}s infinite` }}
+          className="w-1.5 h-1.5 rounded-full bg-white/40"
+          style={{ animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite` }}
         />
       ))}
     </span>
@@ -63,27 +65,36 @@ export function ChatWidget() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
       {isOpen && (
-        <div className="mb-4 flex flex-col w-[360px] h-[520px] max-w-[calc(100vw-2rem)] bg-[#0D0D0D] border border-white/10 rounded-md shadow-2xl overflow-hidden">
-          <div className="flex justify-between items-center px-4 py-3 border-b border-white/10 shrink-0">
-            <span className="font-mono text-[11px] text-white/50 tracking-widest select-none">
-              [ <span className="text-white font-semibold">CORE.</span> support ai ]
-            </span>
+        <div 
+          className="mb-5 flex flex-col w-[380px] h-[600px] max-w-[calc(100vw-2rem)] bg-[#0D0D0D]/75 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.8),0_0_80px_rgba(255,255,255,0.03)] overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-4"
+        >
+          {/* Header */}
+          <div className="flex justify-between items-center px-5 py-4 shrink-0 relative">
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="flex items-center gap-2 select-none">
+              <Image src="/CORE_logo_trans.svg" alt="CORE." width={54} height={13} className="h-[13px] w-auto opacity-90" />
+              <span className="font-mono text-[10px] text-white/40 tracking-[0.2em] mt-0.5">
+                support
+              </span>
+            </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="font-mono text-[11px] text-white/35 hover:text-white/80 transition-colors"
+              className="text-white/40 hover:text-white/90 hover:bg-white/10 transition-all rounded-full p-1.5"
               aria-label="Close chat"
             >
-              [ x ]
+              <Icon src="/icons/x.svg" size={16} />
             </button>
           </div>
 
+          {/* Messages Area */}
           <div
-            className="flex-1 overflow-y-auto p-4 space-y-4"
+            className="flex-1 overflow-y-auto p-5 space-y-6"
             style={{ scrollbarWidth: "none" }}
           >
             {messages.length === 0 && !isLoading && (
-              <div className="flex items-center justify-center h-full text-white/25 text-xs font-mono select-none">
-                how can we help you?
+              <div className="flex flex-col items-center justify-center h-full text-white/30 space-y-4 select-none">
+                <Icon src="/icons/message-circle-question-mark.svg" size={36} opacity={0.3} />
+                <span className="text-[13px] lowercase tracking-wide font-mono opacity-80">how can we help you?</span>
               </div>
             )}
 
@@ -93,7 +104,7 @@ export function ChatWidget() {
               if (m.role === "user") {
                 return (
                   <div key={m.id} className="flex justify-end">
-                    <div className="max-w-[82%] px-3 py-2 text-[13px] rounded-md bg-white/5 border border-white/10 text-white/85 lowercase whitespace-pre-wrap leading-relaxed">
+                    <div className="max-w-[85%] px-4 py-2.5 text-[14px] rounded-2xl rounded-tr-sm bg-white/10 text-white/90 lowercase whitespace-pre-wrap leading-relaxed shadow-sm">
                       {m.content}
                     </div>
                   </div>
@@ -108,13 +119,13 @@ export function ChatWidget() {
 
               return (
                 <div key={m.id} className="flex justify-start">
-                  <div className="max-w-[90%] text-[13px] text-white/80 py-1 min-h-[24px] flex items-center">
+                  <div className="max-w-[90%] text-[14px] text-white/70 py-1 min-h-[24px] flex items-center">
                     {showDots ? (
                       <ThinkingDots />
                     ) : cleaned ? (
                       <AssistantText text={cleaned} />
                     ) : (
-                      <span className="text-white/25 text-xs font-mono">—</span>
+                      <span className="text-white/20 text-sm">—</span>
                     )}
                   </div>
                 </div>
@@ -123,25 +134,27 @@ export function ChatWidget() {
 
             {awaitingFirstToken && (
               <div className="flex justify-start">
-                <div className="text-[13px] py-1 min-h-[24px] flex items-center">
+                <div className="py-2 flex items-center">
                   <ThinkingDots />
                 </div>
               </div>
             )}
 
             {error && (
-              <div className="p-3 text-red-400/80 text-xs font-mono lowercase border border-red-500/20 bg-red-500/5 rounded-md">
-                error: {error.message || "failed to connect."}
+              <div className="p-4 text-red-400/90 text-[13px] lowercase border border-red-500/20 bg-red-500/10 rounded-xl flex items-center gap-3">
+                <Icon src="/icons/circle-alert.svg" size={16} />
+                <span>{error.message || "failed to connect."}</span>
               </div>
             )}
 
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="px-3 py-3 border-t border-white/10 shrink-0">
-            <form onSubmit={handleSubmit} className="flex items-center gap-2">
+          {/* Input Area */}
+          <div className="px-4 py-4 shrink-0 bg-gradient-to-t from-[#0D0D0D] to-transparent">
+            <form onSubmit={handleSubmit} className="relative flex items-center">
               <input
-                className="flex-1 bg-transparent border-none outline-none text-[13px] text-white/90 placeholder-white/25 p-1"
+                className="w-full bg-white/5 hover:bg-white/[0.08] focus:bg-white/10 transition-all border border-white/10 focus:border-white/25 outline-none rounded-full text-[14px] text-white placeholder-white/30 pl-5 pr-12 py-3 shadow-inner"
                 value={input}
                 placeholder="ask a question..."
                 onChange={handleInputChange}
@@ -150,38 +163,33 @@ export function ChatWidget() {
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="font-mono text-[11px] text-white/45 hover:text-white/80 disabled:opacity-20 transition-colors select-none shrink-0"
+                className="absolute right-1.5 p-2 rounded-full text-white/50 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-white/50 transition-all"
+                aria-label="Send message"
               >
-                [ send ]
+                <Icon src="/icons/arrow-up.svg" size={18} />
               </button>
             </form>
           </div>
         </div>
       )}
 
+      {/* Trigger Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-4 py-3 bg-[#0D0D0D]/90 backdrop-blur-md border border-white/10 hover:border-white/30 transition-all duration-200 rounded-full shadow-lg text-white"
+          className="group flex items-center gap-3 px-5 py-3.5 bg-[#0D0D0D]/70 backdrop-blur-xl border border-white/10 hover:border-white/25 hover:bg-[#1A1A1A]/80 transition-all duration-300 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.6)] text-white hover:scale-[1.02] active:scale-[0.98]"
           aria-label="Open support chat"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="opacity-65"
-          >
-            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h12a2 2 0 0 1 2 2z" />
-            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-2" />
-          </svg>
-          <span className="font-mono text-[11px] text-white/55">
-            [ support ]
+          <div className="relative flex items-center justify-center">
+            <Icon
+              src="/icons/message-circle-question-mark.svg"
+              size={18}
+              opacity={0.8}
+            />
+            <div className="absolute inset-0 bg-white/20 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <span className="font-mono text-[11px] tracking-[0.15em] text-white/70 group-hover:text-white transition-colors mt-[1px]">
+            support
           </span>
         </button>
       )}

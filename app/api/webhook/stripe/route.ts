@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { syncStripeSessionToSupabase } from "@/lib/orders";
+import { sendOrderConfirmation, createSendcloudParcel } from "@/lib/emails";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -26,6 +27,18 @@ export async function POST(req: Request) {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
       await syncStripeSessionToSupabase(session.id);
+      
+      const email = session.customer_details?.email;
+      if (email) {
+        await sendOrderConfirmation(
+          email,
+          session.id.slice(-8), // simple short order number
+          session.amount_total || 0,
+          session.currency || "eur"
+        );
+      }
+
+      await createSendcloudParcel(session);
     }
 
     return NextResponse.json({ received: true }, { status: 200 });

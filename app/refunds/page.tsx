@@ -120,6 +120,48 @@ export default function RefundsPage() {
             </div>
           </section>
         </div>
+
+        <hr className="border-white/10 my-16" />
+
+        <section className="space-y-6">
+          <h2 className="text-xl text-white">model withdrawal form.</h2>
+          <div className="space-y-4 leading-relaxed text-sm">
+            <p>
+              (complete and return this form only if you wish to withdraw from
+              the contract)
+            </p>
+            <div className="p-6 bg-white/5 rounded-lg border border-white/10 font-mono text-xs">
+              <p>To: CORE. [Insert Business Address / Email]</p>
+              <br />
+              <p>
+                I/We [*] hereby give notice that I/We [*] withdraw from my/our
+                [*] contract of sale of the following goods [*],
+              </p>
+              <br />
+              <p>Ordered on [*]/received on [*],</p>
+              <br />
+              <p>Name of consumer(s),</p>
+              <br />
+              <p>Address of consumer(s),</p>
+              <br />
+              <p>Signature of consumer(s) (only if notified on paper),</p>
+              <br />
+              <p>Date</p>
+              <br />
+              <p className="text-neutral-500">[*] Delete as appropriate.</p>
+            </div>
+            <p>
+              You can also easily submit your withdrawal by emailing us at{" "}
+              <a
+                href="mailto:contact@bycore.eu"
+                className="text-white hover:underline transition-all"
+              >
+                contact@bycore.eu
+              </a>{" "}
+              with your order number.
+            </p>
+          </div>
+        </section>
       </div>
     </div>
   );

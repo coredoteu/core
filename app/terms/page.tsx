@@ -130,15 +130,15 @@ export default function TermsPage() {
                 laws.
               </p>
               <p>
-                the european commission provides a platform for consumer redress
-                and dispute resolution bodies, available at{" "}
+                De Europese Commissie biedt een platform voor online
+                geschillenbeslechting (ODR) aan, te vinden op{" "}
                 <a
-                  href="https://consumer-redress.ec.europa.eu/dispute-resolution-bodies"
+                  href="https://ec.europa.eu/consumers/odr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white hover:underline transition-all"
                 >
-                  consumer-redress.ec.europa.eu
+                  https://ec.europa.eu/consumers/odr
                 </a>
                 .
               </p>

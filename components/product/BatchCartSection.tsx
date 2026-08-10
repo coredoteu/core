@@ -222,6 +222,7 @@ export default function BatchCartSection({
 
   return (
     <div className={`flex flex-col space-y-4 ${className}`}>
+
       {/* ── Price display ─────────────────────────────────────────────────── */}
       <PriceDisplay phase={phase} productId={productId} />
 

@@ -354,7 +354,7 @@ export default function CartDrawer() {
                   }}
                   className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  {isLoading ? "redirecting..." : "proceed to checkout"}
+                  {isLoading ? "redirecting..." : "bestelling met betalingsverplichting"}
                 </button>
 
                 <div className="flex items-center justify-center gap-6">

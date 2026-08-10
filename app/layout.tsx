@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/layout/Providers";
+import Analytics from "@/components/layout/Analytics";
 import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/layout/CustomCursor";
 import MobileStickyCart from "@/components/cart/MobileStickyCart";
@@ -110,6 +111,7 @@ export default function RootLayout({
           <div className="flex-1 flex flex-col">{children}</div>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

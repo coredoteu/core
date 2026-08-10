@@ -39,6 +39,7 @@ export default function CookieDisclaimer() {
             className="w-full md:w-auto text-xs py-3 px-6"
             onClick={() => {
               localStorage.setItem("core-cookie-consent", "accepted");
+              window.dispatchEvent(new Event("core-consent-granted"));
               setShow(false);
             }}
           >
