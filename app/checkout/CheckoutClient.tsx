@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { useSupabaseSession } from "@/context/AuthContext";
 import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
 
 // ─── Stripe setup ─────────────────────────────────────────────────────────────
@@ -164,24 +165,35 @@ function CheckoutForm({
   shippingCost,
   isFreeShipping,
   onBack,
+  paymentIntentId,
+  initialEmail,
+  defaultShippingAddress,
 }: {
   orderSummary: OrderSummaryItem[];
   subtotal: number;
   shippingCost: number;
   isFreeShipping: boolean;
   onBack: () => void;
+  paymentIntentId: string | null;
+  initialEmail: string | null;
+  defaultShippingAddress: Record<string, any> | null;
 }) {
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
   const { clearCart } = useCart();
 
-  const [step, setStep] = useState<"contact" | "shipping" | "payment">("contact");
+  const isLoggedIn = Boolean(initialEmail);
+
+  const [step, setStep] = useState<"contact" | "shipping" | "payment">(
+    isLoggedIn ? "shipping" : "contact",
+  );
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isShippingComplete, setIsShippingComplete] = useState(false);
-  const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [email, setEmail] = useState(initialEmail ?? "");
+  const [isEmailValid, setIsEmailValid] = useState(isLoggedIn);
+  const [isSyncingContact, setIsSyncingContact] = useState(false);
 
   const total = subtotal + shippingCost;
 
@@ -298,11 +310,27 @@ function CheckoutForm({
           </div>
           <button
             type="button"
-            disabled={!isEmailValid}
-            onClick={() => setStep("shipping")}
+            disabled={!isEmailValid || isSyncingContact}
+            onClick={async () => {
+              if (!isLoggedIn && paymentIntentId) {
+                setIsSyncingContact(true);
+                try {
+                  await fetch("/api/checkout/update-contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ paymentIntentId, email }),
+                  });
+                } catch (err) {
+                  console.error("Failed to sync contact email:", err);
+                } finally {
+                  setIsSyncingContact(false);
+                }
+              }
+              setStep("shipping");
+            }}
             className="mt-6 w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-300"
           >
-            continue to shipping
+            {isSyncingContact ? "saving..." : "continue to shipping"}
           </button>
         </div>
 
@@ -315,6 +343,12 @@ function CheckoutForm({
                 mode: "shipping",
                 allowedCountries: ["NL", "BE", "DE", "FR", "GB", "US", "IT", "ES"],
                 fields: { phone: "never" },
+                defaultValues: defaultShippingAddress
+                  ? {
+                      name: (defaultShippingAddress.name as string) ?? undefined,
+                      address: (defaultShippingAddress.address as any) ?? undefined,
+                    }
+                  : undefined,
               }}
               onChange={(event) => {
                 setIsShippingComplete(event.complete);
@@ -623,13 +657,20 @@ function LoadingSkeleton() {
 
 export default function CheckoutClient() {
   const { items, subtotal } = useCart();
+  const { session } = useSupabaseSession();
   const router = useRouter();
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
   const [orderSummary, setOrderSummary] = useState<OrderSummaryItem[]>([]);
   const [serverSubtotal, setServerSubtotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(0);
   const [isFreeShipping, setIsFreeShipping] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState<string | null>(null);
+  const [defaultShippingAddress, setDefaultShippingAddress] = useState<Record<
+    string,
+    any
+  > | null>(null);
   const [initError, setInitError] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
 
@@ -661,10 +702,13 @@ export default function CheckoutClient() {
         }
 
         setClientSecret(data.clientSecret);
+        setPaymentIntentId(data.paymentIntentId || null);
         setOrderSummary(data.orderSummary || []);
         setServerSubtotal(data.subtotal || 0);
         setShippingCost(data.shippingCost || 0);
         setIsFreeShipping(data.isFreeShipping || false);
+        setCustomerEmail(data.customerEmail ?? session?.user?.email ?? null);
+        setDefaultShippingAddress(data.defaultShippingAddress ?? null);
       } catch (err: any) {
         setInitError(err.message || "An unexpected error occurred.");
       } finally {
@@ -786,6 +830,9 @@ export default function CheckoutClient() {
                 shippingCost={shippingCost}
                 isFreeShipping={isFreeShipping}
                 onBack={() => router.push("/cart")}
+                paymentIntentId={paymentIntentId}
+                initialEmail={customerEmail}
+                defaultShippingAddress={defaultShippingAddress}
               />
             </Elements>
           ) : null}

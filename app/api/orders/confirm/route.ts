@@ -12,7 +12,7 @@ export async function GET(req: Request) {
 
     if (paymentIntentId) {
       // New custom Elements checkout flow
-      const order = await syncStripePaymentIntentToSupabase(paymentIntentId);
+      const { order } = await syncStripePaymentIntentToSupabase(paymentIntentId);
       return NextResponse.json({ order });
     }
 
@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     }
 
     // Legacy hosted Checkout Session flow
-    const order = await syncStripeSessionToSupabase(sessionId);
+    const { order } = await syncStripeSessionToSupabase(sessionId);
     return NextResponse.json({ order });
   } catch (error: unknown) {
     console.error("Order confirmation error:", error);

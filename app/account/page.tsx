@@ -114,7 +114,7 @@ export default async function AccountPage() {
       )
     `,
     )
-    .eq("customer_email", email)
+    .eq("user_id", session.user.id)
     .order("created_at", { ascending: false });
 
   const safeOrders: Order[] = (orders as Order[] | null) ?? [];

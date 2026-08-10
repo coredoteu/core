@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Icon } from "@/components/ui/Icon";
 import Image from "next/image";
+import { OrderSummaryCard } from "@/components/chat/OrderSummaryCard";
 
 function stripThinking(raw: string): string | null {
   if (!raw.includes("<think>")) return raw.trim();
@@ -134,16 +135,32 @@ export function ChatWidget() {
                 isLastMessage &&
                 isLoading;
 
+              const orderInvocations = (m.toolInvocations ?? []).filter(
+                (t: any) =>
+                  t.state === "result" &&
+                  (t.toolName === "getRecentOrders" ||
+                    t.toolName === "getOrderByReference"),
+              );
+
               return (
                 <div key={m.id} className="flex justify-start">
-                  <div className="max-w-[90%] text-[14px] text-white/70 py-1 min-h-[24px] flex items-center">
-                    {showDots ? (
-                      <ThinkingDots />
-                    ) : cleaned ? (
-                      <AssistantText text={cleaned} />
-                    ) : (
-                      <span className="text-white/20 text-sm">—</span>
-                    )}
+                  <div className="max-w-[90%] w-full flex flex-col gap-1 py-1">
+                    <div className="text-[14px] text-white/70 min-h-[24px] flex items-center">
+                      {showDots ? (
+                        <ThinkingDots />
+                      ) : cleaned ? (
+                        <AssistantText text={cleaned} />
+                      ) : orderInvocations.length === 0 ? (
+                        <span className="text-white/20 text-sm">—</span>
+                      ) : null}
+                    </div>
+                    {orderInvocations.map((t: any) => (
+                      <OrderSummaryCard
+                        key={t.toolCallId}
+                        orders={t.result?.orders}
+                        order={t.result?.order}
+                      />
+                    ))}
                   </div>
                 </div>
               );
