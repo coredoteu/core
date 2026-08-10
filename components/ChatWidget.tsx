@@ -44,6 +44,19 @@ function ThinkingDots() {
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasStickyCart, setHasStickyCart] = useState(false);
+
+  useEffect(() => {
+    const handleStickyChange = (e: Event) => {
+      const customEvent = e as CustomEvent<{ visible: boolean }>;
+      setHasStickyCart(customEvent.detail.visible);
+    };
+    window.addEventListener("mobileStickyCartChange", handleStickyChange);
+    return () => {
+      window.removeEventListener("mobileStickyCartChange", handleStickyChange);
+    };
+  }, []);
+
   const {
     messages,
     input,
@@ -63,10 +76,14 @@ export function ChatWidget() {
     isLoading && messages[messages.length - 1]?.role === "user";
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
+    <div
+      className={`fixed right-4 md:right-6 z-50 flex flex-col items-end font-sans transition-all duration-300 ${
+        hasStickyCart ? "bottom-[84px] md:bottom-6" : "bottom-4 md:bottom-6"
+      }`}
+    >
       {isOpen && (
         <div 
-          className="mb-5 flex flex-col w-[380px] h-[600px] max-w-[calc(100vw-2rem)] bg-[#0D0D0D]/75 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.8),0_0_80px_rgba(255,255,255,0.03)] overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-4"
+          className="mb-5 flex flex-col w-[380px] h-[600px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-120px)] bg-[#0D0D0D]/75 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.8),0_0_80px_rgba(255,255,255,0.03)] overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-4"
         >
           {/* Header */}
           <div className="flex justify-between items-center px-5 py-4 shrink-0 relative">

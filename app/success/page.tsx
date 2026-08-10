@@ -80,6 +80,10 @@ function DataRow({
 
 function SuccessContent() {
   const searchParams = useSearchParams();
+  // New Elements flow: Stripe sends ?payment_intent=pi_xxx&redirect_status=succeeded
+  const paymentIntentId = searchParams.get("payment_intent");
+  const redirectStatus = searchParams.get("redirect_status");
+  // Legacy hosted Checkout Session flow
   const sessionId = searchParams.get("session_id");
   const { clearCart } = useCart();
   const cartCleared = useRef(false);
@@ -88,13 +92,23 @@ function SuccessContent() {
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState<string | null>(null);
 
+  // Determine the effective identifier
+  const identifier = paymentIntentId || sessionId;
+
   useEffect(() => {
     if (!cartCleared.current) {
       clearCart();
       cartCleared.current = true;
     }
 
-    if (!sessionId) {
+    // Handle failed redirect from Stripe Elements
+    if (redirectStatus && redirectStatus !== "succeeded") {
+      setLoading(false);
+      setSyncError(`payment ${redirectStatus}. please try again.`);
+      return;
+    }
+
+    if (!identifier) {
       setLoading(false);
       setSyncError("no session id provided.");
       return;
@@ -104,10 +118,14 @@ function SuccessContent() {
 
     async function fetchOrder() {
       try {
-        const res = await fetch(
-          `/api/orders/confirm?session_id=${encodeURIComponent(sessionId!)}`,
-          { cache: "no-store" },
-        );
+        // Choose the right API param depending on which flow we're in
+        const param = paymentIntentId
+          ? `payment_intent_id=${encodeURIComponent(paymentIntentId)}`
+          : `session_id=${encodeURIComponent(sessionId!)}`;
+
+        const res = await fetch(`/api/orders/confirm?${param}`, {
+          cache: "no-store",
+        });
         const data = await res.json();
 
         if (cancelled) return;
@@ -130,11 +148,11 @@ function SuccessContent() {
     return () => {
       cancelled = true;
     };
-  }, [sessionId]);
+  }, [identifier, redirectStatus]);
 
   if (loading) return <LoaderState />;
 
-  if (!sessionId) {
+  if (!identifier) {
     return (
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
         <div className="border border-hairline p-8 md:p-12 max-w-lg mx-auto bg-white/[0.02] flex flex-col gap-6">
@@ -220,18 +238,18 @@ function SuccessContent() {
   const orderRef = order?.id ? order.id.slice(0, 8).toUpperCase() : "—";
   const createdAt = order?.created_at
     ? new Date(order.created_at)
-        .toLocaleDateString("en-GB", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })
-        .toLowerCase()
+      .toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+      .toLowerCase()
     : null;
 
   return (
     <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-32 md:pt-44 pb-24">
       <div className="flex flex-col gap-14">
-        {}
+        { }
         <div className="flex flex-col gap-5 border-b border-hairline pb-10">
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5">
@@ -267,11 +285,11 @@ function SuccessContent() {
           </p>
         </div>
 
-        {}
+        { }
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          {}
+          { }
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-            {}
+            { }
             <div className="border border-hairline bg-white/[0.018]">
               <div className="px-6 py-4 border-b border-hairline flex items-center justify-between">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
@@ -307,7 +325,7 @@ function SuccessContent() {
               </div>
             </div>
 
-            {}
+            { }
             {order?.shipping_details && (
               <div className="border border-hairline bg-white/[0.018]">
                 <div className="px-6 py-4 border-b border-hairline">
@@ -332,11 +350,11 @@ function SuccessContent() {
                     )}
                     {(order.shipping_details.address?.postal_code ||
                       order.shipping_details.address?.city) && (
-                      <span className="block">
-                        {order.shipping_details.address.postal_code}{" "}
-                        {order.shipping_details.address.city}
-                      </span>
-                    )}
+                        <span className="block">
+                          {order.shipping_details.address.postal_code}{" "}
+                          {order.shipping_details.address.city}
+                        </span>
+                      )}
                     {order.shipping_details.address?.country && (
                       <span className="block">
                         {order.shipping_details.address.country}
@@ -347,7 +365,7 @@ function SuccessContent() {
               </div>
             )}
 
-            {}
+            { }
             <div className="border border-hairline bg-white/[0.018]">
               <div className="px-6 py-4 border-b border-hairline">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
@@ -361,8 +379,8 @@ function SuccessContent() {
                       (c) => c.id === item.product_id,
                     );
 
-                    const unitPrice = item.price_at_purchase;
-                    const lineTotal = item.price_at_purchase * item.quantity;
+                    const unitPrice = catalogItem ? catalogItem.price : item.price_at_purchase;
+                    const lineTotal = unitPrice * item.quantity;
 
                     return (
                       <div
@@ -371,14 +389,14 @@ function SuccessContent() {
                       >
                         <div className="flex flex-col gap-1 min-w-0">
                           <span className="text-sm font-light text-white lowercase leading-snug">
-                            <span className="font-normal not-lowercase">
+                            <span className="font-normal normal-case">
                               CORE.
                             </span>{" "}
                             {catalogItem?.name ?? item.product_id}
                           </span>
                           <span className="font-mono text-[10px] text-white/35 lowercase">
                             {catalogItem?.unit && `${catalogItem.unit} / `}
-                            qty: {item.quantity} &times; &euro;
+                            qty: {item.quantity} {" "} &times; &euro;
                             {unitPrice.toFixed(2)}
                           </span>
                         </div>
@@ -391,7 +409,7 @@ function SuccessContent() {
                 ) : (
                   <div className="px-6 py-5 flex items-center justify-between">
                     <span className="text-sm font-light text-white lowercase">
-                      <span className="font-normal not-lowercase">CORE.</span>{" "}
+                      <span className="font-normal normal-case">CORE.</span>{" "}
                       system order
                     </span>
                     <span className="font-mono text-sm text-white tabular-nums">
@@ -403,9 +421,9 @@ function SuccessContent() {
             </div>
           </div>
 
-          {}
+          { }
           <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-4">
-            {}
+            { }
             <div className="border border-hairline bg-white/[0.018]">
               <div className="px-6 py-4 border-b border-hairline">
                 <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
@@ -440,7 +458,7 @@ function SuccessContent() {
               </div>
             </div>
 
-            {}
+            { }
             <div className="border border-hairline px-5 py-4 flex flex-col gap-1.5">
               <span className="font-mono text-[9px] tracking-[0.25em] text-text-dim lowercase">
                 stripe session
@@ -450,7 +468,7 @@ function SuccessContent() {
               </p>
             </div>
 
-            {}
+            { }
             <div className="flex flex-col gap-2.5 pt-2">
               <Link
                 id="cta-continue-shopping"
@@ -468,7 +486,7 @@ function SuccessContent() {
               </Link>
             </div>
 
-            {}
+            { }
             <div className="border border-hairline px-5 py-5 flex flex-col gap-4 mt-2">
               <span className="font-mono text-[10px] tracking-[0.25em] text-text-faint lowercase">
                 what happens next

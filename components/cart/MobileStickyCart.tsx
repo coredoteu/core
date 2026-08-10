@@ -20,6 +20,11 @@ export default function MobileStickyCart() {
           }
         });
         setVisible(isVisible);
+        window.dispatchEvent(
+          new CustomEvent("mobileStickyCartChange", {
+            detail: { visible: isVisible },
+          }),
+        );
       },
       { threshold: 0 },
     );

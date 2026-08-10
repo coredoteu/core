@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-[#0D0D0D] font-sans text-neutral-400">
-      <div className="max-w-3xl mx-auto px-6 py-16">
+      <div className="max-w-3xl mx-auto px-6 pt-28 md:pt-36 pb-16 md:pb-24">
         <Link
           href="/"
           className="inline-flex items-center text-sm text-neutral-500 hover:text-white transition-colors mb-12"
@@ -130,17 +130,14 @@ export default function TermsPage() {
                 laws.
               </p>
               <p>
-                De Europese Commissie biedt een platform voor online
-                geschillenbeslechting (ODR) aan, te vinden op{" "}
+                if you have a complaint or grievance, please contact us directly at{" "}
                 <a
-                  href="https://ec.europa.eu/consumers/odr"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:contact@bycore.eu"
                   className="text-white hover:underline transition-all"
                 >
-                  https://ec.europa.eu/consumers/odr
-                </a>
-                .
+                  contact@bycore.eu.
+                </a>{" "}
+                we aim to resolve all disputes quickly and amicably.
               </p>
             </div>
           </section>

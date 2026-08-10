@@ -8,6 +8,8 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const SHIPPING_COST_EUR = 5.95;
+
 export async function POST(req: Request) {
   try {
     const { items } = await req.json();
@@ -16,6 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "cart is empty" }, { status: 400 });
     }
 
+    // Validate & price items server-side from the catalog (never trust client prices)
     const lineItems = items.map((item: any) => {
       const catalogItem = CATALOG.find(
         (p) => p.id === item.product?.id || p.id === item.product,
@@ -25,62 +28,52 @@ export async function POST(req: Request) {
           `product ${item.product?.id || item.product} not found in catalog`,
         );
       }
-
       return {
-        price_data: {
-          currency: "eur",
-          product_data: {
-            name: `CORE. ${catalogItem.name}`,
-            images: catalogItem.image
-              ? [`https://bycore.eu${catalogItem.image}`]
-              : [],
-            metadata: {
-              productId: catalogItem.id,
-            },
-          },
-          unit_amount: Math.round(catalogItem.price * 100),
-          tax_behavior: "inclusive",
-        },
+        id: catalogItem.id,
+        name: catalogItem.name,
+        unit: catalogItem.unit,
+        size: catalogItem.size,
+        image: catalogItem.image,
+        price: catalogItem.price,
         quantity: item.quantity,
       };
     });
 
-    const subtotal = lineItems.reduce(
-      (acc: number, item: any) =>
-        acc + item.price_data.unit_amount * item.quantity,
+    const subtotalCents = lineItems.reduce(
+      (acc: number, item: any) => acc + Math.round(item.price * 100) * item.quantity,
       0,
     );
-    const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD_EUR * 100;
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card", "ideal"],
-      line_items: lineItems,
-      mode: "payment",
-      automatic_tax: { enabled: true },
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://bycore.eu"}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://bycore.eu"}/cart`,
-      shipping_address_collection: {
-        allowed_countries: ["NL", "BE", "DE", "FR", "GB", "US", "IT", "ES"],
+    const isFreeShipping = subtotalCents >= FREE_SHIPPING_THRESHOLD_EUR * 100;
+    const shippingCents = isFreeShipping ? 0 : Math.round(SHIPPING_COST_EUR * 100);
+    const totalCents = subtotalCents + shippingCents;
+
+    // Build Stripe metadata for order tracking
+    const itemsMetadata = lineItems
+      .map((i: any) => `${i.id}×${i.quantity}`)
+      .join(",");
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalCents,
+      currency: "eur",
+      automatic_payment_methods: { enabled: true },
+      metadata: {
+        items: itemsMetadata,
+        subtotal_cents: subtotalCents.toString(),
+        shipping_cents: shippingCents.toString(),
+        source: "bycore-web-custom-checkout",
       },
-      shipping_options: [
-        {
-          shipping_rate_data: {
-            type: "fixed_amount",
-            fixed_amount: { amount: isFreeShipping ? 0 : 595, currency: "eur" },
-            display_name: isFreeShipping
-              ? "Free Standard Shipping"
-              : "Standard Shipping",
-            tax_behavior: "inclusive",
-            delivery_estimate: {
-              minimum: { unit: "business_day", value: 2 },
-              maximum: { unit: "business_day", value: 5 },
-            },
-          },
-        },
-      ],
     });
 
-    return NextResponse.json({ id: session.id, url: session.url });
+    return NextResponse.json({
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+      amount: totalCents,
+      subtotal: subtotalCents,
+      shippingCost: shippingCents,
+      isFreeShipping,
+      orderSummary: lineItems,
+    });
   } catch (error: unknown) {
     console.error("Stripe checkout error:", error);
     return NextResponse.json(

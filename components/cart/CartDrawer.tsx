@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { QuantityControl } from "@/components/cart/QuantityControl";
 import { FREE_SHIPPING_THRESHOLD_EUR } from "@/lib/constants";
@@ -146,6 +147,7 @@ function EmptyState({ onClose }: { onClose: () => void }) {
 export default function CartDrawer() {
   const { items, subtotal, isDrawerOpen, closeDrawer } = useCart();
   const drawerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const isEmpty = items.length === 0;
   const [isLoading, setIsLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -331,30 +333,14 @@ export default function CartDrawer() {
 
                 <button
                   disabled={isLoading}
-                  onClick={async () => {
-                    try {
-                      setIsLoading(true);
-                      setCheckoutError(null);
-                      const res = await fetch("/api/checkout", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ items }),
-                      });
-                      const data = await res.json();
-                      if (data.url) {
-                        window.location.href = data.url;
-                      } else {
-                        setCheckoutError(data.error || "Checkout failed");
-                        setIsLoading(false);
-                      }
-                    } catch (err: any) {
-                      setCheckoutError(err.message || "Checkout failed");
-                      setIsLoading(false);
-                    }
+                  onClick={() => {
+                    setIsLoading(true);
+                    closeDrawer();
+                    router.push("/checkout");
                   }}
                   className="group w-full flex items-center justify-center gap-3 py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  {isLoading ? "redirecting..." : "bestelling met betalingsverplichting"}
+                  {isLoading ? "loading..." : "proceed to checkout"}
                 </button>
 
                 <div className="flex items-center justify-center gap-6">

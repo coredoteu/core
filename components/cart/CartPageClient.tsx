@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { CATALOG } from "@/lib/catalog";
 import { QuantityControl } from "@/components/cart/QuantityControl";
@@ -204,6 +205,7 @@ function SuggestedProducts({ currentIds }: { currentIds: string[] }) {
 
 export default function CartPageClient() {
   const { items, subtotal, clearCart } = useCart();
+  const router = useRouter();
   const isEmpty = items.length === 0;
   const [isLoading, setIsLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -388,30 +390,13 @@ export default function CartPageClient() {
                 )}
                 <button
                   disabled={isLoading}
-                  onClick={async () => {
-                    try {
-                      setIsLoading(true);
-                      setCheckoutError(null);
-                      const res = await fetch("/api/checkout", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ items }),
-                      });
-                      const data = await res.json();
-                      if (data.url) {
-                        window.location.href = data.url;
-                      } else {
-                        setCheckoutError(data.error || "Checkout failed");
-                        setIsLoading(false);
-                      }
-                    } catch (err: any) {
-                      setCheckoutError(err.message || "Checkout failed");
-                      setIsLoading(false);
-                    }
+                  onClick={() => {
+                    setIsLoading(true);
+                    router.push("/checkout");
                   }}
                   className="w-full py-4 bg-white text-[#0D0D0D] text-xs font-mono tracking-[0.2em] lowercase hover:bg-white/90 active:bg-white/80 disabled:opacity-50 transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/60 focus-visible:outline-offset-2"
                 >
-                  {isLoading ? "redirecting..." : "bestelling met betalingsverplichting"}
+                  {isLoading ? "loading..." : "proceed to checkout"}
                 </button>
                 <Link
                   href="/shop"

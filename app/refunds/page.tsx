@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { WithdrawalForm } from "@/components/WithdrawalForm";
 
 export default function RefundsPage() {
   return (
     <div className="min-h-screen bg-[#0D0D0D] font-sans text-neutral-400">
-      <div className="max-w-3xl mx-auto px-6 py-16">
+      <div className="max-w-3xl mx-auto px-6 pt-28 md:pt-36 pb-16 md:pb-24">
         <Link
           href="/"
           className="inline-flex items-center text-sm text-neutral-500 hover:text-white transition-colors mb-12"
@@ -127,31 +128,11 @@ export default function RefundsPage() {
           <h2 className="text-xl text-white">model withdrawal form.</h2>
           <div className="space-y-4 leading-relaxed text-sm">
             <p>
-              (complete and return this form only if you wish to withdraw from
-              the contract)
+              if you wish to exercise your statutory right of withdrawal, you can easily submit your request below.
             </p>
-            <div className="p-6 bg-white/5 rounded-lg border border-white/10 font-mono text-xs">
-              <p>To: CORE. [Insert Business Address / Email]</p>
-              <br />
-              <p>
-                I/We [*] hereby give notice that I/We [*] withdraw from my/our
-                [*] contract of sale of the following goods [*],
-              </p>
-              <br />
-              <p>Ordered on [*]/received on [*],</p>
-              <br />
-              <p>Name of consumer(s),</p>
-              <br />
-              <p>Address of consumer(s),</p>
-              <br />
-              <p>Signature of consumer(s) (only if notified on paper),</p>
-              <br />
-              <p>Date</p>
-              <br />
-              <p className="text-neutral-500">[*] Delete as appropriate.</p>
-            </div>
-            <p>
-              You can also easily submit your withdrawal by emailing us at{" "}
+            <WithdrawalForm />
+            <p className="mt-4">
+              alternatively, you can also email us at{" "}
               <a
                 href="mailto:contact@bycore.eu"
                 className="text-white hover:underline transition-all"

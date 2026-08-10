@@ -89,3 +89,12 @@ nextjs-portal,
 [data-nextjs-toast-wrapper] {
   display: none !important;
 }
+
+/* ─── Stripe iframe: hide custom cursor while typing in Stripe inputs ─────── */
+/* When hovering a Stripe payment/address element (cross-origin iframe),
+   the custom cursor freezes. We add .stripe-focus to body and hide the
+   cursor elements so the native text cursor can render cleanly. */
+body.stripe-focus [data-custom-cursor] {
+  opacity: 0 !important;
+  transition: opacity 0.15s ease !important;
+}

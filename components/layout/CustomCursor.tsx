@@ -45,7 +45,7 @@ export default function CustomCursor() {
     const ringInner = ringInnerRef.current;
 
     const styleEl = document.createElement("style");
-    styleEl.textContent = "*, *::before, *::after { cursor: none !important; }";
+    styleEl.textContent = "body:not(.stripe-focus) *, body:not(.stripe-focus) *::before, body:not(.stripe-focus) *::after { cursor: none !important; }";
     document.head.appendChild(styleEl);
 
     ringInner.style.transform = hoveringRef.current
@@ -133,6 +133,7 @@ export default function CustomCursor() {
     document.addEventListener("pointerover", onPointerOver, { passive: true });
     document.documentElement.addEventListener("mouseleave", onLeave);
     document.documentElement.addEventListener("mouseenter", onEnter);
+    window.addEventListener("hide-custom-cursor", onLeave);
 
     return () => {
       cancelAnimationFrame(rafId);
@@ -140,6 +141,7 @@ export default function CustomCursor() {
       document.removeEventListener("pointerover", onPointerOver);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       document.documentElement.removeEventListener("mouseenter", onEnter);
+      window.removeEventListener("hide-custom-cursor", onLeave);
       styleEl.remove();
       hideCursorRef.current = null;
     };
@@ -150,6 +152,7 @@ export default function CustomCursor() {
       <div
         ref={dotRef}
         aria-hidden="true"
+        data-custom-cursor="dot"
         style={{
           position: "fixed",
           top: 0,
@@ -169,6 +172,7 @@ export default function CustomCursor() {
       <div
         ref={ringWrapRef}
         aria-hidden="true"
+        data-custom-cursor="ring"
         style={{
           position: "fixed",
           top: 0,

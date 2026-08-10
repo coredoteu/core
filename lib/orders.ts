@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
+import { CATALOG } from "./catalog";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("STRIPE_SECRET_KEY is not configured.");
@@ -98,6 +99,133 @@ export async function syncStripeSessionToSupabase(sessionId: string) {
     if (itemsError) {
       console.error("Error inserting order items into Supabase:", itemsError);
       throw itemsError;
+    }
+  }
+
+  const { data: finalOrder } = await supabase
+    .from("orders")
+    .select("*, order_items(*)")
+    .eq("id", orderData.id)
+    .single();
+
+  return finalOrder || orderData;
+}
+
+/**
+ * Syncs a Stripe PaymentIntent (from the custom Elements checkout) to Supabase.
+ * The PaymentIntent ID is stored in the stripe_session_id column for compatibility.
+ */
+export async function syncStripePaymentIntentToSupabase(paymentIntentId: string) {
+  const supabase = getSupabase();
+
+  // Check if already synced (idempotent)
+  const { data: existingOrder } = await supabase
+    .from("orders")
+    .select("*, order_items(*)")
+    .eq("stripe_session_id", paymentIntentId)
+    .maybeSingle();
+
+  if (existingOrder) {
+    return existingOrder;
+  }
+
+  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId, {
+    expand: ["payment_method", "latest_charge"],
+  });
+
+  if (!paymentIntent || paymentIntent.status !== "succeeded") {
+    throw new Error("PaymentIntent not found or payment not completed");
+  }
+
+  const charge = paymentIntent.latest_charge as Stripe.Charge | null;
+  const billingDetails = charge?.billing_details;
+  // receipt_email is set from confirmParams.receipt_email (our email field)
+  // billing_details.email comes from some payment methods (iDEAL etc.)
+  const customerEmail =
+    paymentIntent.receipt_email ||
+    billingDetails?.email ||
+    paymentIntent.metadata?.customer_email ||
+    "unknown@bycore.eu"; // fallback to prevent NOT NULL DB error
+  const customerName = billingDetails?.name || null;
+  const amountTotal = paymentIntent.amount / 100;
+  const currency = paymentIntent.currency || "eur";
+
+  // Shipping details collected via AddressElement are stored in metadata or charge shipping
+  const chargeShipping = charge?.shipping;
+  const shippingDetails = chargeShipping
+    ? {
+        name: chargeShipping.name,
+        address: {
+          line1: chargeShipping.address?.line1,
+          line2: chargeShipping.address?.line2,
+          city: chargeShipping.address?.city,
+          postal_code: chargeShipping.address?.postal_code,
+          country: chargeShipping.address?.country,
+        },
+      }
+    : billingDetails
+    ? {
+        name: billingDetails.name,
+        address: {
+          line1: billingDetails.address?.line1,
+          line2: billingDetails.address?.line2,
+          city: billingDetails.address?.city,
+          postal_code: billingDetails.address?.postal_code,
+          country: billingDetails.address?.country,
+        },
+      }
+    : null;
+
+  const { data: orderData, error: orderError } = await supabase
+    .from("orders")
+    .insert({
+      stripe_session_id: paymentIntentId, // reuse column to store PI id
+      customer_email: customerEmail,
+      customer_name: customerName,
+      amount_total: amountTotal,
+      currency: currency,
+      payment_status: "paid",
+      shipping_details: shippingDetails,
+    })
+    .select(
+      "id, stripe_session_id, customer_email, customer_name, amount_total, currency, payment_status, shipping_details, created_at",
+    )
+    .single();
+
+  if (orderError) {
+    console.error("Error inserting order into Supabase:", orderError);
+    throw orderError;
+  }
+
+  // Parse items from PaymentIntent metadata
+  const itemsMeta = paymentIntent.metadata?.items || "";
+  const orderItemsToInsert = itemsMeta
+    .split(",")
+    .filter(Boolean)
+    .map((entry: string) => {
+      const [productId, qty] = entry.split("×");
+      const shippingCentsStr = paymentIntent.metadata?.shipping_cents || "0";
+      const subtotalCentsStr = paymentIntent.metadata?.subtotal_cents || "0";
+      const totalItems = itemsMeta.split(",").filter(Boolean).length;
+      const catalogItem = CATALOG.find(c => c.id === productId?.trim());
+      const priceAtPurchase = catalogItem ? catalogItem.price : (totalItems > 0 ? parseInt(subtotalCentsStr) / 100 / totalItems : amountTotal);
+
+      return {
+        order_id: orderData.id,
+        product_id: productId?.trim() || null,
+        quantity: parseInt(qty?.trim() || "1", 10),
+        price_at_purchase: Math.round(priceAtPurchase * 100) / 100,
+      };
+    });
+
+  if (orderItemsToInsert.length > 0) {
+    const { error: itemsError } = await supabase
+      .from("order_items")
+      .insert(orderItemsToInsert);
+
+    if (itemsError) {
+      console.error("Error inserting order items:", itemsError);
+      // Non-fatal — order is still saved
     }
   }
 
