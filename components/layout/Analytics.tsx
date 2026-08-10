@@ -1,10 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
+
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+    dataLayer?: any[];
+  }
+}
+
+function PageTracker({ hasConsent, gaId }: { hasConsent: boolean; gaId: string }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (!hasConsent || !gaId || typeof window === "undefined") return;
+
+    const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+
+    if (window.gtag) {
+      window.gtag("config", gaId, {
+        page_path: url,
+      });
+    }
+  }, [pathname, searchParams, hasConsent, gaId]);
+
+  return null;
+}
 
 export default function Analytics() {
   const [hasConsent, setHasConsent] = useState(false);
+  const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
 
   useEffect(() => {
     // Check initial consent on mount
@@ -24,31 +52,36 @@ export default function Analytics() {
     };
   }, []);
 
-  if (!hasConsent) return null;
-
-  // Replace 'G-XXXXXXXXXX' with the actual Google Analytics Measurement ID
-  const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
+  if (!GA_MEASUREMENT_ID) return null;
 
   return (
     <>
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
-      />
+      {hasConsent && (
+        <>
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          />
+          <Script
+            id="google-analytics"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `,
+            }}
+          />
+        </>
+      )}
+      <Suspense fallback={null}>
+        <PageTracker hasConsent={hasConsent} gaId={GA_MEASUREMENT_ID} />
+      </Suspense>
     </>
   );
 }
+
