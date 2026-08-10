@@ -13,8 +13,8 @@ export async function POST(req: Request) {
         }
 
         const customerEmail = parcel.email;
-        const customerName = parcel.name || "customer";
-        const orderNumber = parcel.order_number || parcel.reference || "";
+        const customerName = String(parcel.name || "customer").toLowerCase();
+        const orderNumber = String(parcel.order_number || parcel.reference || "").toLowerCase();
         const trackingUrl = parcel.tracking_url || "https://bycore.eu";
         const statusCode = parcel.status?.id;
 

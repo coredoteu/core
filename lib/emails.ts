@@ -1,3 +1,5 @@
+import { Resend } from "resend";
+
 export async function sendOrderConfirmation(
   email: string,
   orderNumber: string,
@@ -9,8 +11,10 @@ export async function sendOrderConfirmation(
 
   if (!RESEND_API_KEY) {
     console.warn("RESEND_API_KEY is not set. Skipping email confirmation.");
-    return;
+    return { success: false, error: "RESEND_API_KEY is not set" };
   }
+
+  const resend = new Resend(RESEND_API_KEY);
 
   const itemsHtml = items.length
     ? `
@@ -53,40 +57,27 @@ export async function sendOrderConfirmation(
   `;
 
   try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "CORE. <contact@bycore.eu>",
-        to: email,
-        subject: `CORE. / Order Confirmation ${orderNumber}`,
-        html: html,
-      }),
+    const { data, error } = await resend.emails.send({
+      from: "CORE. <contact@bycore.eu>",
+      to: email,
+      subject: `CORE. / Order Confirmation ${orderNumber}`,
+      html: html,
     });
 
-    if (!res.ok) {
-      console.error("Failed to send Resend email:", await res.text());
+    if (error) {
+      console.error("[Resend Error] Failed to send order confirmation:", error);
+      return { success: false, error };
     }
+
+    console.log("[Resend Success] Order confirmation sent:", data);
+    return { success: true, data };
   } catch (err) {
-    console.error("Error sending order confirmation:", err);
+    console.error("[Resend Exception] Error sending order confirmation:", err);
+    return { success: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
 export async function createSendcloudParcel(session: any) {
-  // Placeholder for Sendcloud integration
-  // This function would map the Stripe session details to a Sendcloud Parcel object
-  // and POST it to the Sendcloud API.
   console.log("Sendcloud integration placeholder called for session:", session.id);
-  // Example API call:
-  // await fetch("https://panel.sendcloud.sc/api/v2/parcels", {
-  //   method: "POST",
-  //   headers: {
-  //     Authorization: \`Basic \${Buffer.from(process.env.SENDCLOUD_KEY + ":" + process.env.SENDCLOUD_SECRET).toString('base64')}\`,
-  //     "Content-Type": "application/json"
-  //   },
-  //   body: JSON.stringify({ ... })
-  // });
 }
+

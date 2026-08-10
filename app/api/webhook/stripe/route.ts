@@ -18,7 +18,6 @@ function getSupabaseAdmin() {
   );
 }
 
-/** Returns true the first time we see this Stripe event id, false on any repeat delivery. */
 async function claimEvent(eventId: string, type: string): Promise<boolean> {
   const supabase = getSupabaseAdmin();
   const { error } = await supabase
@@ -26,10 +25,8 @@ async function claimEvent(eventId: string, type: string): Promise<boolean> {
     .insert({ stripe_event_id: eventId, type });
 
   if (error) {
-    if (error.code === "23505") return false; // unique_violation -> already processed
+    if (error.code === "23505") return false;
     console.error("webhook_events insert error:", error);
-    // Fail open on unexpected DB errors: a missed order is worse than a
-    // rare duplicate email.
     return true;
   }
   return true;
@@ -68,13 +65,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ received: true, deduped: true }, { status: 200 });
     }
 
-    // Legacy: hosted Checkout Session
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
       const { order, isNew } = await syncStripeSessionToSupabase(session.id);
 
-      const email = session.customer_details?.email;
-      if (isNew && email) {
+      const email = session.customer_details?.email || order?.customer_email;
+      if (isNew && email && email !== "unknown@bycore.eu") {
         await sendOrderConfirmation(
           email,
           session.id.slice(-8),
@@ -87,32 +83,37 @@ export async function POST(req: Request) {
       await createSendcloudParcel(session);
     }
 
-    // Live path: custom Elements checkout (PaymentIntent)
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-      if (paymentIntent.metadata?.source === "bycore-web-custom-checkout") {
-        const { order, isNew } =
-          await syncStripePaymentIntentToSupabase(paymentIntent.id);
+      const { order, isNew } =
+        await syncStripePaymentIntentToSupabase(paymentIntent.id);
 
-        if (isNew) {
+      if (isNew) {
+        let email =
+          order?.customer_email && order.customer_email !== "unknown@bycore.eu"
+            ? order.customer_email
+            : paymentIntent.receipt_email || paymentIntent.metadata?.customer_email;
+
+        if (!email || email === "unknown@bycore.eu") {
           const charge = await stripe.charges.list({
             payment_intent: paymentIntent.id,
             limit: 1,
           });
-          const email =
-            charge.data[0]?.billing_details?.email ||
-            paymentIntent.receipt_email;
+          email = charge.data[0]?.billing_details?.email || undefined;
+        }
 
-          if (email) {
-            await sendOrderConfirmation(
-              email,
-              paymentIntent.id.slice(-8),
-              paymentIntent.amount,
-              paymentIntent.currency || "eur",
-              buildEmailItems(order),
-            );
-          }
+        if (email && email !== "unknown@bycore.eu") {
+          console.log(`[Stripe Webhook] Sending order confirmation email to ${email}`);
+          await sendOrderConfirmation(
+            email,
+            paymentIntent.id.slice(-8),
+            paymentIntent.amount,
+            paymentIntent.currency || "eur",
+            buildEmailItems(order),
+          );
+        } else {
+          console.warn(`[Stripe Webhook] Skipping order confirmation email: No valid customer email for PaymentIntent ${paymentIntent.id}`);
         }
       }
     }
