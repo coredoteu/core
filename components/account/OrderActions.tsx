@@ -102,9 +102,9 @@ export default function OrderActions({
   if (isAlreadyCancelled || status === "sent") {
     return (
       <div className="px-5 py-3 border-t border-hairline bg-white/[0.01]">
-        <p className="text-[10px] font-mono text-white/80 lowercase flex items-center gap-2">
-          <span>✓</span>
-          <span>
+        <p className="text-[10px] font-mono text-white/80 lowercase flex items-start gap-2">
+          <span className="shrink-0">✓</span>
+          <span className="break-words">
             {status === "sent"
               ? sentMessage
               : "cancellation request pending approval. support team notified."}
@@ -116,12 +116,12 @@ export default function OrderActions({
 
   return (
     <div className="border-t border-hairline bg-white/[0.01]">
-      <div className="px-5 py-3 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] font-mono tracking-[0.2em] text-text-dim lowercase">
+      <div className="px-5 py-3.5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="text-[9px] font-mono tracking-[0.2em] text-text-dim lowercase shrink-0">
             actions /
           </span>
-          <span className="text-[10px] font-mono text-text-faint lowercase">
+          <span className="text-[10px] font-mono text-text-faint lowercase break-words">
             {inTransitOrDelivered
               ? "in transit (locked)"
               : canCancel
@@ -130,11 +130,11 @@ export default function OrderActions({
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {canChangeAddress && (
             <button
               onClick={() => setActiveForm(activeForm === "address" ? "none" : "address")}
-              className="text-[9px] font-mono tracking-[0.15em] text-white/70 hover:text-white border border-hairline hover:border-white/40 px-2.5 py-1 lowercase transition-colors"
+              className="min-h-[44px] flex items-center justify-center px-4 text-[9px] font-mono tracking-[0.15em] text-white/70 hover:text-white border border-hairline hover:border-white/40 lowercase transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
             >
               {activeForm === "address" ? "close" : "change address"}
             </button>
@@ -143,7 +143,7 @@ export default function OrderActions({
           {canCancel && (
             <button
               onClick={() => setActiveForm(activeForm === "cancel" ? "none" : "cancel")}
-              className="text-[9px] font-mono tracking-[0.15em] text-white/70 hover:text-white border border-hairline hover:border-white/40 px-2.5 py-1 lowercase transition-colors"
+              className="min-h-[44px] flex items-center justify-center px-4 text-[9px] font-mono tracking-[0.15em] text-white/70 hover:text-white border border-hairline hover:border-white/40 lowercase transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40"
             >
               {activeForm === "cancel" ? "close" : "cancel order"}
             </button>
@@ -157,12 +157,12 @@ export default function OrderActions({
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="enter new shipping address"
-            className="flex-1 bg-white/[0.03] border border-hairline px-3 py-2 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 lowercase"
+            className="flex-1 min-h-[44px] bg-white/[0.03] border border-hairline px-3 py-2.5 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 lowercase"
           />
           <button
             onClick={() => handleSubmit("address_change")}
             disabled={status === "submitting" || !address.trim()}
-            className="py-2 px-4 bg-white text-black text-[9px] font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-40 transition-colors shrink-0"
+            className="min-h-[44px] py-2.5 px-4 bg-white text-black text-[9px] font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-40 transition-colors shrink-0"
           >
             {status === "submitting" ? "submitting..." : "submit new address"}
           </button>
@@ -170,14 +170,14 @@ export default function OrderActions({
       )}
 
       {activeForm === "cancel" && (
-        <div className="px-5 pb-4 pt-1 flex items-center justify-between gap-4 bg-white/[0.02]">
-          <p className="text-[10px] font-mono text-white/60 lowercase">
+        <div className="px-5 pb-4 pt-1 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-white/[0.02]">
+          <p className="text-[10px] font-mono text-white/60 lowercase break-words">
             confirm pre-order cancellation request?
           </p>
           <button
             onClick={() => handleSubmit("cancel")}
             disabled={status === "submitting"}
-            className="py-2 px-4 bg-white text-black text-[9px] font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-40 transition-colors shrink-0"
+            className="min-h-[44px] py-2.5 px-4 bg-white text-black text-[9px] font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-40 transition-colors shrink-0"
           >
             {status === "submitting" ? "submitting..." : "confirm cancellation"}
           </button>

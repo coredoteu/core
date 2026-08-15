@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import {
   getServerSession,
   createSupabaseServerClient,
@@ -136,8 +137,7 @@ export default async function AccountPage() {
   const safeOrders: Order[] = (orders as Order[] | null) ?? [];
 
   return (
-    <main className="min-h-screen bg-[#0D0D0D] pt-24 pb-20 px-6">
-      {}
+    <main className="min-h-screen bg-[#0D0D0D] pt-24 pb-[calc(5rem+env(safe-area-inset-bottom))] px-6">
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -147,37 +147,36 @@ export default async function AccountPage() {
       />
 
       <div className="relative z-10 max-w-3xl mx-auto space-y-12">
-        {}
         <section>
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-5">
-              {}
-              <div className="w-12 h-12  border border-hairline bg-white/[0.03] flex items-center justify-center shrink-0">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-center gap-4 sm:gap-5 min-w-0">
+              <div className="w-12 h-12 border border-hairline bg-white/[0.03] flex items-center justify-center shrink-0">
                 <span className="text-xs font-mono text-text-muted tracking-wider">
                   {initials}
                 </span>
               </div>
-              {}
-              <div>
-                <div className="flex items-center gap-2.5 mb-0.5">
-                  <h1 className="text-base font-light text-white/90 tracking-tight lowercase">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2.5 mb-0.5">
+                  <h1 className="text-base font-light text-white/90 tracking-tight lowercase truncate max-w-[180px] sm:max-w-none">
                     {fullName}
                   </h1>
-                  <span className="text-[9px] font-mono tracking-[0.25em] text-text-faint border border-hairline  px-2 py-0.5 lowercase">
+                  <span className="text-[9px] font-mono tracking-[0.25em] text-text-faint border border-hairline px-2 py-0.5 lowercase shrink-0">
                     customer
                   </span>
                 </div>
-                <p className="text-[11px] font-mono text-text-faint">{email}</p>
+                <p className="text-[11px] font-mono text-text-faint truncate">
+                  {email}
+                </p>
               </div>
             </div>
-            <SignOutButton />
+            <div className="shrink-0">
+              <SignOutButton />
+            </div>
           </div>
 
-          {}
           <div className="mt-8 h-px bg-white/[0.06]" />
         </section>
 
-        {}
         <section>
           <div className="mb-6">
             <p className="text-[10px] font-mono tracking-[0.3em] text-text-faint lowercase mb-1">
@@ -196,16 +195,16 @@ export default async function AccountPage() {
           </div>
 
           {safeOrders.length === 0 ? (
-            <div className="border border-hairline  px-6 py-10 text-center">
+            <div className="border border-hairline px-6 py-10 text-center">
               <p className="text-[11px] font-mono text-text-dim lowercase tracking-wider">
                 your orders will appear here
               </p>
-              <a
+              <Link
                 href="/shop"
-                className="mt-4 inline-block text-[10px] font-mono tracking-[0.25em] lowercase text-text-faint hover:text-white/70 underline underline-offset-4 decoration-white/15 transition-colors duration-200"
+                className="mt-4 inline-block py-2 -my-2 text-[10px] font-mono tracking-[0.25em] lowercase text-text-faint hover:text-white/70 underline underline-offset-4 decoration-white/15 transition-colors duration-200"
               >
                 explore the shop →
-              </a>
+              </Link>
             </div>
           ) : (
             <div className="space-y-4">
@@ -214,44 +213,39 @@ export default async function AccountPage() {
                 return (
                   <article
                     key={order.id}
-                    className="border border-hairline  bg-white/[0.01] hover:bg-white/[0.02] transition-colors duration-300"
+                    className="border border-hairline bg-white/[0.01] hover:bg-white/[0.02] transition-colors duration-300"
                   >
-                    {}
-                    <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-hairline">
-                      <div>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between px-5 py-4 border-b border-hairline">
+                      <div className="min-w-0">
                         <p className="text-[9px] font-mono tracking-[0.25em] text-text-dim lowercase mb-1">
                           {formatDate(order.created_at)}
                         </p>
-                        <p className="text-[10px] font-mono text-text-dim truncate max-w-[200px]">
+                        <p className="text-[10px] font-mono text-text-dim truncate max-w-full sm:max-w-[200px]">
                           #{order.stripe_session_id.slice(-12)}
                         </p>
                       </div>
-                      <div className="flex items-center gap-3 shrink-0">
-                        {}
+                      <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-[9px] font-mono tracking-[0.2em] text-white border-white/30 bg-white/[0.04] px-2 py-0.5 border lowercase">
                           status / {order.payment_status}
                         </span>
-                        {}
                         <span className="text-sm font-light text-white/80">
                           {formatCurrency(order.amount_total, order.currency)}
                         </span>
                       </div>
                     </div>
 
-                    {}
                     <div className="px-5 py-4 space-y-3">
                       {order.order_items.map((item) => (
                         <div
                           key={item.id}
-                          className="flex items-center justify-between gap-4"
+                          className="flex items-center justify-between gap-3"
                         >
-                          <div className="flex items-center gap-3">
-                            {}
-                            <span className="text-[9px] font-mono text-text-faint bg-white/[0.04] border border-hairline  w-6 h-6 flex items-center justify-center shrink-0">
+                          <div className="flex items-center gap-3 min-w-0 flex-1">
+                            <span className="text-[9px] font-mono text-text-faint bg-white/[0.04] border border-hairline w-6 h-6 flex items-center justify-center shrink-0">
                               {item.quantity}
                             </span>
-                            <div>
-                              <p className="text-[12px] text-text-muted lowercase leading-tight">
+                            <div className="min-w-0">
+                              <p className="text-[12px] text-text-muted lowercase leading-tight break-words">
                                 {item.products?.name ?? item.product_id}
                               </p>
                               {item.products?.size && (
@@ -271,13 +265,14 @@ export default async function AccountPage() {
                       ))}
                     </div>
 
-                    {}
                     {address && (
                       <div className="px-5 pb-4 pt-1">
                         <p className="text-[9px] font-mono tracking-[0.2em] text-text-dim lowercase mb-1">
                           ships to
                         </p>
-                        <p className="text-[11px] text-text-faint">{address}</p>
+                        <p className="text-[11px] text-text-faint break-words">
+                          {address}
+                        </p>
                       </div>
                     )}
 

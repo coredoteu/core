@@ -29,8 +29,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex flex-col items-center justify-center px-6">
-      { }
+    <div className="min-h-screen bg-[#0D0D0D] flex flex-col items-center justify-center px-6 pt-28 pb-16">
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -45,9 +44,12 @@ export default function ForgotPasswordPage() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="relative z-10 w-full max-w-sm"
       >
-        { }
-        <div className="flex justify-center mb-10">
-          <Link href="/" aria-label="CORE. home">
+        <div className="flex justify-center mb-8">
+          <Link
+            href="/"
+            aria-label="CORE. home"
+            className="inline-flex items-center justify-center p-3 -m-1"
+          >
             <Image
               src="/CORE_logo_trans.svg"
               alt="CORE."
@@ -68,7 +70,6 @@ export default function ForgotPasswordPage() {
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="text-center"
             >
-              { }
               <div className="flex justify-center mb-6">
                 <div className="w-12 h-12 border border-hairline bg-white/[0.03] flex items-center justify-center">
                   <svg
@@ -93,11 +94,11 @@ export default function ForgotPasswordPage() {
                 check your inbox
               </h2>
               <p className="text-[12px] text-text-faint leading-relaxed mb-8">
-                if an account exists for <span className="text-text-muted">{email}</span>, you will receive a password reset link shortly.
+                if an account exists for <span className="text-text-muted break-all">{email}</span>, you will receive a password reset link shortly.
               </p>
               <Link
                 href="/login"
-                className="inline-block text-[11px] font-mono tracking-[0.2em] lowercase text-text-faint hover:text-white/70 transition-colors duration-200 underline underline-offset-4 decoration-white/15"
+                className="inline-block py-2 -my-2 text-[11px] font-mono tracking-[0.2em] lowercase text-text-faint hover:text-white/70 transition-colors duration-200 underline underline-offset-4 decoration-white/15"
               >
                 back to sign in
               </Link>
@@ -108,7 +109,6 @@ export default function ForgotPasswordPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              { }
               <div className="mb-8">
                 <p className="text-[10px] font-mono tracking-[0.3em] text-text-faint lowercase mb-2">
                   password recovery
@@ -119,7 +119,6 @@ export default function ForgotPasswordPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                { }
                 <div className="space-y-1.5">
                   <label
                     htmlFor="email"
@@ -139,7 +138,6 @@ export default function ForgotPasswordPage() {
                   />
                 </div>
 
-                { }
                 <AnimatePresence>
                   {error && (
                     <motion.div
@@ -156,7 +154,6 @@ export default function ForgotPasswordPage() {
                   )}
                 </AnimatePresence>
 
-                { }
                 <button
                   id="reset-submit"
                   type="submit"
@@ -192,19 +189,17 @@ export default function ForgotPasswordPage() {
                 </button>
               </form>
 
-              { }
               <div className="flex items-center gap-3 my-6">
                 <div className="flex-1 h-px bg-white/[0.06]" />
                 <span className="text-[10px] font-mono text-text-dim">or</span>
                 <div className="flex-1 h-px bg-white/[0.06]" />
               </div>
 
-              { }
               <p className="text-center text-[11px] text-text-faint">
                 remember your password?{" "}
                 <Link
                   href="/login"
-                  className="text-text-muted hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/50 transition-all duration-200"
+                  className="inline-block py-2 -my-2 text-text-muted hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/50 transition-all duration-200"
                 >
                   sign in
                 </Link>
