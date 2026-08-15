@@ -5,6 +5,8 @@ import {
 } from "@/lib/supabase-server";
 import { supabaseAdmin } from "@/lib/supabase";
 import SignOutButton from "@/components/account/SignOutButton";
+import OrderActions from "@/components/account/OrderActions";
+import { getActiveBatch } from "@/lib/batches";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -44,6 +46,12 @@ interface Order {
     };
   } | null;
   created_at: string;
+  carrier?: string;
+  tracking_number?: string;
+  tracking_url?: string;
+  shipping_status?: string;
+  cancellation_requested?: boolean;
+  cancellation_requested_at?: string;
   order_items: OrderItem[];
 }
 
@@ -86,6 +94,8 @@ export default async function AccountPage() {
     .toUpperCase()
     .slice(0, 2);
 
+  const activeBatch = await getActiveBatch();
+
   // 2. Fetch orders (using admin client to bypass RLS, filtered by email)
   const { data: orders, error } = await supabaseAdmin
     .from("orders")
@@ -100,6 +110,12 @@ export default async function AccountPage() {
       payment_status,
       shipping_details,
       created_at,
+      carrier,
+      tracking_number,
+      tracking_url,
+      shipping_status,
+      cancellation_requested,
+      cancellation_requested_at,
       order_items (
         id,
         quantity,
@@ -264,6 +280,16 @@ export default async function AccountPage() {
                         <p className="text-[11px] text-text-faint">{address}</p>
                       </div>
                     )}
+
+                    <OrderActions
+                      orderId={order.id}
+                      stripeSessionId={order.stripe_session_id}
+                      createdAt={order.created_at}
+                      paymentStatus={order.payment_status}
+                      shippingStatus={order.shipping_status}
+                      cancellationRequested={order.cancellation_requested}
+                      activeBatch={activeBatch}
+                    />
                   </article>
                 );
               })}

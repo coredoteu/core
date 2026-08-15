@@ -1,6 +1,12 @@
 import Stripe from "stripe";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { CATALOG } from "./catalog";
+import {
+  DEFAULT_SHIPPING_COGS_EUR,
+  resolveLineItems,
+  calculateProfit,
+  getTotalBatchDuoCount,
+} from "./funding-engine";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("STRIPE_SECRET_KEY is not configured.");
@@ -104,10 +110,33 @@ export async function syncStripeSessionToSupabase(sessionId: string) {
 
   const userId = await resolveUserId(supabase, stripeCustomerId, customerEmail);
 
+  // Resolve line items from session for initial profit calculation
+  const sessionLineItems = (session.line_items?.data ?? []).map((item) => ({
+    product_id:
+      ((item.price?.product as Stripe.Product | undefined)?.metadata
+        ?.productId ?? null) as string | null,
+    quantity: item.quantity ?? 1,
+  }));
+  const resolvedItems = resolveLineItems(sessionLineItems);
+  const totalDuos = await getTotalBatchDuoCount();
+  const { netProfit, v2FundedAmount } = calculateProfit(
+    amountTotal,
+    resolvedItems,
+    DEFAULT_SHIPPING_COGS_EUR,
+    totalDuos + resolvedItems.duoQuantity, // include this order in tier calc
+  );
+
+  // Derive payment_intent_id if present
+  const paymentIntentId =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : (session.payment_intent as Stripe.PaymentIntent | null)?.id ?? null;
+
   const { data: orderData, error: orderError } = await supabase
     .from("orders")
     .insert({
       stripe_session_id: session.id,
+      payment_intent_id: paymentIntentId,
       customer_email: customerEmail,
       customer_name: customerName,
       amount_total: amountTotal,
@@ -116,9 +145,13 @@ export async function syncStripeSessionToSupabase(sessionId: string) {
       shipping_details: shippingDetails,
       user_id: userId,
       stripe_customer_id: stripeCustomerId,
+      status: "active",
+      shipping_cogs: DEFAULT_SHIPPING_COGS_EUR,
+      net_profit: netProfit,
+      v2_funded_amount: v2FundedAmount,
     })
     .select(
-      "id, stripe_session_id, customer_email, customer_name, amount_total, currency, payment_status, shipping_details, user_id, stripe_customer_id, created_at",
+      "id, stripe_session_id, payment_intent_id, customer_email, customer_name, amount_total, currency, payment_status, shipping_details, user_id, stripe_customer_id, status, net_profit, v2_funded_amount, shipping_cogs, created_at",
     )
     .single();
 
@@ -232,10 +265,32 @@ export async function syncStripePaymentIntentToSupabase(paymentIntentId: string)
     paymentIntent.metadata?.user_id ||
     (await resolveUserId(supabase, stripeCustomerId, customerEmail));
 
+  // Parse items metadata for profit calculation
+  const itemsMeta = paymentIntent.metadata?.items || "";
+  const parsedItems = itemsMeta
+    .split(",")
+    .filter(Boolean)
+    .map((entry: string) => {
+      const [productId, qty] = entry.split("×");
+      return {
+        product_id: productId?.trim() ?? null,
+        quantity: parseInt(qty?.trim() || "1", 10),
+      };
+    });
+  const resolvedItems = resolveLineItems(parsedItems);
+  const totalDuos = await getTotalBatchDuoCount();
+  const { netProfit, v2FundedAmount } = calculateProfit(
+    amountTotal,
+    resolvedItems,
+    DEFAULT_SHIPPING_COGS_EUR,
+    totalDuos + resolvedItems.duoQuantity, // include this order in tier calc
+  );
+
   const { data: orderData, error: orderError } = await supabase
     .from("orders")
     .insert({
       stripe_session_id: paymentIntentId, // reuse column to store PI id
+      payment_intent_id: paymentIntentId,
       customer_email: customerEmail,
       customer_name: customerName,
       amount_total: amountTotal,
@@ -244,9 +299,13 @@ export async function syncStripePaymentIntentToSupabase(paymentIntentId: string)
       shipping_details: shippingDetails,
       user_id: userId,
       stripe_customer_id: stripeCustomerId,
+      status: "active",
+      shipping_cogs: DEFAULT_SHIPPING_COGS_EUR,
+      net_profit: netProfit,
+      v2_funded_amount: v2FundedAmount,
     })
     .select(
-      "id, stripe_session_id, customer_email, customer_name, amount_total, currency, payment_status, shipping_details, user_id, stripe_customer_id, created_at",
+      "id, stripe_session_id, payment_intent_id, customer_email, customer_name, amount_total, currency, payment_status, shipping_details, user_id, stripe_customer_id, status, net_profit, v2_funded_amount, shipping_cogs, created_at",
     )
     .single();
 
@@ -255,29 +314,23 @@ export async function syncStripePaymentIntentToSupabase(paymentIntentId: string)
     throw orderError;
   }
 
-  const itemsMeta = paymentIntent.metadata?.items || "";
-  const orderItemsToInsert = itemsMeta
-    .split(",")
-    .filter(Boolean)
-    .map((entry: string) => {
-      const [productId, qty] = entry.split("×");
-      const shippingCentsStr = paymentIntent.metadata?.shipping_cents || "0";
-      const subtotalCentsStr = paymentIntent.metadata?.subtotal_cents || "0";
-      const totalItems = itemsMeta.split(",").filter(Boolean).length;
-      const catalogItem = CATALOG.find((c) => c.id === productId?.trim());
-      const priceAtPurchase = catalogItem
-        ? catalogItem.price
-        : totalItems > 0
-          ? parseInt(subtotalCentsStr) / 100 / totalItems
-          : amountTotal;
+  const orderItemsToInsert = parsedItems.map((item) => {
+    const subtotalCentsStr = paymentIntent.metadata?.subtotal_cents || "0";
+    const totalItems = parsedItems.length;
+    const catalogItem = CATALOG.find((c) => c.id === item.product_id);
+    const priceAtPurchase = catalogItem
+      ? catalogItem.price
+      : totalItems > 0
+        ? parseInt(subtotalCentsStr) / 100 / totalItems
+        : amountTotal;
 
-      return {
-        order_id: orderData.id,
-        product_id: productId?.trim() || null,
-        quantity: parseInt(qty?.trim() || "1", 10),
-        price_at_purchase: Math.round(priceAtPurchase * 100) / 100,
-      };
-    });
+    return {
+      order_id: orderData.id,
+      product_id: item.product_id,
+      quantity: item.quantity,
+      price_at_purchase: Math.round(priceAtPurchase * 100) / 100,
+    };
+  });
 
   if (orderItemsToInsert.length > 0) {
     const { error: itemsError } = await supabase

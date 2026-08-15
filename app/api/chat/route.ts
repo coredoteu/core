@@ -4,6 +4,10 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createDataStreamResponse, streamText, tool } from "ai";
 import { z } from "zod";
 import { getServerSession, createSupabaseServerClient } from "@/lib/supabase-server";
+import { findOrder } from "@/lib/order-lookup";
+import { buildMockTrackingPayload } from "@/lib/tracking";
+import { buildRoutine } from "@/lib/routine";
+import { getActiveBatch } from "@/lib/batches";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
@@ -26,10 +30,8 @@ export async function POST(req: Request) {
    */
   function sanitizeForGemini(msgs: any[]): any[] {
     return msgs.map((m) => {
-      // Nothing to do for user messages
       if (m.role !== "assistant" && m.role !== "tool") return m;
 
-      // Flatten tool role (tool-result messages) into assistant text
       if (m.role === "tool") {
         const text = Array.isArray(m.content)
           ? m.content
@@ -39,7 +41,6 @@ export async function POST(req: Request) {
         return { role: "assistant", content: text };
       }
 
-      // Assistant message — strip any tool-call parts from content array
       let textParts: string[] = [];
 
       if (typeof m.content === "string" && m.content.trim()) {
@@ -49,14 +50,12 @@ export async function POST(req: Request) {
           if (part.type === "text" && part.text?.trim()) {
             textParts.push(part.text.trim());
           } else if (part.type === "tool-call") {
-            // Omit tool-call parts entirely — Gemini can't replay them
           } else if (part.type === "tool-result") {
             textParts.push(`[tool result for ${part.toolName ?? "unknown"}: ${JSON.stringify(part.result)}]`);
           }
         }
       }
 
-      // Also flatten toolInvocations (useChat SDK shape)
       if (Array.isArray(m.toolInvocations)) {
         for (const t of m.toolInvocations) {
           if (t.state === "result" || t.result !== undefined) {
@@ -70,20 +69,11 @@ export async function POST(req: Request) {
     });
   }
 
-  // Raw messages (with tool history) for models that support it
   const messages = rawMessages;
-  // Gemini-safe messages — all tool parts flattened to text
   const geminiMessages = sanitizeForGemini(rawMessages);
 
-
-  // ── Resolve the signed-in customer for this request (server-side only) ──
   const session = await getServerSession();
   const userEmail = session?.user?.email ?? null;
-
-  // Queries here run AS the authenticated user (cookie-based client, anon
-  // key) — Postgres RLS on `orders`/`order_items` is what actually enforces
-  // that this can never return another customer's data, even if a tool
-  // below has a logic bug.
   const supabaseAsUser = await createSupabaseServerClient();
 
   const orderTools = {
@@ -143,6 +133,188 @@ export async function POST(req: Request) {
         return { order: data };
       },
     }),
+    getTrackingStatus: tool({
+      description:
+        "Fetch the shipping / tracking status for one of the signed-in customer's orders, " +
+        "including carrier, tracking number, and a checkpoint timeline. Use this whenever the " +
+        "customer asks 'where is my order', 'has it shipped', or 'track my package'. Never " +
+        "invent tracking data.",
+      parameters: z.object({
+        reference: z
+          .string()
+          .optional()
+          .describe("Order reference the customer gave. Omit to use their most recent order."),
+      }),
+      execute: async ({ reference }) => {
+        if (!userEmail) return { error: "not_authenticated" };
+        const { data: order, error } = await findOrder(supabaseAsUser, reference);
+        if (error) return { error: "query_failed", message: error.message };
+        if (!order) return { error: "not_found" };
+        return buildMockTrackingPayload(order);
+      },
+    }),
+    checkOrderChangeEligibility: tool({
+      description:
+        "Check whether one of the signed-in customer's orders can still be cancelled or have " +
+        "its shipping address changed. " +
+        "IMPORTANT RULES FOR CANCELLATIONS: " +
+        "1. Pre-orders can ONLY be cancelled while the pre-order window is still open (before pre-order close date). " +
+        "2. Orders placed during the buffer stock phase cannot be cancelled at all. " +
+        "3. Address changes are allowed before the order enters transit.",
+      parameters: z.object({
+        reference: z.string().describe("Order reference the customer wants to change or cancel."),
+        requestType: z.enum(["cancel", "address_change"]),
+      }),
+      execute: async ({ reference, requestType }) => {
+        if (!userEmail) return { error: "not_authenticated" };
+        const { data: order, error } = await findOrder(supabaseAsUser, reference);
+        if (error) return { error: "query_failed", message: error.message };
+        if (!order) return { error: "not_found" };
+
+        const tracking = buildMockTrackingPayload(order);
+        const inTransitOrDelivered = ["in_transit", "out_for_delivery", "delivered"].includes(tracking.currentStatus);
+
+        const activeBatch = await getActiveBatch();
+
+        let eligible = false;
+        let reason: string | null = null;
+
+        if (order.payment_status !== "paid") {
+          eligible = false;
+          reason = "order payment has not been completed.";
+        } else if (order.cancellation_requested) {
+          eligible = false;
+          reason = "a cancellation request has already been submitted for this order and is being processed.";
+        } else if (inTransitOrDelivered) {
+          eligible = false;
+          reason = "order is already in transit or delivered and can no longer be changed or cancelled.";
+        } else if (requestType === "cancel") {
+          const now = new Date();
+          const orderDate = new Date(order.created_at);
+
+          if (!activeBatch) {
+            eligible = false;
+            reason = "cancellation window is currently locked.";
+          } else {
+            const closeDate = new Date(activeBatch.preorderCloseDate);
+            closeDate.setHours(23, 59, 59, 999);
+
+            const wasPurchasedDuringPreorder = orderDate <= closeDate;
+            const isPreorderWindowStillOpen = now <= closeDate && activeBatch.phase === "preorder";
+
+            if (!wasPurchasedDuringPreorder) {
+              eligible = false;
+              reason = "buffer stock orders cannot be cancelled.";
+            } else if (!isPreorderWindowStillOpen) {
+              eligible = false;
+              reason = "the pre-order window for this batch has closed and production is locked.";
+            } else {
+              eligible = true;
+            }
+          }
+        } else if (requestType === "address_change") {
+          eligible = !inTransitOrDelivered;
+          reason = eligible ? null : "order is already in transit and shipping address cannot be modified.";
+        }
+
+        return {
+          orderId: order.id,
+          orderRef: order.id.slice(0, 8).toLowerCase(),
+          requestType,
+          eligible,
+          currentStatus: tracking.currentStatus,
+          reason,
+        };
+      },
+    }),
+    checkReturnEligibility: tool({
+      description:
+        "Check whether an order is within the 30-day risk-free guarantee window, and whether " +
+        "the guarantee has already been used for that product type. Use this whenever the " +
+        "customer asks about returns or refunds — never state eligibility without calling it.",
+      parameters: z.object({
+        reference: z.string().optional().describe("Order reference; omit for the most recent order."),
+      }),
+      execute: async ({ reference }) => {
+        if (!userEmail) return { error: "not_authenticated" };
+        const { data: order, error } = await findOrder(supabaseAsUser, reference);
+        if (error) return { error: "query_failed", message: error.message };
+        if (!order) return { error: "not_found" };
+
+        const tracking = buildMockTrackingPayload(order);
+        const isDelivered = tracking.currentStatus === "delivered";
+
+        const daysSince = Math.floor((Date.now() - new Date(order.created_at).getTime()) / 86_400_000);
+        const withinWindow = daysSince <= 30;
+        const daysRemaining = Math.max(0, 30 - daysSince);
+
+        const { data: claims } = await supabaseAsUser
+          .from("guarantee_claims")
+          .select("product_scope")
+          .eq("order_id", order.id);
+
+        const claimedScopes = new Set((claims ?? []).map((c) => c.product_scope));
+
+        const items = (order.order_items ?? []).map((item: any) => ({
+          productId: item.product_id,
+          alreadyClaimed: claimedScopes.has(item.product_id) || claimedScopes.has("duo-system-001"),
+        }));
+
+        const eligible = isDelivered && withinWindow && items.some((i: any) => !i.alreadyClaimed);
+
+        return {
+          orderId: order.id,
+          orderRef: order.id.slice(0, 8).toLowerCase(),
+          purchasedAt: order.created_at,
+          isDelivered,
+          currentStatus: tracking.currentStatus,
+          daysSince,
+          daysRemaining,
+          withinWindow,
+          items,
+          eligible,
+          reason: !isDelivered
+            ? "order has not been delivered yet. returns can only be requested after receiving your package."
+            : !withinWindow
+            ? "the 30-day guarantee window has expired."
+            : null,
+        };
+      },
+    }),
+    getRoutineRecommendation: tool({
+      description:
+        "Compute a personalized CORE. shampoo/conditioner routine from the customer's hair " +
+        "type, scalp condition, and concerns. Use this for any hair-care-advice or 'what " +
+        "routine should I use' question. This is CORE. system guidance, not a medical diagnosis.",
+      parameters: z.object({
+        hairType: z.enum(["oily", "dry", "normal", "damaged", "fine", "thick"]),
+        scalpCondition: z.enum(["balanced", "oily", "dry", "sensitive", "flaky"]).optional(),
+        concerns: z.array(z.enum(["frizz", "breakage", "volume", "shine", "dandruff", "color-treated"])).optional(),
+      }),
+      execute: async ({ hairType, scalpCondition, concerns }) => buildRoutine({ hairType, scalpCondition, concerns }),
+    }),
+    getActiveBatchStatus: tool({
+      description:
+        "Fetch the current live CORE. batch: phase, pre-order close date, and exact shipping " +
+        "window. Use this instead of guessing shipping timelines whenever the customer asks " +
+        "when their order ships or when pre-orders close.",
+      parameters: z.object({}),
+      execute: async () => (await getActiveBatch()) ?? { error: "no_active_batch" },
+    }),
+    triggerUIAction: tool({
+      description:
+        "Trigger a frontend UI action instead of a chat card. Use 'open_cart' when the " +
+        "customer wants to buy/checkout/see their cart. Use 'prompt_login' when an action " +
+        "needs a signed-in account and they aren't authenticated. Use 'scroll_to_waitlist' " +
+        "for the v2 waitlist. Use 'navigate_shop' or 'navigate_refunds' to send them to those " +
+        "pages. Call this at most once per customer request.",
+      parameters: z.object({
+        action: z.enum(["open_cart", "prompt_login", "scroll_to_waitlist", "navigate_shop", "navigate_refunds"]),
+      }),
+      execute: async ({ action }) => {
+        return { action, acknowledged: true };
+      },
+    }),
   };
 
   console.log("[AI Routing Environment Check]", {
@@ -152,53 +324,49 @@ export async function POST(req: Request) {
   });
 
   const systemPrompt = `
-  identity & role:
-  you are the automated core. support system for bycore.eu. you are an ai, and you are 100% transparent about this.
-  CORE. is a premium, unisex, engineered hair care brand. our mission is to be the high-performance european alternative to expensive us brands (like based or olaplex), offering uncompromising quality with a minimalist tech-noir aesthetic and zero import fees. our slogan is "refined to the core."
+  CRITICAL RULE 1 (STRICTLY ENFORCED): ALWAYS RESPOND IN THE EXACT SAME LANGUAGE AS THE USER'S LATEST MESSAGE. IF THE USER SPEAKS DUTCH, RESPOND IN DUTCH. IF ENGLISH, RESPOND IN ENGLISH. NEVER DEFAULT TO ENGLISH WHEN THE USER SPEAKS ANOTHER LANGUAGE.
 
-  language matching:
-  respond in the exact same language the user is speaking (e.g. if the user speaks dutch, respond in dutch. if english, english). always maintain strict lowercase formatting regardless of the language.
+  <identity>
+  you are the automated CORE. support system for bycore.eu. you are an ai, fully transparent about this.
+  CORE. is a premium, unisex, engineered hair care brand. our mission is to provide high-performance european alternatives to expensive us brands (like based or olaplex) with a minimalist tech-noir aesthetic, clinical precision, and zero import fees. slogan: "refined to the core."
+  </identity>
 
-  tone & behavioral rules (strictly enforced):
-  1. strict lowercase: every single word you write MUST be in lowercase. the ONLY exception is the brand name "CORE.", which must always be fully capitalized and end with a period. note: when using the word "core" as a regular english word (like in the slogan "refined to the core"), it MUST be lowercase.
-  2. extreme brevity: be brutally concise. never write 3 sentences if 1 is enough. do not over-explain policies, logistics, or routines unless the customer specifically asks "why" or "how".
-  3. unbiased comparisons: if asked if CORE. is better than competitors (like based or olaplex), remain objective. do NOT just say "yes". explain that it depends on where the user lives (e.g. import fees in europe) and what their specific hair prefers.
-  4. no em-dashes: never use em-dashes. use slashes (/), colons (:), or regular hyphens (-) instead.
-  5. clinical & factual: keep responses clinical, direct, and solution-oriented. use terms like: system, actives, equilibrium, precision, engineered. do not use emotional apologies (never say "i am so sorry to hear that" or "i'm happy to help"). provide immediate facts and solutions.
-  6. zero-bullshit sales: answer exactly what is asked. do not aggressively upsell "the duo" unless the user explicitly asks for recommendations, optimal routines, or discounts.
-  7. formatting: no markdown bolding or bullet points unless absolutely necessary for a technical list. keep paragraphs short.
+  <behavioral_rules>
+  1. strict lowercase: every single word MUST be lowercase. the ONLY exception is the brand name "CORE.", which must always be capitalized with a period.
+  2. extreme brevity: maximum 1 to 2 short sentences. be direct, clinical, and solution-oriented.
+  3. no em-dashes: never use em-dashes (—). use slashes (/), colons (:), or standard hyphens (-).
+  4. no emotional filler: never say "sorry", "i'm happy to help", or "thanks for reaching out". state facts and solutions immediately.
+  </behavioral_rules>
 
-  product information (current launch: v1 / system 001):
-  we currently sell our v1 "swiss lab edition" (white bottles, 290ml).
-  - formulations: 98-99% natural origin, ecocert cosmos certified, vegan, cruelty-free, silicone-free, ph 4.5 - 5.5, engineered in the netherlands.
-  - signature scent (v1): juicy fruits and warm woods.
-  - phase 01 shampoo actives: aloe vera juice, sea kale extract, ginkgo biloba leaf, burdock root. (routine: 01. massage / 02. cleanse / 03. rinse).
-  - phase 02 conditioner actives: aloe vera, hydrolyzed wheat protein, argan oil, sea kale. (routine: 01. apply / 02. wait / 03. rinse).
-
-  future project (v2 / stealth black edition):
-  if asked about the future, mention v2 is in development: 250ml matte black bottles, scent: bergamot/cedarwood/peppermint. new actives: salix alba, caffeine, baobab protein, plant squalane.
+  <knowledge_base>
+  product specifications:
+  - v1 system 001 (swiss lab edition): 290ml white bottles, 98-99% natural origin, ecocert cosmos certified, vegan, silicone-free, ph 4.5-5.5, engineered in the netherlands. signature scent: juicy fruits & warm woods.
+  - phase 01 shampoo actives: aloe vera juice, sea kale extract, ginkgo biloba leaf, burdock root.
+  - phase 02 conditioner actives: aloe vera, hydrolyzed wheat protein, argan oil, sea kale.
+  - v2 (stealth black edition): in development, 250ml matte black, scent: bergamot/cedarwood/peppermint.
 
   pricing & bundles:
-  - system 001 (the duo): € 39.95 pre-order (regular € 44.95, value € 56.00).
-  - single bottles: € 24.95 pre-order (regular € 28.00).
+  - system 001 duo pre-order: € 39.95 (regular € 44.95, value € 56.00).
+  - single bottles pre-order: € 24.95 (regular € 28.00).
+  - shipping: free tracked shipping on all orders over € 50.
 
-  shipping & delivery information (always answer factually based on this):
-  - currently, we operate on a pre-order model (system 001). 
-  - the timeline is: 10 days of production/transit AFTER the pre-order window closes, PLUS 1-2 business days for local delivery in NL/BE (or 2-4 days for EU).
-  - CRITICAL INSTRUCTION: because delivery depends on the pre-order closing date, never promise a specific arrival date like "in 2 weeks". instead, always state the rule: "delivery takes about 12 to 14 days after the pre-order window closes." (or for EU: "12 to 14 days plus a few days shipping"). 
-  - IMPORTANT: do not overcomplicate this or reveal internal supply chain details (do NOT mention our supplier names, 20% buffer stock, or the exact backend logistics).
-  - free tracked shipping is available on all orders over €50.
-
-  detailed return & guarantee policy (strictly enforced):
+  logistics & returns:
+  - delivery timeline: 10 days production/transit AFTER pre-order window closes + 1-2 business days (NL/BE) or 2-4 days (EU).
+  - cancellation rules: pre-orders can ONLY be cancelled while the pre-order window is still open (before pre-order close date). buffer stock purchases cannot be cancelled. once pre-orders close or orders move to transit, cancellations are locked.
   - 30-day risk-free guarantee: valid ONCE per product type per unique household/email/address/payment method.
-  - the duo rules: claiming the guarantee on "the duo" fully exhausts eligibility for all future claims. claiming a single bottle leaves the other type eligible (or a max 50% refund on a later duo claim).
-  - opened bottles do not need to be shipped back. a flat € 5.95 logistics processing fee is ALWAYS deducted from guarantee refunds (if originally shipped for free).
+  - guarantee rules: claiming "the duo" exhausts future claims. claiming a single bottle leaves the other eligible. opened bottles do not need to be returned; € 5.95 processing fee is deducted from guarantee refunds.
   - unopened returns: accepted within 30 days, customer pays return shipping.
-  - damaged/incorrect items: 100% free immediate replacement.
-  - fallback: for official claims, cancellations, or complex tracking, instruct the user to email contact@bycore.eu with their order number.
-  
-  order lookup tools:
-  you have tools to fetch the signed-in customer's real order data (getRecentOrders, getOrderByReference). always call the relevant tool instead of guessing when asked about orders, tracking, totals, or delivery status. if a tool returns "not_authenticated", tell the customer to sign in to view their orders. after calling a tool, ALWAYS provide a brief text response answering their specific question based on the tool results. do not repeat every line item, as the ui handles that, but answer exactly what they asked (e.g. status, expected delivery based on their country).
+  </knowledge_base>
+
+  <tool_rules>
+  - getRecentOrders & getOrderByReference: fetch real order data. if not authenticated, ask user to sign in.
+  - getActiveBatchStatus: use for pre-order close & shipping window questions instead of general estimates.
+  - getTrackingStatus: use whenever asked where an order is or if it shipped.
+  - checkOrderChangeEligibility: use before offering cancellations or address updates. pre-orders can ONLY be cancelled before the pre-order window closes. buffer stock purchases cannot be cancelled at all.
+  - checkReturnEligibility: use for 30-day guarantee or return queries. IMPORTANT: returns/guarantees are ONLY possible AFTER delivery. if not delivered yet, inform user returns open upon delivery (or offer order cancellation if unfulfilled).
+  - getRoutineRecommendation: use for hair care advice. ask for hair type if missing.
+  - triggerUIAction: call 'open_cart' for cart/checkout requests, 'prompt_login' for auth required, 'scroll_to_waitlist' for v2 waitlist, 'navigate_shop' or 'navigate_refunds' to redirect. confirm UI actions using a complete, natural sentence in the user's language (e.g. "i have opened your cart." / "your cart is now open.").
+  </tool_rules>
   `.trim();
 
   const openrouter = createOpenAI({
@@ -257,18 +425,14 @@ export async function POST(req: Request) {
         if (!groqModelInfo) throw new Error("Groq model not configured");
 
         const narrationSystem = `
+CRITICAL RULE 1: YOU MUST RESPOND IN THE EXACT SAME LANGUAGE AS THE USER'S LATEST MESSAGE. IF THE USER WRITES IN DUTCH, RESPOND IN DUTCH. IF ENGLISH, RESPOND IN ENGLISH.
+
 ${systemPrompt}
 
-you already looked up the requested order data below. the ui already shows
-the customer a card with the full order details, so do not restate every
-line item. 
-
-CRITICAL INSTRUCTION: answer their last question directly in MAXIMUM 1 SHORT SENTENCE. 
-do not explain logistics (like 10 days + 2 days). just state the final delivery estimate rule 
-(e.g. "your package is expected to arrive about 12-14 days after the pre-order window closes.") or status. 
-be brutally concise and minimalist. never mention tools, emails, or databases. 
-if the data contains an "error" field, explain plainly. 
-RESPOND IN THE EXACT SAME LANGUAGE AS THE USER'S MESSAGE.
+narration_rules:
+- the ui already presents full order cards to the customer. do not restate every item.
+- answer their question directly in MAXIMUM 1 TO 2 SHORT SENTENCES.
+- if a tool result contains an "action" field, confirm the UI action in one complete, natural sentence in the user's language (e.g. "i have opened your cart." / "your cart is now open.").
 
 order data:
 ${JSON.stringify(toolResults)}

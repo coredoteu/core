@@ -254,11 +254,10 @@ function TimelineCard({
           />
         )}
         <span
-          className={`relative block h-3 w-3 rounded-[50%] border ${
-            statusTone === "live"
+          className={`relative block h-3 w-3 rounded-[50%] border ${statusTone === "live"
               ? "bg-white border-white"
               : "bg-[#0D0D0D] border-white/25"
-          }`}
+            }`}
         />
       </div>
 
@@ -471,116 +470,116 @@ const phases: {
   description: string;
   content: ReactNode;
 }[] = [
-  {
-    id: "v1",
-    index: "phase 01",
-    title: "v1 / lab white edition",
-    status: "live",
-    statusTone: "live",
-    icon: "/icons/flask-conical.svg",
-    description:
-      "clean, minimal white bottles with precision pumps. the current live system.",
-    content: (
-      <div className="flex flex-col gap-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <SpecGroup label="unit 01 / shampoo" items={v1ShampooActives} />
-          <SpecGroup
-            label="unit 02 / conditioner"
-            items={v1ConditionerActives}
-          />
-        </div>
-        <div>
-          <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
-            launch metrics
-          </span>
-          <MetricsRow metrics={v1Metrics} />
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: "v2v3",
-    index: "phase 02",
-    title: "v2 & v3 / stealth black edition",
-    status: "in development",
-    statusTone: "dev",
-    icon: "/icons/atom.svg",
-    description:
-      "transitioning to custom batch matte black bottles, featuring high-contrast crisp white silkscreen printing and matte black disc-top caps.",
-    content: (
-      <div className="flex flex-col gap-10">
-        <div>
-          <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
-            gravity-driven packaging ux
-          </span>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <OrientationCard
-              label="shampoo"
-              sub="upright / cap on top"
-              note="standard dispensing orientation for daily-use viscosity."
-            />
-            <OrientationCard
-              label="conditioner"
-              sub="inverted / cap on bottom"
-              inverted
-              note="gravity-fed dosing for the higher-density formula. form follows function."
-            />
-          </div>
-        </div>
-        <div>
-          <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
-            upgraded active compounds
-          </span>
+    {
+      id: "v1",
+      index: "phase 01",
+      title: "v1 / lab white edition",
+      status: "live",
+      statusTone: "live",
+      icon: "/icons/flask-conical.svg",
+      description:
+        "clean, minimal white bottles with precision pumps. the current live system.",
+      content: (
+        <div className="flex flex-col gap-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <SpecGroup label="unit 01 / shampoo v2" items={v2ShampooActives} />
+            <SpecGroup label="unit 01 / shampoo" items={v1ShampooActives} />
             <SpecGroup
-              label="unit 02 / conditioner v2"
-              items={v2ConditionerActives}
+              label="unit 02 / conditioner"
+              items={v1ConditionerActives}
             />
           </div>
+          <div>
+            <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
+              launch metrics
+            </span>
+            <MetricsRow metrics={v1Metrics} />
+          </div>
         </div>
-      </div>
-    ),
-  },
-  {
-    id: "packaging",
-    index: "phase 03",
-    title: "unboxing & secondary packaging",
-    status: "prototyping",
-    statusTone: "prototype",
-    icon: "/icons/layers-minimalistic.svg",
-    description:
-      "the full secondary packaging experience, spec'd to match the stealth black system end to end.",
-    content: (
-      <div className="flex flex-col gap-6">
-        <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl">
-          every layer of the unboxing sequence is being prototyped alongside the
-          v2 bottle tooling.
-        </p>
-        <PackagingGrid items={packagingItems} />
-      </div>
-    ),
-  },
-  {
-    id: "future",
-    index: "phase 04",
-    title: "future system expansions",
-    status: "research & development",
-    statusTone: "research",
-    icon: "/icons/microscope.svg",
-    description:
-      "early-stage exploration into system extensions beyond the core duo.",
-    content: (
-      <div className="flex flex-col gap-6">
-        <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl">
-          still bound by the same functional-concentration standard: nothing
-          ships until it earns its place on the label.
-        </p>
-        <ResearchGrid items={researchItems} />
-      </div>
-    ),
-  },
-];
+      ),
+    },
+    {
+      id: "v2v3",
+      index: "phase 02",
+      title: "v2 & v3 / stealth black edition",
+      status: "in development",
+      statusTone: "dev",
+      icon: "/icons/atom.svg",
+      description:
+        "transitioning to custom batch matte black bottles, featuring high-contrast crisp white silkscreen printing and matte black disc-top caps.",
+      content: (
+        <div className="flex flex-col gap-10">
+          <div>
+            <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
+              gravity-driven packaging ux
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <OrientationCard
+                label="shampoo"
+                sub="upright / cap on top"
+                note="standard dispensing orientation for daily-use viscosity."
+              />
+              <OrientationCard
+                label="conditioner"
+                sub="inverted / cap on bottom"
+                inverted
+                note="gravity-fed dosing for the higher-density formula. form follows function."
+              />
+            </div>
+          </div>
+          <div>
+            <span className="block font-mono text-[10px] tracking-[0.2em] text-text-dim lowercase mb-4">
+              upgraded active compounds
+            </span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <SpecGroup label="unit 01 / shampoo v2" items={v2ShampooActives} />
+              <SpecGroup
+                label="unit 02 / conditioner v2"
+                items={v2ConditionerActives}
+              />
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "packaging",
+      index: "phase 03",
+      title: "unboxing & secondary packaging",
+      status: "prototyping",
+      statusTone: "prototype",
+      icon: "/icons/layers-minimalistic.svg",
+      description:
+        "the full secondary packaging experience, spec'd to match the stealth black system end to end.",
+      content: (
+        <div className="flex flex-col gap-6">
+          <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl">
+            every layer of the unboxing sequence is being prototyped alongside the
+            v2 bottle tooling.
+          </p>
+          <PackagingGrid items={packagingItems} />
+        </div>
+      ),
+    },
+    {
+      id: "future",
+      index: "phase 04",
+      title: "future system expansions",
+      status: "research & development",
+      statusTone: "research",
+      icon: "/icons/microscope.svg",
+      description:
+        "early-stage exploration into system extensions beyond the core duo.",
+      content: (
+        <div className="flex flex-col gap-6">
+          <p className="text-sm text-text-faint lowercase leading-relaxed max-w-2xl">
+            still bound by the same functional-concentration standard: nothing
+            ships until it earns its place on the label.
+          </p>
+          <ResearchGrid items={researchItems} />
+        </div>
+      ),
+    },
+  ];
 
 function FormulaComparator() {
   const [version, setVersion] = useState<"v1" | "v2">("v1");
@@ -612,11 +611,10 @@ function FormulaComparator() {
                 key={v}
                 onClick={() => setVersion(v)}
                 aria-pressed={version === v}
-                className={`flex-1 sm:flex-none px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${
-                  version === v
+                className={`flex-1 sm:flex-none px-5 py-2.5 font-mono text-[10px] tracking-[0.2em] lowercase transition-all duration-300 whitespace-nowrap focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/40 ${version === v
                     ? "bg-white text-[#0D0D0D]"
                     : "text-text-faint hover:text-white"
-                }`}
+                  }`}
               >
                 {v === "v1" ? "v1 launch actives" : "v2 custom batch actives"}
               </button>
@@ -687,7 +685,7 @@ function RoadmapCta() {
 export default function RoadmapContent() {
   return (
     <>
-      {}
+      { }
       <section className="pt-28 md:pt-36 pb-16 md:pb-24">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-text-muted pb-8 md:pb-14 border-b border-hairline">
@@ -705,7 +703,7 @@ export default function RoadmapContent() {
               <br />
               &amp; system roadmap.
             </h1>
-            <p className="text-text-muted text-sm sm:text-base md:text-lg leading-relaxed lowercase max-w-xl">
+            <p className="text-text-muted text-sm sm:text-base md:text-lg leading-relaxed normal-case max-w-xl">
               CORE. launched with a precise, minimalist v1 system featuring lab
               white bottles and ecocert cosmos natural actives, compromising
               nothing on formulation. the upcoming v2 and v3 iterations upgrade
@@ -730,7 +728,7 @@ export default function RoadmapContent() {
         </div>
       </section>
 
-      {}
+      { }
       <section
         id="timeline"
         className="border-t border-hairline py-16 md:py-24 bg-white/[0.015] scroll-mt-24"

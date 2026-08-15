@@ -5,6 +5,44 @@ import { useChat } from "@ai-sdk/react";
 import { Icon } from "@/components/ui/Icon";
 import Image from "next/image";
 import { OrderSummaryCard } from "@/components/chat/OrderSummaryCard";
+import { useCart } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
+import { TrackingCard } from "@/components/chat/TrackingCard";
+import { OrderChangeCard } from "@/components/chat/OrderChangeCard";
+import { ReturnEligibilityCard } from "@/components/chat/ReturnEligibilityCard";
+import { RoutineCard } from "@/components/chat/RoutineCard";
+import { BatchStatusCard } from "@/components/chat/BatchStatusCard";
+
+const CARD_TOOL_NAMES = new Set([
+  "getRecentOrders",
+  "getOrderByReference",
+  "getTrackingStatus",
+  "checkOrderChangeEligibility",
+  "checkReturnEligibility",
+  "getRoutineRecommendation",
+  "getActiveBatchStatus",
+]);
+
+function renderToolCard(t: any) {
+  switch (t.toolName) {
+    case "getRecentOrders":
+      return <OrderSummaryCard orders={t.result?.orders} />;
+    case "getOrderByReference":
+      return <OrderSummaryCard order={t.result?.order} />;
+    case "getTrackingStatus":
+      return <TrackingCard data={t.result} />;
+    case "checkOrderChangeEligibility":
+      return <OrderChangeCard data={t.result} />;
+    case "checkReturnEligibility":
+      return <ReturnEligibilityCard data={t.result} />;
+    case "getRoutineRecommendation":
+      return <RoutineCard data={t.result} />;
+    case "getActiveBatchStatus":
+      return <BatchStatusCard data={t.result} />;
+    default:
+      return null;
+  }
+}
 
 function stripThinking(raw: string): string | null {
   if (!raw.includes("<think>")) return raw.trim();
@@ -58,6 +96,10 @@ export function ChatWidget() {
     };
   }, []);
 
+  const cart = useCart();
+  const router = useRouter();
+  const processedActionIds = useRef<Set<string>>(new Set());
+
   const {
     messages,
     input,
@@ -66,6 +108,35 @@ export function ChatWidget() {
     error,
     isLoading,
   } = useChat({ onError: (e) => console.error("Chat error:", e) });
+
+  useEffect(() => {
+    for (const m of messages) {
+      for (const t of m.toolInvocations ?? []) {
+        if (t.toolName !== "triggerUIAction" || t.state !== "result") continue;
+        if (processedActionIds.current.has(t.toolCallId)) continue;
+        processedActionIds.current.add(t.toolCallId);
+
+        switch (t.result?.action) {
+          case "open_cart":
+            cart.openDrawer();
+            break;
+          case "prompt_login":
+            router.push("/login");
+            break;
+          case "scroll_to_waitlist":
+            document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+            setTimeout(() => document.getElementById("waitlist-email")?.focus(), 400);
+            break;
+          case "navigate_shop":
+            router.push("/shop");
+            break;
+          case "navigate_refunds":
+            router.push("/refunds");
+            break;
+        }
+      }
+    }
+  }, [messages, cart, router]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -135,11 +206,8 @@ export function ChatWidget() {
                 isLastMessage &&
                 isLoading;
 
-              const orderInvocations = (m.toolInvocations ?? []).filter(
-                (t: any) =>
-                  t.state === "result" &&
-                  (t.toolName === "getRecentOrders" ||
-                    t.toolName === "getOrderByReference"),
+              const cardInvocations = (m.toolInvocations ?? []).filter(
+                (t: any) => t.state === "result" && CARD_TOOL_NAMES.has(t.toolName),
               );
 
               return (
@@ -150,16 +218,12 @@ export function ChatWidget() {
                         <ThinkingDots />
                       ) : cleaned ? (
                         <AssistantText text={cleaned} />
-                      ) : orderInvocations.length === 0 ? (
+                      ) : cardInvocations.length === 0 ? (
                         <span className="text-white/20 text-sm">—</span>
                       ) : null}
                     </div>
-                    {orderInvocations.map((t: any) => (
-                      <OrderSummaryCard
-                        key={t.toolCallId}
-                        orders={t.result?.orders}
-                        order={t.result?.order}
-                      />
+                    {cardInvocations.map((t: any) => (
+                      <div key={t.toolCallId}>{renderToolCard(t)}</div>
                     ))}
                   </div>
                 </div>

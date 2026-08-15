@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { supabaseAdmin } from "@/lib/supabase";
+import { recalculateOrderProfit } from "@/lib/funding-engine";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -16,7 +18,48 @@ export async function POST(req: Request) {
         const customerName = String(parcel.name || "customer").toLowerCase();
         const orderNumber = String(parcel.order_number || parcel.reference || "").toLowerCase();
         const trackingUrl = parcel.tracking_url || "https://bycore.eu";
+        const trackingNumber = parcel.tracking_number || "";
+        const carrierName = typeof parcel.carrier === "string" ? parcel.carrier : parcel.carrier?.name || "postnl";
         const statusCode = parcel.status?.id;
+
+        let shippingStatus = "label_created";
+        if (statusCode === 12) shippingStatus = "delivered";
+        else if (statusCode === 13) shippingStatus = "out_for_delivery";
+        else if (statusCode === 11) shippingStatus = "in_transit";
+        else if (statusCode === 1000 || statusCode === 1 || statusCode === 3) shippingStatus = "picked_up";
+
+        if (orderNumber) {
+            const { data: updatedOrders } = await supabaseAdmin
+                .from("orders")
+                .update({
+                    carrier: carrierName,
+                    tracking_number: trackingNumber,
+                    tracking_url: trackingUrl,
+                    shipping_status: shippingStatus,
+                })
+                .or(`id.ilike.%${orderNumber}%,stripe_session_id.ilike.%${orderNumber}%`)
+                .select("id");
+
+            // Update shipping_cogs with the actual carrier cost if Sendcloud provides it
+            // Sendcloud surfaces this in parcel.shipment.price or parcel.price (carrier cost in EUR)
+            const actualShippingCost: number | undefined =
+                parcel.shipment?.price ?? parcel.price ?? undefined;
+
+            if (actualShippingCost !== undefined && updatedOrders && updatedOrders.length > 0) {
+                for (const row of updatedOrders) {
+                    await supabaseAdmin
+                        .from("orders")
+                        .update({ shipping_cogs: actualShippingCost })
+                        .eq("id", row.id);
+
+                    // Recalculate profit now that we have the real shipping cost
+                    await recalculateOrderProfit(row.id);
+                    console.log(
+                        `[Sendcloud Webhook] Updated shipping_cogs to ${actualShippingCost} and recalculated profit for order ${row.id}`,
+                    );
+                }
+            }
+        }
 
         if (statusCode === 11) {
             await resend.emails.send({
@@ -25,7 +68,7 @@ export async function POST(req: Request) {
                 subject: `your order ${orderNumber} is on its way / CORE.`,
                 html: `
         <div style="background-color: #0d0d0d; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #ffffff;">
-          <div style="max-width: 500px; margin: 0 auto; background-color: #0d0d0d; border: 1px solid rgba(255, 255, 255, 0.1); padding: 32px; text-align: left;">
+          <div style="max-width: 500px; margin: 0 auto; background-color: #0d0d0d; text-align: left;">
             <a href="https://bycore.eu" target="_blank" style="text-decoration: none; display: inline-block; margin-bottom: 30px;">
               <img src="https://bycore.eu/CORE_logo_trans.png" alt="CORE." width="120" style="display: block; width: 120px; border: 0;" />
             </a>
@@ -59,7 +102,7 @@ export async function POST(req: Request) {
                 subject: `your order ${orderNumber} has been delivered / CORE.`,
                 html: `
         <div style="background-color: #0d0d0d; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #ffffff;">
-          <div style="max-width: 500px; margin: 0 auto; background-color: #0d0d0d; border: 1px solid rgba(255, 255, 255, 0.1); padding: 32px; text-align: left;">
+          <div style="max-width: 500px; margin: 0 auto; background-color: #0d0d0d; text-align: left;">
             <a href="https://bycore.eu" target="_blank" style="text-decoration: none; display: inline-block; margin-bottom: 30px;">
               <img src="https://bycore.eu/CORE_logo_trans.png" alt="CORE." width="120" style="display: block; width: 120px; border: 0;" />
             </a>

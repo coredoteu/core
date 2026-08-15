@@ -7,6 +7,7 @@ import {
 } from "@/lib/orders";
 import { sendOrderConfirmation, createSendcloudParcel } from "@/lib/emails";
 import { CATALOG } from "@/lib/catalog";
+import { recalculateBatchIfTierChanged } from "@/lib/funding-engine";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -15,6 +16,7 @@ function getSupabaseAdmin() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
   );
 }
 
@@ -43,6 +45,59 @@ function buildEmailItems(order: any) {
   });
 }
 
+/**
+ * Mark an order as refunded and zero out its v2_funded_amount.
+ * Looks up by payment_intent_id first, then falls back to stripe_session_id.
+ */
+async function handleRefund(
+  paymentIntentId: string | null,
+  stripeSessionId: string | null,
+): Promise<void> {
+  const supabase = getSupabaseAdmin();
+
+  // Build the OR filter for the lookup
+  const filters: string[] = [];
+  if (paymentIntentId) {
+    filters.push(`payment_intent_id.eq.${paymentIntentId}`);
+  }
+  if (stripeSessionId) {
+    filters.push(`stripe_session_id.eq.${stripeSessionId}`);
+  }
+  if (filters.length === 0) {
+    console.warn("[Stripe Webhook] handleRefund called with no identifiers");
+    return;
+  }
+
+  const { data: orders, error: fetchErr } = await supabase
+    .from("orders")
+    .select("id")
+    .or(filters.join(","));
+
+  if (fetchErr || !orders || orders.length === 0) {
+    console.warn(
+      "[Stripe Webhook] handleRefund — order not found:",
+      { paymentIntentId, stripeSessionId },
+      fetchErr,
+    );
+    return;
+  }
+
+  const orderIds = orders.map((o) => o.id);
+  const { error: updateErr } = await supabase
+    .from("orders")
+    .update({ status: "refunded", v2_funded_amount: 0.00 })
+    .in("id", orderIds);
+
+  if (updateErr) {
+    console.error("[Stripe Webhook] handleRefund — update error:", updateErr);
+  } else {
+    console.log(
+      `[Stripe Webhook] Marked ${orderIds.length} order(s) as refunded:`,
+      orderIds,
+    );
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.text();
@@ -65,9 +120,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ received: true, deduped: true }, { status: 200 });
     }
 
+    // ── checkout.session.completed ────────────────────────────────────────────
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
       const { order, isNew } = await syncStripeSessionToSupabase(session.id);
+
+      if (isNew && order?.id) {
+        // Trigger tier-aware batch recalculation for the entire batch
+        await recalculateBatchIfTierChanged(order.id);
+      }
 
       const email = session.customer_details?.email || order?.customer_email;
       if (isNew && email && email !== "unknown@bycore.eu") {
@@ -83,11 +144,17 @@ export async function POST(req: Request) {
       await createSendcloudParcel(session);
     }
 
+    // ── payment_intent.succeeded ──────────────────────────────────────────────
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
       const { order, isNew } =
         await syncStripePaymentIntentToSupabase(paymentIntent.id);
+
+      if (isNew && order?.id) {
+        // Trigger tier-aware batch recalculation
+        await recalculateBatchIfTierChanged(order.id);
+      }
 
       if (isNew) {
         let email =
@@ -113,9 +180,28 @@ export async function POST(req: Request) {
             buildEmailItems(order),
           );
         } else {
-          console.warn(`[Stripe Webhook] Skipping order confirmation email: No valid customer email for PaymentIntent ${paymentIntent.id}`);
+          console.warn(
+            `[Stripe Webhook] Skipping order confirmation email: No valid customer email for PaymentIntent ${paymentIntent.id}`,
+          );
         }
       }
+    }
+
+    // ── charge.refunded ───────────────────────────────────────────────────────
+    if (event.type === "charge.refunded") {
+      const charge = event.data.object as Stripe.Charge;
+      const piId =
+        typeof charge.payment_intent === "string"
+          ? charge.payment_intent
+          : (charge.payment_intent as Stripe.PaymentIntent | null)?.id ?? null;
+
+      await handleRefund(piId, null);
+    }
+
+    // ── payment_intent.canceled ───────────────────────────────────────────────
+    if (event.type === "payment_intent.canceled") {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      await handleRefund(paymentIntent.id, null);
     }
 
     return NextResponse.json({ received: true }, { status: 200 });

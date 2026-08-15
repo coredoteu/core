@@ -24,23 +24,43 @@ const statusNodes = [
   { key: "status", value: "in development" },
 ];
 
+function getMilestoneStatus(percentage: number) {
+  if (percentage < 25) {
+    return "milestone 01 // active matrix formulation lock";
+  } else if (percentage < 50) {
+    return "milestone 02 // laboratory stability & cpsr certification";
+  } else if (percentage < 75) {
+    return "milestone 03 // matte black tooling & direct silkscreening";
+  } else if (percentage < 100) {
+    return "milestone 04 // 2x 300kg custom batch compounding";
+  } else {
+    return "status: funded // unlocked for batch production";
+  }
+}
+
 export default function V2SneakPeek() {
   const [isHovered, setIsHovered] = useState(false);
   const [funding, setFunding] = useState({
-    unlocked: 105,
-    total: 250,
+    current_funded: 0,
+    target_goal: 15000,
+    percentage: 0,
     isLoading: true,
   });
 
   useEffect(() => {
     async function loadStats() {
-      const stats = await getFundingStats();
-      setFunding({ ...stats, isLoading: false });
+      try {
+        const stats = await getFundingStats();
+        setFunding({ ...stats, isLoading: false });
+      } catch {
+        // Render 0% gracefully on error
+        setFunding((prev) => ({ ...prev, isLoading: false }));
+      }
     }
     loadStats();
   }, []);
 
-  const percentage = Math.round((funding.unlocked / funding.total) * 100);
+  const displayPercentage = funding.isLoading ? 0 : funding.percentage;
 
   return (
     <section
@@ -167,21 +187,26 @@ export default function V2SneakPeek() {
                 custom formulation and matte black tooling of v2.
               </p>
 
-              <div className="flex flex-col gap-2 my-2">
+              <div className="flex flex-col gap-2.5 my-2">
                 <div className="flex items-center justify-between font-mono text-[10px] lowercase text-text-muted">
-                  <span>custom batch funding</span>
-                  <span className="text-white">{percentage}%</span>
+                  <span>custom batch funding (v2)</span>
+                  <span className="text-white font-mono">
+                    [ {displayPercentage.toFixed(1)}% unlocked ]
+                  </span>
                 </div>
                 <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                   <div
                     className={`h-full bg-white relative transition-all duration-1000 ease-out ${funding.isLoading ? "animate-pulse opacity-50" : ""}`}
-                    style={{ width: `${percentage}%` }}
+                    style={{ width: `${displayPercentage}%` }}
                   >
                     <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                   </div>
                 </div>
-                <div className="font-mono text-[9px] tracking-[0.1em] text-text-muted lowercase mt-1">
-                  {funding.unlocked} / {funding.total} pre-orders unlocked
+                <div className="flex flex-col gap-0.5 font-mono text-[9px] tracking-[0.1em] text-text-muted lowercase mt-0.5">
+                  <span className="text-text-muted">active status:</span>
+                  <span className="text-white/70">
+                    {getMilestoneStatus(displayPercentage)}
+                  </span>
                 </div>
               </div>
 

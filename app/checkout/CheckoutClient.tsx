@@ -462,16 +462,38 @@ function CheckoutForm({
 
 function OrderSummary({
   items,
-  subtotal,
+  rawSubtotal,
+  discountCents,
   shippingCost,
   isFreeShipping,
+  appliedPromoCode,
+  isApplyingPromo,
+  promoError,
+  onApplyPromo,
+  onRemovePromo,
 }: {
   items: OrderSummaryItem[];
-  subtotal: number;
+  rawSubtotal: number;
+  discountCents: number;
   shippingCost: number;
   isFreeShipping: boolean;
+  appliedPromoCode: string | null;
+  isApplyingPromo: boolean;
+  promoError: string | null;
+  onApplyPromo: (code: string) => Promise<void>;
+  onRemovePromo: () => Promise<void>;
 }) {
-  const total = subtotal + shippingCost;
+  const [promoInput, setPromoInput] = useState("");
+  const [showPromoInput, setShowPromoInput] = useState(false);
+
+  const discountedSubtotal = Math.max(0, rawSubtotal - discountCents);
+  const total = discountedSubtotal + shippingCost;
+
+  const handleApply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!promoInput.trim()) return;
+    await onApplyPromo(promoInput.trim());
+  };
 
   return (
     <div className="flex flex-col gap-0">
@@ -573,6 +595,68 @@ function OrderSummary({
         })}
       </div>
 
+      {/* Promo Code Section */}
+      <div className="mt-6 pt-5 border-t border-hairline">
+        {appliedPromoCode ? (
+          <div className="flex items-center justify-between p-3 bg-white/[0.03] border border-white/15">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
+              <span className="text-[10px] font-mono tracking-[0.15em] text-white uppercase">
+                {appliedPromoCode}
+              </span>
+              <span className="text-[9px] font-mono text-white/50 lowercase">
+                (applied)
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={onRemovePromo}
+              disabled={isApplyingPromo}
+              className="text-[9px] font-mono tracking-[0.1em] text-text-muted hover:text-white transition-colors duration-200 lowercase underline underline-offset-2"
+            >
+              remove
+            </button>
+          </div>
+        ) : (
+          <div>
+            {!showPromoInput ? (
+              <button
+                type="button"
+                onClick={() => setShowPromoInput(true)}
+                className="text-[10px] font-mono tracking-[0.15em] text-text-muted hover:text-white transition-colors duration-200 lowercase"
+              >
+                + add promo code
+              </button>
+            ) : (
+              <form onSubmit={handleApply} className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={promoInput}
+                    onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
+                    placeholder="FOUNDER-XXXXXX"
+                    disabled={isApplyingPromo}
+                    className="flex-1 px-3 py-2 bg-white/[0.03] border border-hairline text-white text-[11px] font-mono placeholder:text-white/20 focus:outline-none focus:border-white/30 uppercase tracking-[0.15em] transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isApplyingPromo || !promoInput.trim()}
+                    className="px-4 py-2 bg-white text-[#0D0D0D] text-[10px] font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-40 transition-colors"
+                  >
+                    {isApplyingPromo ? "..." : "apply"}
+                  </button>
+                </div>
+                {promoError && (
+                  <p className="text-[10px] font-mono text-[#e57373] lowercase">
+                    {promoError}
+                  </p>
+                )}
+              </form>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* Free shipping progress */}
       {!isFreeShipping && (
         <div className="mt-6 border border-hairline p-4">
@@ -581,7 +665,7 @@ function OrderSummary({
               €
               {Math.max(
                 0,
-                FREE_SHIPPING_THRESHOLD_EUR - subtotal / 100,
+                FREE_SHIPPING_THRESHOLD_EUR - discountedSubtotal / 100,
               ).toFixed(2)}{" "}
               from free shipping
             </span>
@@ -593,7 +677,7 @@ function OrderSummary({
             <div
               className="absolute inset-y-0 left-0 bg-white/25 transition-all duration-500"
               style={{
-                width: `${Math.min(100, ((subtotal / 100) / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%`,
+                width: `${Math.min(100, (discountedSubtotal / 100 / FREE_SHIPPING_THRESHOLD_EUR) * 100)}%`,
               }}
             />
           </div>
@@ -607,9 +691,21 @@ function OrderSummary({
             subtotal
           </span>
           <span className="text-xs text-white tabular-nums">
-            €{(subtotal / 100).toFixed(2)}
+            €{(rawSubtotal / 100).toFixed(2)}
           </span>
         </div>
+
+        {discountCents > 0 && (
+          <div className="flex items-center justify-between text-white">
+            <span className="text-[10px] font-mono tracking-[0.1em] text-white/70 lowercase">
+              discount
+            </span>
+            <span className="text-xs font-mono text-white/90 tabular-nums">
+              -€{(discountCents / 100).toFixed(2)}
+            </span>
+          </div>
+        )}
+
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-mono tracking-[0.1em] text-text-muted lowercase">
             shipping
@@ -632,7 +728,7 @@ function OrderSummary({
             total due
           </span>
           <span className="text-xl font-light text-white tabular-nums">
-            €{((subtotal + shippingCost) / 100).toFixed(2)}
+            €{(total / 100).toFixed(2)}
           </span>
         </div>
       </div>
@@ -663,7 +759,12 @@ export default function CheckoutClient() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
   const [orderSummary, setOrderSummary] = useState<OrderSummaryItem[]>([]);
+  const [rawSubtotal, setRawSubtotal] = useState(0);
   const [serverSubtotal, setServerSubtotal] = useState(0);
+  const [discountCents, setDiscountCents] = useState(0);
+  const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+  const [promoError, setPromoError] = useState<string | null>(null);
   const [shippingCost, setShippingCost] = useState(0);
   const [isFreeShipping, setIsFreeShipping] = useState(false);
   const [customerEmail, setCustomerEmail] = useState<string | null>(null);
@@ -704,6 +805,7 @@ export default function CheckoutClient() {
         setClientSecret(data.clientSecret);
         setPaymentIntentId(data.paymentIntentId || null);
         setOrderSummary(data.orderSummary || []);
+        setRawSubtotal(data.subtotal || 0);
         setServerSubtotal(data.subtotal || 0);
         setShippingCost(data.shippingCost || 0);
         setIsFreeShipping(data.isFreeShipping || false);
@@ -719,6 +821,66 @@ export default function CheckoutClient() {
     initCheckout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleApplyPromo = async (code: string) => {
+    if (!paymentIntentId) return;
+    setIsApplyingPromo(true);
+    setPromoError(null);
+    try {
+      const res = await fetch("/api/checkout/apply-promo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentIntentId,
+          promoCode: code,
+          items,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setPromoError(data.error || "invalid promo code");
+        return;
+      }
+      setDiscountCents(data.discountCents || 0);
+      setServerSubtotal(data.subtotalCents);
+      setShippingCost(data.shippingCents);
+      setIsFreeShipping(data.isFreeShipping);
+      setAppliedPromoCode(data.appliedCode);
+    } catch (err: any) {
+      setPromoError(err.message || "failed to apply promo code");
+    } finally {
+      setIsApplyingPromo(false);
+    }
+  };
+
+  const handleRemovePromo = async () => {
+    if (!paymentIntentId) return;
+    setIsApplyingPromo(true);
+    setPromoError(null);
+    try {
+      const res = await fetch("/api/checkout/apply-promo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentIntentId,
+          promoCode: "",
+          items,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setDiscountCents(0);
+        setServerSubtotal(data.subtotalCents);
+        setShippingCost(data.shippingCents);
+        setIsFreeShipping(data.isFreeShipping);
+        setAppliedPromoCode(null);
+      }
+    } catch (err: any) {
+      console.error("Failed to remove promo:", err);
+    } finally {
+      setIsApplyingPromo(false);
+    }
+  };
 
   // ─── Error state ─────────────────────────────────────────────────────────
 
@@ -774,9 +936,15 @@ export default function CheckoutClient() {
           ) : (
             <OrderSummary
               items={orderSummary}
-              subtotal={serverSubtotal}
+              rawSubtotal={rawSubtotal}
+              discountCents={discountCents}
               shippingCost={shippingCost}
               isFreeShipping={isFreeShipping}
+              appliedPromoCode={appliedPromoCode}
+              isApplyingPromo={isApplyingPromo}
+              promoError={promoError}
+              onApplyPromo={handleApplyPromo}
+              onRemovePromo={handleRemovePromo}
             />
           )}
         </div>
