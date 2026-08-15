@@ -27,11 +27,11 @@ export function OrderChangeCard({ data }: { data: any }) {
 
   return (
     <div className="border border-hairline bg-[#0A0A0A]/80 backdrop-blur-md w-full p-5 flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <span className="font-mono text-[9px] tracking-[0.3em] text-white/40 lowercase">
+      <div className="flex items-center justify-between gap-3">
+        <span className="min-w-0 flex-1 truncate font-mono text-[9px] tracking-[0.3em] text-white/40 lowercase">
           order / #{data.orderRef}
         </span>
-        <span className={`font-mono text-[9px] tracking-[0.2em] px-2 py-1 border lowercase ${
+        <span className={`shrink-0 font-mono text-[9px] tracking-[0.2em] px-2 py-1 border lowercase ${
           data.eligible ? "border-white/30 text-white" : "border-white/10 text-white/30"
         }`}>
           {data.eligible ? "change window open" : "locked"}
@@ -39,9 +39,9 @@ export function OrderChangeCard({ data }: { data: any }) {
       </div>
 
       {!data.eligible ? (
-        <p className="text-xs text-white/50 lowercase leading-relaxed">{data.reason}</p>
+        <p className="text-xs text-white/50 lowercase leading-relaxed break-words">{data.reason}</p>
       ) : status === "sent" ? (
-        <p className="text-xs text-white/70 lowercase leading-relaxed">
+        <p className="text-xs text-white/70 lowercase leading-relaxed break-words">
           request submitted. our team will confirm by email shortly.
         </p>
       ) : (
@@ -57,7 +57,7 @@ export function OrderChangeCard({ data }: { data: any }) {
           <button
             onClick={submit}
             disabled={status === "submitting" || (data.requestType === "address_change" && !address.trim())}
-            className="w-full py-3 bg-white text-black text-[10px] font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-40 transition-colors"
+            className="w-full min-h-[44px] py-3 bg-white text-black text-[10px] font-mono tracking-[0.2em] lowercase hover:bg-white/90 disabled:opacity-40 transition-colors"
           >
             {status === "submitting"
               ? "submitting..."

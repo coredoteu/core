@@ -279,7 +279,7 @@ export default function CartDrawer() {
               </div>
             )}
 
-            <div className="flex-1 overflow-y-auto px-7">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-7">
               {isEmpty ? (
                 <EmptyState onClose={closeDrawer} />
               ) : (
@@ -294,7 +294,7 @@ export default function CartDrawer() {
             </div>
 
             {!isEmpty && (
-              <div className="shrink-0 border-t border-hairline px-7 py-6 flex flex-col gap-5">
+              <div className="shrink-0 border-t border-hairline px-7 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] flex flex-col gap-5">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-text-muted lowercase font-mono tracking-[0.1em]">

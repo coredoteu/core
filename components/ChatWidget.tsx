@@ -96,6 +96,27 @@ export function ChatWidget() {
     };
   }, []);
 
+  // Lock background scroll while open — on mobile this renders as a
+  // full-screen sheet, so without this the page behind it still scrolls.
+  // Mirrors the pattern already used by CartDrawer.
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isOpen]);
+
   const cart = useCart();
   const router = useRouter();
   const processedActionIds = useRef<Set<string>>(new Set());
@@ -147,126 +168,140 @@ export function ChatWidget() {
   const awaitingFirstToken =
     isLoading && messages[messages.length - 1]?.role === "user";
 
+  // Keep the trigger clear of the mobile sticky add-to-cart bar AND the
+  // iOS home-indicator safe area, whichever offset is larger.
+  const triggerBottomClass = hasStickyCart
+    ? "bottom-[calc(84px+env(safe-area-inset-bottom))] md:bottom-6"
+    : "bottom-[calc(1rem+env(safe-area-inset-bottom))] md:bottom-6";
+
   return (
-    <div
-      className={`fixed right-4 md:right-6 z-50 flex flex-col items-end font-sans transition-all duration-300 ${
-        hasStickyCart ? "bottom-[84px] md:bottom-6" : "bottom-4 md:bottom-6"
-      }`}
-    >
+    <>
       {isOpen && (
-        <div 
-          className="mb-5 flex flex-col w-[380px] h-[600px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-120px)] bg-[#0D0D0D]/75 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.8),0_0_80px_rgba(255,255,255,0.03)] overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-4"
-        >
-          {/* Header */}
-          <div className="flex justify-between items-center px-5 py-4 shrink-0 relative">
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            <div className="flex items-center gap-2 select-none">
-              <Image src="/CORE_logo_trans.svg" alt="CORE." width={54} height={13} className="h-[13px] w-auto opacity-90" />
-              <span className="font-mono text-[10px] text-white/40 tracking-[0.2em] mt-0.5">
-                support
-              </span>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white/40 hover:text-white/90 hover:bg-white/10 transition-all rounded-full p-1.5"
-              aria-label="Close chat"
-            >
-              <Icon src="/icons/x.svg" size={16} />
-            </button>
-          </div>
-
-          {/* Messages Area */}
+        <div className="fixed inset-0 z-50 flex sm:items-end sm:justify-end pointer-events-none">
+          {/* Scrim only needed for the full-screen mobile sheet */}
           <div
-            className="flex-1 overflow-y-auto p-5 space-y-6"
-            style={{ scrollbarWidth: "none" }}
+            className="absolute inset-0 bg-black/50 sm:hidden pointer-events-auto"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
+
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="CORE. support chat"
+            className="relative pointer-events-auto flex flex-col w-full h-[100dvh] sm:h-[600px] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:max-h-[calc(100dvh-120px)] sm:mb-5 sm:mr-4 md:mr-6 bg-[#0D0D0D] sm:bg-[#0D0D0D]/75 sm:backdrop-blur-2xl border-t sm:border border-white/10 sm:rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.8),0_0_80px_rgba(255,255,255,0.03)] overflow-hidden"
           >
-            {messages.length === 0 && !isLoading && (
-              <div className="flex flex-col items-center justify-center h-full text-white/30 space-y-4 select-none">
-                <Icon src="/icons/message-circle-question-mark.svg" size={36} opacity={0.3} />
-                <span className="text-[13px] lowercase tracking-wide font-mono opacity-80">how can we help you?</span>
+            {/* Header */}
+            <div className="flex justify-between items-center px-5 py-4 shrink-0 relative">
+              <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              <div className="flex items-center gap-2 select-none">
+                <Image src="/CORE_logo_trans.svg" alt="CORE." width={54} height={13} className="h-[13px] w-auto opacity-90" />
+                <span className="font-mono text-[10px] text-white/40 tracking-[0.2em] mt-0.5">
+                  support
+                </span>
               </div>
-            )}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 text-white/40 hover:text-white/90 hover:bg-white/10 transition-all rounded-full"
+                aria-label="Close chat"
+              >
+                <Icon src="/icons/x.svg" size={16} />
+              </button>
+            </div>
 
-            {messages.map((m, idx) => {
-              const isLastMessage = idx === messages.length - 1;
+            {/* Messages Area */}
+            <div
+              className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-6"
+              style={{ scrollbarWidth: "none" }}
+            >
+              {messages.length === 0 && !isLoading && (
+                <div className="flex flex-col items-center justify-center h-full text-white/30 space-y-4 select-none">
+                  <Icon src="/icons/message-circle-question-mark.svg" size={36} opacity={0.3} />
+                  <span className="text-[13px] lowercase tracking-wide font-mono opacity-80">how can we help you?</span>
+                </div>
+              )}
 
-              if (m.role === "user") {
+              {messages.map((m, idx) => {
+                const isLastMessage = idx === messages.length - 1;
+
+                if (m.role === "user") {
+                  return (
+                    <div key={m.id} className="flex justify-end">
+                      <div className="max-w-[85%] px-4 py-2.5 text-[14px] rounded-2xl rounded-tr-sm bg-white/10 text-white/90 lowercase whitespace-pre-wrap leading-relaxed shadow-sm">
+                        {m.content}
+                      </div>
+                    </div>
+                  );
+                }
+
+                const cleaned = stripThinking(m.content ?? "");
+                const showDots =
+                  (cleaned === null || cleaned === "") &&
+                  isLastMessage &&
+                  isLoading;
+
+                const cardInvocations = (m.toolInvocations ?? []).filter(
+                  (t: any) => t.state === "result" && CARD_TOOL_NAMES.has(t.toolName),
+                );
+
                 return (
-                  <div key={m.id} className="flex justify-end">
-                    <div className="max-w-[85%] px-4 py-2.5 text-[14px] rounded-2xl rounded-tr-sm bg-white/10 text-white/90 lowercase whitespace-pre-wrap leading-relaxed shadow-sm">
-                      {m.content}
+                  <div key={m.id} className="flex justify-start">
+                    <div className="max-w-[90%] w-full flex flex-col gap-1 py-1">
+                      <div className="text-[14px] text-white/70 min-h-[24px] flex items-center">
+                        {showDots ? (
+                          <ThinkingDots />
+                        ) : cleaned ? (
+                          <AssistantText text={cleaned} />
+                        ) : cardInvocations.length === 0 ? (
+                          <span className="text-white/20 text-sm">—</span>
+                        ) : null}
+                      </div>
+                      {cardInvocations.map((t: any) => (
+                        <div key={t.toolCallId}>{renderToolCard(t)}</div>
+                      ))}
                     </div>
                   </div>
                 );
-              }
+              })}
 
-              const cleaned = stripThinking(m.content ?? "");
-              const showDots =
-                (cleaned === null || cleaned === "") &&
-                isLastMessage &&
-                isLoading;
-
-              const cardInvocations = (m.toolInvocations ?? []).filter(
-                (t: any) => t.state === "result" && CARD_TOOL_NAMES.has(t.toolName),
-              );
-
-              return (
-                <div key={m.id} className="flex justify-start">
-                  <div className="max-w-[90%] w-full flex flex-col gap-1 py-1">
-                    <div className="text-[14px] text-white/70 min-h-[24px] flex items-center">
-                      {showDots ? (
-                        <ThinkingDots />
-                      ) : cleaned ? (
-                        <AssistantText text={cleaned} />
-                      ) : cardInvocations.length === 0 ? (
-                        <span className="text-white/20 text-sm">—</span>
-                      ) : null}
-                    </div>
-                    {cardInvocations.map((t: any) => (
-                      <div key={t.toolCallId}>{renderToolCard(t)}</div>
-                    ))}
+              {awaitingFirstToken && (
+                <div className="flex justify-start">
+                  <div className="py-2 flex items-center">
+                    <ThinkingDots />
                   </div>
                 </div>
-              );
-            })}
+              )}
 
-            {awaitingFirstToken && (
-              <div className="flex justify-start">
-                <div className="py-2 flex items-center">
-                  <ThinkingDots />
+              {error && (
+                <div className="p-4 text-red-400/90 text-[13px] lowercase border border-red-500/20 bg-red-500/10 rounded-xl flex items-center gap-3">
+                  <Icon src="/icons/circle-alert.svg" size={16} />
+                  <span>{error.message || "failed to connect."}</span>
                 </div>
-              </div>
-            )}
+              )}
 
-            {error && (
-              <div className="p-4 text-red-400/90 text-[13px] lowercase border border-red-500/20 bg-red-500/10 rounded-xl flex items-center gap-3">
-                <Icon src="/icons/circle-alert.svg" size={16} />
-                <span>{error.message || "failed to connect."}</span>
-              </div>
-            )}
+              <div ref={messagesEndRef} />
+            </div>
 
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Area */}
-          <div className="px-4 py-4 shrink-0 bg-gradient-to-t from-[#0D0D0D] to-transparent">
-            <form onSubmit={handleSubmit} className="relative flex items-center">
-              <input
-                className="w-full bg-white/5 hover:bg-white/[0.08] focus:bg-white/10 transition-all border border-white/10 focus:border-white/25 outline-none rounded-full text-[14px] text-white placeholder-white/30 pl-5 pr-12 py-3 shadow-inner"
-                value={input}
-                placeholder="ask a question..."
-                onChange={handleInputChange}
-                autoComplete="off"
-              />
-              <button
-                type="submit"
-                disabled={!input.trim() || isLoading}
-                className="absolute right-1.5 p-2 rounded-full text-white/50 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-white/50 transition-all"
-                aria-label="Send message"
-              >
-                <Icon src="/icons/arrow-up.svg" size={18} />
-              </button>
-            </form>
+            {/* Input Area */}
+            <div className="px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] shrink-0 bg-gradient-to-t from-[#0D0D0D] to-transparent">
+              <form onSubmit={handleSubmit} className="relative flex items-center">
+                <input
+                  className="w-full bg-white/5 hover:bg-white/[0.08] focus:bg-white/10 transition-all border border-white/10 focus:border-white/25 outline-none rounded-full text-base sm:text-[14px] text-white placeholder-white/30 pl-5 pr-12 py-3 shadow-inner"
+                  value={input}
+                  placeholder="ask a question..."
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim() || isLoading}
+                  className="absolute right-1 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-white/50 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-white/50 transition-all"
+                  aria-label="Send message"
+                >
+                  <Icon src="/icons/arrow-up.svg" size={18} />
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}
@@ -275,7 +310,7 @@ export function ChatWidget() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-3 px-5 py-3.5 bg-[#0D0D0D]/70 backdrop-blur-xl border border-white/10 hover:border-white/25 hover:bg-[#1A1A1A]/80 transition-all duration-300 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.6)] text-white hover:scale-[1.02] active:scale-[0.98]"
+          className={`fixed right-4 md:right-6 z-50 group flex items-center gap-3 px-5 py-3.5 bg-[#0D0D0D]/70 backdrop-blur-xl border border-white/10 hover:border-white/25 hover:bg-[#1A1A1A]/80 transition-all duration-300 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.6)] text-white hover:scale-[1.02] active:scale-[0.98] ${triggerBottomClass}`}
           aria-label="Open support chat"
         >
           <div className="relative flex items-center justify-center">
@@ -291,6 +326,6 @@ export function ChatWidget() {
           </span>
         </button>
       )}
-    </div>
+    </>
   );
 }

@@ -48,7 +48,7 @@ export default function MobileStickyCart() {
       initial="hidden"
       animate={visible ? "visible" : "hidden"}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0D0D0D]/90 backdrop-blur-xl border-t border-hairline px-6 py-4 flex items-center justify-between"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0D0D0D]/90 backdrop-blur-xl border-t border-hairline px-6 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] flex items-center justify-between"
     >
       <div className="flex flex-col">
         <span className="text-xs tracking-[0.2em] font-mono text-text-muted lowercase">

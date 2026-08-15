@@ -38,7 +38,7 @@ const stripeAppearance = {
     colorSuccess: "#81c784",
     fontFamily:
       '"GeistSans", "Geist Sans", ui-sans-serif, system-ui, sans-serif',
-    fontSizeBase: "13px",
+    fontSizeBase: "16px",
     fontSizeSm: "11px",
     fontWeightNormal: "300",
     fontWeightMedium: "400",
@@ -55,8 +55,8 @@ const stripeAppearance = {
       backgroundColor: "rgba(255,255,255,0.025)",
       color: "#ffffff",
       boxShadow: "none",
-      padding: "12px 14px",
-      fontSize: "13px",
+      padding: "13px 14px",
+      fontSize: "16px",
       fontWeight: "300",
       transition: "border-color 0.2s ease",
       textTransform: "lowercase",
@@ -911,10 +911,10 @@ export default function CheckoutClient() {
   // ─── Main layout ──────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row">
+    <div className="min-h-screen flex flex-col lg:flex-row lg:items-start">
       {/* ── LEFT: Order summary ──────────────────────────────────────────── */}
-      <div className="lg:w-[45%] xl:w-[42%] bg-white/[0.015] border-b lg:border-b-0 lg:border-r border-hairline">
-        <div className="max-w-md mx-auto px-6 md:px-10 lg:px-12 pt-24 pb-12 lg:pt-28 lg:pb-16 lg:min-h-screen lg:flex lg:flex-col">
+      <div className="w-full lg:w-[45%] xl:w-[42%] bg-white/[0.015] border-b lg:border-b-0 lg:border-r border-hairline lg:sticky lg:top-24 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto">
+        <div className="max-w-md mx-auto px-6 md:px-10 lg:px-12 pt-24 pb-12 lg:pt-28 lg:pb-16">
           {isInitializing ? (
             <div className="flex flex-col gap-6 animate-pulse">
               <div className="h-5 w-24 bg-white/[0.06]" />
@@ -951,8 +951,8 @@ export default function CheckoutClient() {
       </div>
 
       {/* ── RIGHT: Checkout form ─────────────────────────────────────────── */}
-      <div className="flex-1 lg:overflow-y-auto">
-        <div className="max-w-lg mx-auto px-6 md:px-10 lg:px-12 pt-10 pb-16 lg:pt-32 lg:pb-24 lg:min-h-screen lg:flex lg:flex-col">
+      <div className="w-full flex-1">
+        <div className="max-w-lg mx-auto px-6 md:px-10 lg:px-12 pt-10 pb-16 lg:pt-32 lg:pb-24">
           {/* Mobile logo */}
           <div className="lg:hidden mb-8 pb-6 border-b border-hairline">
             <Link href="/" aria-label="CORE. home">

@@ -98,3 +98,18 @@ body.stripe-focus [data-custom-cursor] {
   opacity: 0 !important;
   transition: opacity 0.15s ease !important;
 }
+
+/* ─── Mobile input zoom fix ────────────────────────────────────────────────
+   iOS Safari auto-zooms the page when a focused text input computes to a
+   font-size under 16px. Rather than patching every form component (login,
+   signup, forgot/update-password, waitlist, checkout contact/promo fields,
+   order-change/withdrawal forms, the chat input), this catches all native
+   inputs at once below the point where it matters. `!important` is
+   intentional here: this is a safety net, not a design choice. */
+@media (max-width: 639px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
