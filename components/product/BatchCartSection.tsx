@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useCart, CartProduct } from "@/context/CartContext";
 import { Icon } from "@/components/ui/Icon";
 import { STORE_CONFIG, PRICING } from "@/lib/storeConfig";
+import CountdownInline from "@/components/product/CountdownInline";
 
 export type BatchPhase = "preorder" | "buffer" | "soldout";
 
@@ -19,6 +20,8 @@ export interface BatchCartSectionProps {
   closeDate?: string;
 
   shipDate?: string;
+
+  closeDateISO?: string;
 
   className?: string;
 }
@@ -105,17 +108,30 @@ function Subtext({
   stockCount,
   closeDate,
   shipDate,
+  closeDateISO,
 }: {
   phase: BatchPhase;
   stockCount?: number;
   closeDate?: string;
   shipDate?: string;
+  closeDateISO?: string;
 }) {
   if (phase === "preorder") {
     return (
-      <p className="font-mono text-xs text-text-muted leading-relaxed">
-        pre-orders close on {closeDate}. estimated shipping: {shipDate}.
-      </p>
+      <div className="flex flex-col gap-1">
+        <p className="font-mono text-xs text-text-muted leading-relaxed">
+          pre-orders close on {closeDate}. estimated shipping: {shipDate}.
+        </p>
+        {closeDateISO && (
+          <p className="font-mono text-[11px] leading-relaxed">
+            <CountdownInline
+              targetISO={closeDateISO}
+              className="text-white/80"
+            />{" "}
+            <span className="text-text-muted">until batch 01 closes.</span>
+          </p>
+        )}
+      </div>
     );
   }
 
@@ -151,6 +167,7 @@ export default function BatchCartSection({
   stockCount = STORE_CONFIG.stockCount,
   closeDate = STORE_CONFIG.closeDate,
   shipDate = STORE_CONFIG.shipDate,
+  closeDateISO = STORE_CONFIG.closeDateISO,
   className = "",
 }: BatchCartSectionProps) {
   const [btnStatus, setBtnStatus] = useState<ButtonStatus>("idle");
@@ -269,12 +286,13 @@ export default function BatchCartSection({
         )}
       </button>
 
-      {}
+      {/* ── Subtext with live countdown ───────────────────────────────────── */}
       <Subtext
         phase={phase}
         stockCount={stockCount}
         closeDate={closeDate}
         shipDate={shipDate}
+        closeDateISO={closeDateISO}
       />
     </div>
   );

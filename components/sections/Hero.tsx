@@ -1,8 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { getActiveBatch } from "@/lib/batches";
+import { PRICING, STORE_CONFIG } from "@/lib/storeConfig";
+import CountdownInline from "@/components/product/CountdownInline";
 
-export default function Hero() {
+export default async function Hero() {
+  const batch = await getActiveBatch();
+  const duoPricing = PRICING["duo-system-001"];
+
   return (
     <section className="relative pt-16 md:pt-20 overflow-visible">
       <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:56px_56px] pointer-events-none" />
@@ -13,6 +19,26 @@ export default function Hero() {
           <span className="hidden sm:inline">technical hair care.</span>
           <span>lat 51.92 // lon 4.47</span>
         </div>
+
+        {(batch?.phase ?? STORE_CONFIG.currentPhase) === "preorder" && (
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 py-3 border-b border-hairline text-[10px] sm:text-[11px] font-mono tracking-[0.15em] text-text-muted lowercase">
+            <CountdownInline
+              targetISO={
+                batch?.preorderCloseDate
+                  ? `${batch.preorderCloseDate}T23:59:59+02:00`
+                  : STORE_CONFIG.closeDateISO
+              }
+              className="text-white/80"
+            />
+            <span className="text-text-dim">until batch 01 closes</span>
+            <span className="text-text-dim hidden sm:inline">·</span>
+            <span className="hidden sm:inline">
+              preorder €{duoPricing.preorderPrice.toFixed(2)}
+              <span className="text-text-dim mx-1">→</span>
+              regular €{duoPricing.regularPrice.toFixed(2)}
+            </span>
+          </div>
+        )}
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 py-14 md:py-20 items-end">
           <div className="lg:col-span-8">

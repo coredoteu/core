@@ -6,6 +6,9 @@ export const STORE_CONFIG = {
   stockCount: 5,
   closeDate: "aug 16",
   shipDate: "by aug 30",
+  // ISO timestamp for the live countdown engine. Keep in sync with
+  // `batches.preorder_close_date` (supabase/migrations/003_concierge_features.sql).
+  closeDateISO: "2026-08-16T23:59:59+02:00",
 };
 
 export type PricingConfig = {

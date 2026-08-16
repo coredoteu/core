@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import V2IngredientsGrid from "@/components/sections/V2IngredientsGrid";
+import BackerLedger from "@/components/sections/BackerLedger";
 import { getFundingStats } from "@/app/actions/funding";
 
 const logLines = [
@@ -254,6 +255,7 @@ export default function V2SneakPeek() {
         </div>
 
         <V2IngredientsGrid />
+        <BackerLedger />
       </div>
     </section>
   );
