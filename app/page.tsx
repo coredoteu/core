@@ -46,7 +46,7 @@ export default function Home() {
       <ThreeStepSystem />
       <ProductHoverSection />
 
-      {}
+      { }
       <section className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-36 border-b border-hairline">
         <SectionHeader index="04" title="the comparison" />
 
@@ -104,7 +104,7 @@ export default function Home() {
         </div>
       </section>
 
-      {}
+      { }
       <section className="border-b border-hairline bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28">
           <SectionHeader index="05" title="standards" />
@@ -130,7 +130,7 @@ export default function Home() {
       <FaqSection />
       <V2SneakPeek />
 
-      {}
+      { }
       <section id="waitlist" className="bg-[#0D0D0D]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-28 border-b border-hairline">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
