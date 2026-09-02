@@ -23,11 +23,7 @@ export default async function Hero() {
         {(batch?.phase ?? STORE_CONFIG.currentPhase) === "preorder" && (
           <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 py-3 border-b border-hairline text-[10px] sm:text-[11px] font-mono tracking-[0.15em] text-text-muted lowercase">
             <CountdownInline
-              targetISO={
-                batch?.preorderCloseDate
-                  ? `${batch.preorderCloseDate}T23:59:59+02:00`
-                  : STORE_CONFIG.closeDateISO
-              }
+              targetISO={batch?.closeDateISO ?? STORE_CONFIG.closeDateISO}
               className="text-white/80"
             />
             <span className="text-text-dim">until batch 01 closes</span>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import BatchCartSection from "@/components/product/BatchCartSection";
 import { getCatalogProduct } from "@/lib/catalog";
 import { PRODUCTS } from "@/lib/products";
+import type { BatchDisplayProps } from "@/lib/batches";
 
 export function ActivesList({
   actives,
@@ -35,6 +36,7 @@ export default function SingleProductCard({
   actives,
   productId,
   isHighlighted,
+  batch,
 }: {
   unit: string;
   name: string;
@@ -45,6 +47,7 @@ export default function SingleProductCard({
   actives: { code: string; name: string }[];
   productId: string;
   isHighlighted?: boolean;
+  batch?: BatchDisplayProps;
 }) {
   const product = getCatalogProduct(productId);
   const productPage = PRODUCTS.find((p) => p.id === productId);
@@ -110,7 +113,11 @@ export default function SingleProductCard({
 
       {}
       <div className="mt-auto pt-6 flex flex-col gap-4">
-        <BatchCartSection productId={productId} product={product} />
+        <BatchCartSection
+          productId={productId}
+          product={product}
+          {...(batch ?? {})}
+        />
         {productPage && (
           <Link
             href={`/products/${productPage.slug}`}

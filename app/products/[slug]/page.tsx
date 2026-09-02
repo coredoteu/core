@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductBySlug, PRODUCTS } from "@/lib/products";
 import ProductPageTemplate from "@/components/product/ProductPageTemplate";
+import { getActiveBatch, toBatchDisplayProps } from "@/lib/batches";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -36,5 +37,7 @@ export default async function ProductPage({
   const product = getProductBySlug(slug);
   if (!product) notFound();
 
-  return <ProductPageTemplate product={product} />;
+  const batch = toBatchDisplayProps(await getActiveBatch());
+
+  return <ProductPageTemplate product={product} batch={batch} />;
 }

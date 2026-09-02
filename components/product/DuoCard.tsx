@@ -3,11 +3,14 @@
 import Image from "next/image";
 import BatchCartSection from "@/components/product/BatchCartSection";
 import { getCatalogProduct } from "@/lib/catalog";
+import type { BatchDisplayProps } from "@/lib/batches";
 
 export default function DuoCard({
   isHighlighted = false,
+  batch,
 }: {
   isHighlighted?: boolean;
+  batch?: BatchDisplayProps;
 }) {
   const duoProduct = getCatalogProduct("duo-system-001");
 
@@ -119,7 +122,11 @@ export default function DuoCard({
         </div>
 
         {}
-        <BatchCartSection productId={duoProduct.id} product={duoProduct} />
+        <BatchCartSection
+          productId={duoProduct.id}
+          product={duoProduct}
+          {...(batch ?? {})}
+        />
       </div>
     </div>
   );

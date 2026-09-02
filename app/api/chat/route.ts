@@ -8,6 +8,7 @@ import { findOrder } from "@/lib/order-lookup";
 import { buildMockTrackingPayload } from "@/lib/tracking";
 import { buildRoutine } from "@/lib/routine";
 import { getActiveBatch } from "@/lib/batches";
+import { logChatInteraction } from "@/lib/chat-logs";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
@@ -75,6 +76,11 @@ export async function POST(req: Request) {
   const session = await getServerSession();
   const userEmail = session?.user?.email ?? null;
   const supabaseAsUser = await createSupabaseServerClient();
+
+  // Used by the chat_logs insights feed in /admin — the most recent thing
+  // the customer actually typed, independent of which model path answers it.
+  const lastUserMessage: string =
+    [...rawMessages].reverse().find((m: any) => m.role === "user")?.content ?? "";
 
   const orderTools = {
     getRecentOrders: tool({
@@ -409,6 +415,17 @@ export async function POST(req: Request) {
           maxTokens: 4000,
           tools: orderTools,
           maxSteps: 1, // Prevent SDK from attempting a signature-less replay
+          onFinish: async ({ text, toolCalls: finishToolCalls }) => {
+            // Only log here when stage 1 produced a plain-text reply with no
+            // tool calls — tool-call turns are logged after stage 2's narration.
+            if (!finishToolCalls || finishToolCalls.length === 0) {
+              await logChatInteraction({
+                userEmail,
+                userMessage: lastUserMessage,
+                assistantReply: text,
+              });
+            }
+          },
         });
 
         // Forward stage 1's parts (tool call/result) but keep stream open
@@ -444,6 +461,14 @@ ${JSON.stringify(toolResults)}
           messages, // Plain text messages only
           temperature: 0.4,
           maxTokens: 300,
+          onFinish: async ({ text }) => {
+            await logChatInteraction({
+              userEmail,
+              userMessage: lastUserMessage,
+              assistantReply: text,
+              toolNames: toolCalls.map((t: any) => t.toolName),
+            });
+          },
         });
 
         stage2.mergeIntoDataStream(dataStream);
@@ -463,6 +488,13 @@ ${JSON.stringify(toolResults)}
               maxTokens: 4000,
               tools: orderTools,
               maxSteps: 3, 
+              onFinish: async ({ text }) => {
+                await logChatInteraction({
+                  userEmail,
+                  userMessage: lastUserMessage,
+                  assistantReply: text,
+                });
+              },
             });
             fallbackStream.mergeIntoDataStream(dataStream);
             success = true;

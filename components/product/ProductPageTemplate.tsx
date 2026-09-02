@@ -18,11 +18,14 @@ import UsageSection from "@/components/product/UsageSection";
 import TechnicalSpecsSection from "@/components/product/TechnicalSpecsSection";
 import ProductFAQ from "@/components/product/ProductFAQ";
 import CrossSell from "@/components/product/CrossSell";
+import type { BatchDisplayProps } from "@/lib/batches";
 
 export default function ProductPageTemplate({
   product,
+  batch,
 }: {
   product: ProductPageData;
+  batch?: BatchDisplayProps;
 }) {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
@@ -82,7 +85,7 @@ export default function ProductPageTemplate({
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 xl:gap-28 items-start">
             <ProductGallery images={product.images} name={product.name} />
-            <HeroPanel product={product} />
+            <HeroPanel product={product} batch={batch} />
           </div>
         </div>
       </section>

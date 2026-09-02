@@ -2,13 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/layout/Providers";
 import Analytics from "@/components/layout/Analytics";
-import Navbar from "@/components/layout/Navbar";
-import CustomCursor from "@/components/layout/CustomCursor";
-import MobileStickyCart from "@/components/cart/MobileStickyCart";
-import CartDrawer from "@/components/cart/CartDrawer";
-import Footer from "@/components/layout/Footer";
-import CookieDisclaimer from "@/components/layout/CookieDisclaimer";
-import { ChatWidget } from "@/components/ChatWidget";
+import SiteChrome from "@/components/layout/SiteChrome";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -102,14 +96,7 @@ export default function RootLayout({
           }}
         />
         <Providers>
-          <Navbar />
-          <CustomCursor />
-          <CartDrawer />
-          <MobileStickyCart />
-          <CookieDisclaimer />
-          <ChatWidget />
-          <div className="flex-1 flex flex-col">{children}</div>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </Providers>
         <Analytics />
       </body>

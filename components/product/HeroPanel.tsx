@@ -3,8 +3,15 @@ import BatchCartSection from "@/components/product/BatchCartSection";
 import { ProductPageData } from "@/lib/products";
 import { CATALOG } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
+import type { BatchDisplayProps } from "@/lib/batches";
 
-export default function HeroPanel({ product }: { product: ProductPageData }) {
+export default function HeroPanel({
+  product,
+  batch,
+}: {
+  product: ProductPageData;
+  batch?: BatchDisplayProps;
+}) {
   const catalogProduct = CATALOG.find((p) => p.id === product.id)!;
 
   return (
@@ -98,7 +105,11 @@ export default function HeroPanel({ product }: { product: ProductPageData }) {
       </div>
 
       <div className="flex flex-col gap-4 pt-4 border-t border-hairline">
-        <BatchCartSection productId={product.id} product={catalogProduct} />
+        <BatchCartSection
+          productId={product.id}
+          product={catalogProduct}
+          {...(batch ?? {})}
+        />
         <p className="text-[10px] font-mono text-text-muted lowercase text-center">
           secure checkout. free returns.
         </p>

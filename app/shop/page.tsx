@@ -9,6 +9,7 @@ import {
   CONDITIONER_INGREDIENT_LIST,
 } from "@/lib/content";
 import { getActivePrice } from "@/lib/storeConfig";
+import { getActiveBatch, toBatchDisplayProps } from "@/lib/batches";
 
 export const metadata: Metadata = {
   title: "shop / 01 - CORE.",
@@ -27,7 +28,9 @@ const specs = [
   { key: "sulfates", value: "0" },
 ];
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const batch = toBatchDisplayProps(await getActiveBatch());
+
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white font-sans">
       {}
@@ -80,7 +83,7 @@ export default function ShopPage() {
 
         {}
         <div className="mb-8">
-          <DuoCard isHighlighted />
+          <DuoCard isHighlighted batch={batch} />
         </div>
 
         {}
@@ -94,6 +97,7 @@ export default function ShopPage() {
             image="/images/shampoo-front.png"
             actives={SHAMPOO_INGREDIENT_LIST}
             productId="shampoo-290"
+            batch={batch}
           />
           <SingleProductCard
             unit="unit 02"
@@ -104,6 +108,7 @@ export default function ShopPage() {
             image="/images/conditioner-front.png"
             actives={CONDITIONER_INGREDIENT_LIST}
             productId="conditioner-290"
+            batch={batch}
           />
         </div>
       </section>
@@ -162,7 +167,7 @@ export default function ShopPage() {
               key={item.title}
               className={`flex flex-col gap-4 p-8 ${
                 i < 2
-                  ? "md:border-r border-b md:border-b-0 border-hairline"
+                  ? "md:border-r border-b md:border-b-0 md:border-r border-hairline"
                   : ""
               }`}
             >

@@ -3,6 +3,7 @@ import BatchCartSection from "@/components/product/BatchCartSection";
 import { getCatalogProduct } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { getActiveBatch, toBatchDisplayProps } from "@/lib/batches";
 
 const badges = [
   { icon: "/icons/vegan.svg", label: "vegan" },
@@ -150,10 +151,11 @@ function IngredientList({
   );
 }
 
-export default function SystemSpecSheet() {
+export default async function SystemSpecSheet() {
   const shampoo = getCatalogProduct("shampoo-290");
   const conditioner = getCatalogProduct("conditioner-290");
   const duo = getCatalogProduct("duo-system-001");
+  const batch = toBatchDisplayProps(await getActiveBatch());
 
   return (
     <section
@@ -238,7 +240,11 @@ export default function SystemSpecSheet() {
                 </p>
               </div>
               <div className="mt-2">
-                <BatchCartSection productId={duo.id} product={duo} />
+                <BatchCartSection
+                  productId={duo.id}
+                  product={duo}
+                  {...(batch ?? {})}
+                />
               </div>
             </div>
           </div>
@@ -265,7 +271,11 @@ export default function SystemSpecSheet() {
           </div>
           <RitualSteps steps={shampooRitual} />
           <div className="mt-auto pt-2">
-            <BatchCartSection productId={shampoo.id} product={shampoo} />
+            <BatchCartSection
+              productId={shampoo.id}
+              product={shampoo}
+              {...(batch ?? {})}
+            />
           </div>
         </div>
 
@@ -295,6 +305,7 @@ export default function SystemSpecSheet() {
             <BatchCartSection
               productId={conditioner.id}
               product={conditioner}
+              {...(batch ?? {})}
             />
           </div>
         </div>
